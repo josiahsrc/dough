@@ -26,31 +26,60 @@ class DoughRecipeData {
     Duration exitDuration,
     Curve exitCurve,
   }) {
-    return null;
-  }
-
-  // const DoughRecipeData.raw({
-  //   double viscosity,
-  //   double adhesion,
-  //   Duration entryDuration,
-  //   Curve entryCurve,
-  //   Duration exitDuration,
-  //   Curve exitCurve,
-  // })  : this.viscosity = viscosity ?? 10000,
-  //       this.adhesion = adhesion ?? 14,
-  //       this.entryDuration = entryDuration ?? const Duration(milliseconds: 50),
-  //       this.entryCurve = entryCurve ?? Curves.easeInOut,
-  //       this.exitDuration = exitDuration ?? const Duration(milliseconds: 500),
-  //       this.exitCurve = exitCurve ?? Curves.elasticIn;
-
-  factory DoughRecipeData.fallback() {
     return DoughRecipeData.raw(
-      viscosity: 10000,
-      adhesion: 14,
-      entryDuration: const Duration(milliseconds: 50),
-      entryCurve: Curves.easeInOut,
-      exitDuration: const Duration(milliseconds: 500),
-      exitCurve: Curves.elasticIn,
+      viscosity: viscosity ?? 10000,
+      adhesion: adhesion ?? 14,
+      entryDuration: entryDuration ?? const Duration(milliseconds: 50),
+      entryCurve: entryCurve ?? Curves.easeInOut,
+      exitDuration: exitDuration ?? const Duration(milliseconds: 500),
+      exitCurve: exitCurve ?? Curves.elasticIn,
     );
   }
+
+  DoughRecipeData copyWith({
+    double viscosity,
+    double adhesion,
+    Duration entryDuration,
+    Curve entryCurve,
+    Duration exitDuration,
+    Curve exitCurve,
+  }) {
+    return DoughRecipeData.raw(
+      viscosity: viscosity ?? this.viscosity,
+      adhesion: adhesion ?? this.adhesion,
+      entryDuration: entryDuration ?? this.entryDuration,
+      entryCurve: entryCurve ?? this.entryCurve,
+      exitDuration: exitDuration ?? this.exitDuration,
+      exitCurve: exitCurve ?? this.exitCurve,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) return false;
+
+    return other is DoughRecipeData &&
+        other.viscosity == viscosity &&
+        other.adhesion == adhesion &&
+        other.entryDuration == entryDuration &&
+        other.entryCurve == entryCurve &&
+        other.exitDuration == exitDuration &&
+        other.exitCurve == exitCurve;
+  }
+
+  @override
+  int get hashCode {
+    final values = <Object>[
+      viscosity,
+      adhesion,
+      entryDuration,
+      entryCurve,
+      exitDuration,
+      exitCurve,
+    ];
+
+    return hashList(values);
+  }
+
+  factory DoughRecipeData.fallback() => DoughRecipeData();
 }
