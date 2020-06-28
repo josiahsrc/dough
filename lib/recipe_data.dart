@@ -36,6 +36,13 @@ class DoughRecipeData {
     );
   }
 
+  factory DoughRecipeData.chef({
+    double flour,
+    double water,
+  }) {
+    throw UnimplementedError();
+  }
+
   DoughRecipeData copyWith({
     double viscosity,
     double adhesion,

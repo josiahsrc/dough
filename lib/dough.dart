@@ -7,6 +7,7 @@ import 'dart:math' as math;
 
 part 'recipe.dart';
 part 'recipe_data.dart';
+part 'controller.dart';
 
 class Dough extends StatelessWidget {
   final Widget child;
@@ -18,6 +19,8 @@ class Dough extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recipe = DoughRecipe.of(context);
+
     throw UnimplementedError();
   }
 }
