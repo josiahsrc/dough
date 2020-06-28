@@ -36,12 +36,13 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     _lerpTime = 0.0;
     _lerpCurve = null;
 
-    _animCtrl = AnimationController(vsync: this);
-    _animCtrl.addListener(_onAnimCtrlUpdated);
-    _animCtrl.addStatusListener(_onAnimCtrlStatusUpdated);
+    _animCtrl = AnimationController(vsync: this)
+      ..addListener(_onAnimCtrlUpdated)
+      ..addStatusListener(_onAnimCtrlStatusUpdated);
 
-    widget.controller.addStatusListener(_onDoughCtrlStatusUpdated);
-    widget.controller.addListener(_onDoughCtrlUpdated);
+    widget.controller
+      ..addStatusListener(_onDoughCtrlStatusUpdated)
+      ..addListener(_onDoughCtrlUpdated);
 
     Tween<double>(begin: 0.0, end: 1.0).animate(_animCtrl);
   }
@@ -50,23 +51,27 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   void dispose() {
     super.dispose();
 
-    _animCtrl.removeListener(_onAnimCtrlUpdated);
-    _animCtrl.removeStatusListener(_onAnimCtrlStatusUpdated);
-    _animCtrl.dispose();
+    _animCtrl
+      ..removeListener(_onAnimCtrlUpdated)
+      ..removeStatusListener(_onAnimCtrlStatusUpdated)
+      ..dispose();
 
-    widget.controller.removeStatusListener(_onDoughCtrlStatusUpdated);
-    widget.controller.removeListener(_onDoughCtrlUpdated);
+    widget.controller
+      ..removeStatusListener(_onDoughCtrlStatusUpdated)
+      ..removeListener(_onDoughCtrlUpdated);
   }
 
   @override
   void didUpdateWidget(covariant Dough oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    oldWidget.controller.removeListener(_onDoughCtrlUpdated);
-    oldWidget.controller.removeStatusListener(_onDoughCtrlStatusUpdated);
+    oldWidget.controller
+      ..removeListener(_onDoughCtrlUpdated)
+      ..removeStatusListener(_onDoughCtrlStatusUpdated);
 
-    widget.controller.addListener(_onDoughCtrlUpdated);
-    widget.controller.addStatusListener(_onDoughCtrlStatusUpdated);
+    widget.controller
+      ..addListener(_onDoughCtrlUpdated)
+      ..addStatusListener(_onDoughCtrlStatusUpdated);
   }
 
   @override
@@ -102,14 +107,16 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
         _lerpCurve = recipe.entryCurve;
         _animCtrl.duration = recipe.entryDuration;
 
-        _animCtrl.stop();
-        _animCtrl.forward(from: _lerpTime);
+        _animCtrl
+          ..stop()
+          ..forward(from: _lerpTime);
       } else if (status == DoughStatus.started) {
         _lerpCurve = recipe.exitCurve;
         _animCtrl.duration = recipe.exitDuration;
 
-        _animCtrl.stop();
-        _animCtrl.reverse(from: _lerpTime);
+        _animCtrl
+          ..stop()
+          ..reverse(from: _lerpTime);
       } else {
         throw UnimplementedError();
       }
