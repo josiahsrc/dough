@@ -143,7 +143,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
         _animCtrl
           ..stop()
           ..forward(from: _effectiveT);
-      } else if (status == DoughStatus.started) {
+      } else if (status == DoughStatus.stopped) {
         _effectiveCurve = recipe.exitCurve;
         _animCtrl.duration = recipe.exitDuration;
 
@@ -151,7 +151,9 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
           ..stop()
           ..reverse(from: _effectiveT);
       } else {
-        throw UnimplementedError();
+        throw UnimplementedError(
+          'Status ${status.toString()} not implemented!',
+        );
       }
     });
   }

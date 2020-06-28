@@ -29,10 +29,14 @@ class _PressableDoughState extends State<PressableDough> {
           target: details.globalPosition,
         );
       },
-      onPanEnd: (details) {
+      onPanCancel: () {
+        _controller.stop();
+      },
+      onPanEnd: (_) {
         _controller.stop();
       },
       child: widget.child,
+      behavior: HitTestBehavior.translucent,
     );
 
     return Dough(

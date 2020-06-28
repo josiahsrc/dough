@@ -43,6 +43,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final fab = FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      );
+
+    final doughFab = PressableDough(
+      child: fab,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -61,11 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: doughFab,
     );
   }
 }
