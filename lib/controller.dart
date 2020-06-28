@@ -12,6 +12,14 @@ class DoughController with ChangeNotifier {
   Offset get target => _target;
   Offset get delta => this.target - this.origin;
 
+  void addStatusListener(DoughStatusCallback callback) {
+    _statusListeners.add(callback);
+  }
+
+  void removeStatusListener(DoughStatusCallback callback) {
+    _statusListeners.remove(callback);
+  }
+
   void start({
     Offset origin,
     Offset target,
