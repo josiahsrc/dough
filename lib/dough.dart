@@ -6,6 +6,7 @@ import 'package:vector_math/vector_math_64.dart' as vmath;
 import 'dart:math' as math;
 
 part 'recipe.dart';
+part 'recipe_data.dart';
 
 class Dough extends StatelessWidget {
   final Widget child;
