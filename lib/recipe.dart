@@ -55,7 +55,7 @@ class DoughRecipeData {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? 10000,
       adhesion: adhesion ?? 14,
-      expansion: expansion ?? 1.05,
+      expansion: expansion ?? 1,
       entryDuration: entryDuration ?? const Duration(milliseconds: 200),
       entryCurve: entryCurve ?? Curves.easeInOut,
       exitDuration: exitDuration ?? const Duration(milliseconds: 500),
@@ -63,13 +63,14 @@ class DoughRecipeData {
     );
   }
 
-  factory DoughRecipeData.leChef({
-    double poundsOfFlour,
-    double cupsOfWater,
-    double teaspoonsOfHoney,
-  }) {
-    throw UnimplementedError();
-  }
+  // TODO :-)
+  // factory DoughRecipeData.leChef({
+  //   double poundsOfFlour = 10,
+  //   double cupsOfWater = 5,
+  //   double teaspoonsOfHoney,
+  // }) {
+  //   throw UnimplementedError();
+  // }
 
   DoughRecipeData copyWith({
     double viscosity,

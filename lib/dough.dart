@@ -90,7 +90,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     final bendSize = delta.length / recipe.viscosity;
     final t = _effectiveT;
 
-    // TODO use a homography here to scale non-uniformly
+    // TODO use a homography here to scale non-uniformly?
     final scaleMagnitude = ui.lerpDouble(1, recipe.expansion, t);
     final scale = Matrix4.identity()
       ..scale(scaleMagnitude, scaleMagnitude, scaleMagnitude);

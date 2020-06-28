@@ -1,11 +1,26 @@
 part of dough;
 
+@immutable
+class PressableDoughReleaseDetails {
+  final Offset delta;
+
+  const PressableDoughReleaseDetails({
+    this.delta,
+  });
+}
+
+typedef PressableDoughReleaseCallback = void Function(
+  PressableDoughReleaseDetails details,
+);
+
 class PressableDough extends StatefulWidget {
   final Widget child;
+  final PressableDoughReleaseCallback onRelease;
 
   const PressableDough({
     Key key,
     @required this.child,
+    this.onRelease,
   }) : super(key: key);
 
   @override
@@ -18,7 +33,7 @@ class _PressableDoughState extends State<PressableDough> {
   @override
   Widget build(BuildContext context) {
     final pressableInterface = GestureDetector(
-      onPanDown: (details) {
+      onPanStart: (details) {
         _controller.start(
           origin: details.globalPosition,
           target: details.globalPosition,
@@ -29,11 +44,13 @@ class _PressableDoughState extends State<PressableDough> {
           target: details.globalPosition,
         );
       },
-      onPanCancel: () {
+      onPanEnd: (details) {
         _controller.stop();
-      },
-      onPanEnd: (_) {
-        _controller.stop();
+        widget.onRelease?.call(
+          PressableDoughReleaseDetails(
+            delta: _controller.delta,
+          ),
+        );
       },
       child: widget.child,
       behavior: HitTestBehavior.translucent,
