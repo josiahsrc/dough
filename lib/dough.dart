@@ -84,11 +84,16 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     final delta = _VectorUtils.offsetToVector(widget.controller.delta);
     final deltaAngle = _VectorUtils.computeFullCirculeAngle(
       toDirection: delta,
-      fromDirection: vmath.Vector2(0, 1),
+      fromDirection: vmath.Vector2(1, 1),
     );
 
     final bendSize = delta.length / recipe.viscosity;
     final t = _effectiveT;
+
+    // TODO use a homography here to scale non-uniformly
+    final scaleMagnitude = ui.lerpDouble(1, recipe.expansion, t);
+    final scale = Matrix4.identity()
+      ..scale(scaleMagnitude, scaleMagnitude, scaleMagnitude);
 
     final rotateTo = Matrix4.rotationZ(deltaAngle);
 
@@ -109,7 +114,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
     return Transform(
       alignment: Alignment.center,
-      transform: translate * rotateBack * bend * rotateTo,
+      transform: translate * rotateBack * bend * rotateTo * scale,
       child: widget.child,
     );
   }

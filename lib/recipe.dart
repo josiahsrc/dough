@@ -27,6 +27,7 @@ class DoughRecipe extends InheritedWidget {
 class DoughRecipeData {
   final double viscosity;
   final double adhesion;
+  final double expansion;
   final Duration entryDuration;
   final Curve entryCurve;
   final Duration exitDuration;
@@ -35,6 +36,7 @@ class DoughRecipeData {
   const DoughRecipeData.raw({
     @required this.viscosity,
     @required this.adhesion,
+    @required this.expansion,
     @required this.entryDuration,
     @required this.entryCurve,
     @required this.exitDuration,
@@ -44,6 +46,7 @@ class DoughRecipeData {
   factory DoughRecipeData({
     double viscosity,
     double adhesion,
+    double expansion,
     Duration entryDuration,
     Curve entryCurve,
     Duration exitDuration,
@@ -52,16 +55,18 @@ class DoughRecipeData {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? 10000,
       adhesion: adhesion ?? 14,
-      entryDuration: entryDuration ?? const Duration(milliseconds: 50),
+      expansion: expansion ?? 1.05,
+      entryDuration: entryDuration ?? const Duration(milliseconds: 200),
       entryCurve: entryCurve ?? Curves.easeInOut,
       exitDuration: exitDuration ?? const Duration(milliseconds: 500),
       exitCurve: exitCurve ?? Curves.elasticIn,
     );
   }
 
-  factory DoughRecipeData.chef({
-    double flour,
-    double water,
+  factory DoughRecipeData.leChef({
+    double poundsOfFlour,
+    double cupsOfWater,
+    double teaspoonsOfHoney,
   }) {
     throw UnimplementedError();
   }
@@ -69,6 +74,7 @@ class DoughRecipeData {
   DoughRecipeData copyWith({
     double viscosity,
     double adhesion,
+    double expansion,
     Duration entryDuration,
     Curve entryCurve,
     Duration exitDuration,
@@ -77,6 +83,7 @@ class DoughRecipeData {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? this.viscosity,
       adhesion: adhesion ?? this.adhesion,
+      expansion: expansion ?? this.expansion,
       entryDuration: entryDuration ?? this.entryDuration,
       entryCurve: entryCurve ?? this.entryCurve,
       exitDuration: exitDuration ?? this.exitDuration,
@@ -91,6 +98,7 @@ class DoughRecipeData {
     return other is DoughRecipeData &&
         other.viscosity == viscosity &&
         other.adhesion == adhesion &&
+        other.expansion == expansion &&
         other.entryDuration == entryDuration &&
         other.entryCurve == entryCurve &&
         other.exitDuration == exitDuration &&
@@ -102,6 +110,7 @@ class DoughRecipeData {
     final values = <Object>[
       viscosity,
       adhesion,
+      expansion,
       entryDuration,
       entryCurve,
       exitDuration,
