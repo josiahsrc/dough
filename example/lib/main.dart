@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       height: 100,
       child: Center(
         child: Text(
-          'Drag me around :)',
+          'Drag me around!',
           textAlign: TextAlign.center,
         ),
       ),
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: PressableDough(
         child: centerContainer,
-        onRelease: (details) {
+        onReleased: (details) {
           // This callback is raised when the user release their
           // hold on the pressable dough.
           print('I was release with ${details.delta} delta!');

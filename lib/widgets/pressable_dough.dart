@@ -15,12 +15,12 @@ typedef PressableDoughReleaseCallback = void Function(
 
 class PressableDough extends StatefulWidget {
   final Widget child;
-  final PressableDoughReleaseCallback onRelease;
+  final PressableDoughReleaseCallback onReleased;
 
   const PressableDough({
     Key key,
     @required this.child,
-    this.onRelease,
+    this.onReleased,
   }) : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class _PressableDoughState extends State<PressableDough> {
       },
       onPanEnd: (details) {
         _controller.stop();
-        widget.onRelease?.call(
+        widget.onReleased?.call(
           PressableDoughReleaseDetails(
             delta: _controller.delta,
           ),
