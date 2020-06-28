@@ -2,7 +2,9 @@ library dough;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart' as vmath;
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 part 'status.dart';
 part 'recipe.dart';
@@ -26,15 +28,15 @@ class Dough extends StatefulWidget {
 
 class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   AnimationController _animCtrl;
-  double _lerpTime;
-  Curve _lerpCurve;
+  double _effectiveT;
+  Curve _effectiveCurve;
 
   @override
   void initState() {
     super.initState();
 
-    _lerpTime = 0.0;
-    _lerpCurve = null;
+    _effectiveT = 0.0;
+    _effectiveCurve = null;
 
     _animCtrl = AnimationController(vsync: this)
       ..addListener(_onAnimCtrlUpdated)
@@ -78,19 +80,49 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final recipe = DoughRecipe.of(context);
 
-    throw UnimplementedError();
+    final delta = _VectorUtils.offsetToVector(widget.controller.delta);
+    final deltaAngle = _VectorUtils.computeFullCirculeAngle(
+      toDirection: delta,
+      fromDirection: vmath.Vector2(0, 1),
+    );
+
+    final bendSize = delta.length / recipe.viscosity;
+    final t = _effectiveT;
+
+    final rotateTo = Matrix4.rotationZ(deltaAngle);
+
+    final bend = Matrix4.columns(
+      vmath.Vector4(1, t * bendSize, 0, 0),
+      vmath.Vector4(t * bendSize, 1, 0, 0),
+      vmath.Vector4(0, 0, 1, 0),
+      vmath.Vector4(0, 0, 0, 1),
+    )..transpose();
+
+    final rotateBack = Matrix4.rotationZ(-deltaAngle);
+
+    final translate = Matrix4.translationValues(
+      delta.x * t / recipe.adhesion,
+      delta.y * t / recipe.adhesion,
+      0,
+    );
+
+    return Transform(
+      alignment: Alignment.center,
+      transform: translate * rotateBack * bend * rotateTo,
+      child: widget.child,
+    );
   }
 
   void _onAnimCtrlUpdated() {
     setState(() {
-      _lerpTime = _lerpCurve.transform(_animCtrl.value);
+      _effectiveT = _effectiveCurve.transform(_animCtrl.value);
     });
   }
 
   void _onAnimCtrlStatusUpdated(AnimationStatus status) {
     setState(() {
       if (status == AnimationStatus.completed) {
-        _lerpTime = _lerpCurve.transform(1.0);
+        _effectiveT = _effectiveCurve.transform(1.0);
       }
     });
   }
@@ -104,19 +136,19 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
     setState(() {
       if (status == DoughStatus.started) {
-        _lerpCurve = recipe.entryCurve;
+        _effectiveCurve = recipe.entryCurve;
         _animCtrl.duration = recipe.entryDuration;
 
         _animCtrl
           ..stop()
-          ..forward(from: _lerpTime);
+          ..forward(from: _effectiveT);
       } else if (status == DoughStatus.started) {
-        _lerpCurve = recipe.exitCurve;
+        _effectiveCurve = recipe.exitCurve;
         _animCtrl.duration = recipe.exitDuration;
 
         _animCtrl
           ..stop()
-          ..reverse(from: _lerpTime);
+          ..reverse(from: _effectiveT);
       } else {
         throw UnimplementedError();
       }
