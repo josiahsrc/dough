@@ -1,16 +1,7 @@
 part of dough;
 
-enum DoughControllerStatus {
-  started,
-  finished,
-}
-
-typedef DoughControllerStatusCallback = void Function(
-  DoughControllerStatus status,
-);
-
 class DoughController with ChangeNotifier {
-  final _statusListeners = ObserverList<DoughControllerStatusCallback>();
+  final _statusListeners = ObserverList<DoughStatusCallback>();
 
   bool _isActive = false;
   Offset _origin = Offset.zero;
@@ -19,43 +10,44 @@ class DoughController with ChangeNotifier {
   bool get isActive => _isActive;
   Offset get origin => _origin;
   Offset get target => _target;
-  Offset get delta => this.delta - this.origin;
+  Offset get delta => this.target - this.origin;
 
-  void addStatusListener(DoughControllerStatusCallback callback) {
-    _statusListeners.add(callback);
-  }
-
-  void removeStatusListener(DoughControllerStatusCallback callback) {
-    _statusListeners.remove(callback);
-  }
-
-  void start(Offset origin) {
+  void start({
+    Offset origin,
+    Offset target,
+  }) {
     assert(!isActive);
 
     _isActive = true;
-    _origin = origin;
-    _target = origin;
+    _origin = origin ?? _origin;
+    _target = target ?? _target;
 
     notifyListeners();
-    _notifyStatusListeners(DoughControllerStatus.started);
+    _notifyStatusListeners(DoughStatus.started);
   }
 
-  void update(Offset target) {
+  void update({
+    Offset origin,
+    Offset target,
+  }) {
     assert(isActive);
 
-    _target = target;
+    _origin = origin ?? _origin;
+    _target = target ?? _target;
+
     notifyListeners();
   }
 
-  void finish() {
+  void stop() {
     assert(isActive);
 
     _isActive = false;
+
     notifyListeners();
-    _notifyStatusListeners(DoughControllerStatus.finished);
+    _notifyStatusListeners(DoughStatus.stopped);
   }
 
-  void _notifyStatusListeners(DoughControllerStatus status) {
+  void _notifyStatusListeners(DoughStatus status) {
     _statusListeners.forEach((fn) => fn(status));
   }
 }

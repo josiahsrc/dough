@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+part 'status.dart';
 part 'recipe.dart';
 part 'recipe_data.dart';
 part 'controller.dart';
