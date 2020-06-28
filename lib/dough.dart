@@ -8,9 +8,10 @@ import 'dart:ui' as ui;
 
 part 'status.dart';
 part 'recipe.dart';
-part 'recipe_data.dart';
 part 'controller.dart';
 part 'utils.dart';
+
+part 'widgets/pressable_dough.dart';
 
 class Dough extends StatefulWidget {
   final Widget child;
