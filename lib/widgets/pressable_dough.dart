@@ -1,7 +1,10 @@
 part of dough;
 
+/// Some details about a dough release after being pressed.
 @immutable
 class PressableDoughReleaseDetails {
+
+  /// How far the dough was dragged before it was released.
   final Offset delta;
 
   const PressableDoughReleaseDetails({
@@ -13,8 +16,13 @@ typedef PressableDoughReleaseCallback = void Function(
   PressableDoughReleaseDetails details,
 );
 
+/// A smooshable dough widget that reacts to a user's presses.
 class PressableDough extends StatefulWidget {
+
+  /// The child to smoosh.
   final Widget child;
+
+  /// A callback raised when the user releases their hold on the widget.
   final PressableDoughReleaseCallback onReleased;
 
   const PressableDough({

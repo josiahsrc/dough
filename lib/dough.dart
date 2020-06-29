@@ -13,8 +13,13 @@ part 'utils.dart';
 
 part 'widgets/pressable_dough.dart';
 
+/// Squishes a provided [child] widget based on the provided
+/// [controller] widget in a dough-like fashion.
 class Dough extends StatefulWidget {
+  /// The child to squish.
   final Widget child;
+
+  /// The squish controller. You'll have to manage this yourself.
   final DoughController controller;
 
   const Dough({

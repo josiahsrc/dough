@@ -1,9 +1,12 @@
 part of dough;
 
+/// Inherited settings for dough widgets. Use this to override
+/// the default dough settings.
 @immutable
 class DoughRecipe extends InheritedWidget {
   static final DoughRecipeData _kFallbackRecipe = DoughRecipeData.fallback();
 
+  /// The settings to use.
   final DoughRecipeData data;
 
   const DoughRecipe({
@@ -12,6 +15,8 @@ class DoughRecipe extends InheritedWidget {
     this.data,
   }) : super(key: key, child: child);
 
+  /// Gets the inherited [DoughRecipeData]. If no recipe is found,
+  /// a default one will be used instead.
   static DoughRecipeData of(BuildContext context) {
     final ih = context.dependOnInheritedWidgetOfExactType<DoughRecipe>();
     return ih?.data ?? _kFallbackRecipe;
@@ -23,14 +28,33 @@ class DoughRecipe extends InheritedWidget {
   }
 }
 
+/// Settings which will be applied to the [DoughWidget] on build.
 @immutable
 class DoughRecipeData {
+
+  /// How thick the dough is. Higher values make for harder/less
+  /// elastic dough. A typical value would be something like 10000.
   final double viscosity;
+
+  /// How stick the dough is. Higher values result in dough that
+  /// doesn't move around a lot when its dragged. Lower values
+  /// result in really "slippery" dough. A typical value would be
+  /// something like 14.
   final double adhesion;
+
+  /// The factor by which the dough expands when pressed.
   final double expansion;
+
+  /// How long the dough takes to transition into a squished state.
   final Duration entryDuration;
+
+  /// The curve by which the dough enters a squished state.
   final Curve entryCurve;
+
+  /// How long the dough takes to transition out of a squished state.
   final Duration exitDuration;
+
+  /// The curve by which the dough exits a squished state.
   final Curve exitCurve;
 
   const DoughRecipeData.raw({
@@ -72,6 +96,7 @@ class DoughRecipeData {
   //   throw UnimplementedError();
   // }
 
+  /// Copies the current recipe with some new values.
   DoughRecipeData copyWith({
     double viscosity,
     double adhesion,
