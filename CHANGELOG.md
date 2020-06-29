@@ -10,10 +10,15 @@
 
 * Fixed the description for a better point score
 
-## [0.0.3] - June 28, 2020.
+## [0.0.3] - June 29, 2020.
 
 * Fixed formatting using `dart format`
 
-## [0.0.4] - June 28, 2020.
+## [0.0.4] - June 29, 2020.
 
 * Removed unreferenced utility functions
+
+## [0.0.5] - June 29, 2020.
+
+* Fixed dough vsync disposal ordering issue
+* Improved example project structure

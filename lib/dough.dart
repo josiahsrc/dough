@@ -57,8 +57,6 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
-
     _animCtrl
       ..removeListener(_onAnimCtrlUpdated)
       ..removeStatusListener(_onAnimCtrlStatusUpdated)
@@ -66,7 +64,10 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
     widget.controller
       ..removeStatusListener(_onDoughCtrlStatusUpdated)
-      ..removeListener(_onDoughCtrlUpdated);
+      ..removeListener(_onDoughCtrlUpdated)
+      ..dispose();
+
+    super.dispose();
   }
 
   @override
