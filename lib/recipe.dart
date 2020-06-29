@@ -31,7 +31,6 @@ class DoughRecipe extends InheritedWidget {
 /// Settings which will be applied to the [DoughWidget] on build.
 @immutable
 class DoughRecipeData {
-
   /// How thick the dough is. Higher values make for harder/less
   /// elastic dough. A typical value would be something like 10000.
   final double viscosity;

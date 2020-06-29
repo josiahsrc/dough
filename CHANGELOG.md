@@ -9,3 +9,11 @@
 ## [0.0.2] - June 28, 2020.
 
 * Fixed the description for a better point score
+
+## [0.0.3] - June 28, 2020.
+
+* Fixed formatting using `dart format`
+
+## [0.0.4] - June 28, 2020.
+
+* Removed unreferenced utility functions

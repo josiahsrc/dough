@@ -17,8 +17,8 @@ class DoughController with ChangeNotifier {
   /// The ending point of the squish.
   Offset get target => _target;
 
-  /// The difference between the target and the origin. The Dough 
-  /// widget uses this to determine which direction to smoosh its 
+  /// The difference between the target and the origin. The Dough
+  /// widget uses this to determine which direction to smoosh its
   /// child.
   Offset get delta => this.target - this.origin;
 
@@ -34,10 +34,10 @@ class DoughController with ChangeNotifier {
 
   /// Begin squishing the dough. Sets [isActive] to true. Informs all status
   /// listeners that the status has changed to [DoughStatus.started].
-  /// 
+  ///
   /// - If no [origin] is provided, the old [origin] will be used instead.
   /// - If no [target] is provided, the old [target] will be used instead.
-  /// 
+  ///
   /// **A squish can't already be active when calling this message.**
   void start({
     Offset origin,
@@ -54,10 +54,10 @@ class DoughController with ChangeNotifier {
   }
 
   /// Update the currently active squish.
-  /// 
+  ///
   /// - If no [origin] is provided, the old [origin] will be used instead.
   /// - If no [target] is provided, the old [target] will be used instead.
-  /// 
+  ///
   /// **A squish must already be active when calling this function.**
   void update({
     Offset origin,
@@ -73,7 +73,7 @@ class DoughController with ChangeNotifier {
 
   /// Stops squishing the dough. Sets [isActive] to false. Informs all status
   /// listeners that the status has changed to [DoughStatus.stopped].
-  /// 
+  ///
   /// **A squish must already be active when calling this function.**
   void stop() {
     assert(isActive);
