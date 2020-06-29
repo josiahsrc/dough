@@ -1,4 +1,4 @@
 # Contributing
 
-Contributions are always welcome. Just create a pull request and I'll have a look at
-the changes you suggest!
+Contributions are always welcome. If you see something that needs
+improvement, feel free to send up a pull request!
