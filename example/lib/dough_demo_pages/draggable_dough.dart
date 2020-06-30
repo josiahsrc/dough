@@ -9,21 +9,30 @@ class DraggableDoughPage extends StatelessWidget {
         Positioned(
           left: 50,
           top: 10,
-          child: DraggableDough<String>(
-            data: "hi",
-            child: Container(
-              width: 50,
-              height: 50,
-              color: Colors.red,
+          child: DoughRecipe(
+            data: DoughRecipeData(
+              viscosity: 1000,
+              adhesion: 4,
+              entryDuration: Duration(
+                milliseconds: 10,
+              ),
             ),
-            feedback: Container(
-              width: 50,
-              height: 50,
-              color: Colors.green,
+            child: DraggableDough<String>(
+              data: "hi",
+              child: Container(
+                width: 50,
+                height: 50,
+                color: Colors.red,
+              ),
+              feedback: Container(
+                width: 50,
+                height: 50,
+                color: Colors.green,
+              ),
+              onDragStarted: () {
+                print('started');
+              },
             ),
-            onDragStarted: () {
-              print('started');
-            },
           ),
         ),
       ],

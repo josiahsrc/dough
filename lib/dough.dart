@@ -30,7 +30,9 @@ class Dough extends StatefulWidget {
     Key key,
     @required this.child,
     @required this.controller,
-  }) : super(key: key);
+  })  : assert(controller != null),
+        assert(child != null),
+        super(key: key);
 
   @override
   _DoughState createState() => _DoughState();
@@ -68,8 +70,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
     widget.controller
       ..removeStatusListener(_onDoughCtrlStatusUpdated)
-      ..removeListener(_onDoughCtrlUpdated)
-      ..dispose();
+      ..removeListener(_onDoughCtrlUpdated);
 
     super.dispose();
   }
