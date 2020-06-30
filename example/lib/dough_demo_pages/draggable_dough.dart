@@ -21,6 +21,9 @@ class DraggableDoughPage extends StatelessWidget {
               height: 50,
               color: Colors.green,
             ),
+            onDragStarted: () {
+              print('started');
+            },
           ),
         ),
       ],

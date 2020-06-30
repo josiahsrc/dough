@@ -8,8 +8,8 @@ class _MultiThresholdGestureRecognizer
   _MultiThresholdGestureRecognizer({
     Object debugOwner,
     PointerDeviceKind kind,
-    this.axis,
-    this.threshold,
+    @required this.axis,
+    @required this.threshold,
   }) : super(debugOwner: debugOwner, kind: kind);
 
   @override
@@ -28,6 +28,8 @@ class _MultiThresholdGestureRecognizer
 class _MultiThresholdPointerState extends MultiDragPointerState {
   final double threshold;
   final Axis axis;
+
+  GestureMultiDragStartCallback _starter;
 
   _MultiThresholdPointerState(
     Offset initialPosition,
@@ -51,11 +53,13 @@ class _MultiThresholdPointerState extends MultiDragPointerState {
 
     if (sqrDeltaMagnitude > threshold * threshold) {
       resolve(GestureDisposition.accepted);
+      _starter(initialPosition);
     }
   }
 
   @override
   void accepted(GestureMultiDragStartCallback starter) {
-    starter(initialPosition);
+    assert(_starter == null);
+    _starter = starter;
   }
 }
