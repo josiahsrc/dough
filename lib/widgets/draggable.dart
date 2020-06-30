@@ -2,16 +2,73 @@ part of dough;
 
 class DraggableDoughPrefs {}
 
-/// Makes its child draggable but in a smooshy-like way.
-class DraggableDough<T> extends Draggable<T> {
-  /// Whether haptic feedback should be triggered on drag start.
+class DraggableDough<T> extends StatelessWidget {
+  final bool hapticFeedbackOnStart;
+  final T data;
+  final Axis axis;
+  final Widget child;
+  final Widget childWhenDragging;
+  final Widget feedback;
+  final Offset feedbackOffset;
+  final DragAnchor dragAnchor;
+  final bool ignoringFeedbackSemantics;
+  final Axis affinity;
+  final int maxSimultaneousDrags;
+  final VoidCallback onDragStarted;
+  final DraggableCanceledCallback onDraggableCanceled;
+  final VoidCallback onDragCompleted;
+  final DragEndCallback onDragEnd;
+
+  const DraggableDough({
+    Key key,
+    @required this.child,
+    @required this.feedback,
+    this.data,
+    this.axis,
+    this.childWhenDragging,
+    this.feedbackOffset = Offset.zero,
+    this.dragAnchor = DragAnchor.child,
+    this.affinity,
+    this.maxSimultaneousDrags,
+    this.onDragStarted,
+    this.onDraggableCanceled,
+    this.onDragEnd,
+    this.onDragCompleted,
+    this.ignoringFeedbackSemantics = true,
+    this.hapticFeedbackOnStart = true,
+  })  : assert(child != null),
+        assert(feedback != null),
+        assert(ignoringFeedbackSemantics != null),
+        assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
+        assert(hapticFeedbackOnStart != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _Draggable<T>(
+      child: child,
+      feedback: feedback,
+      data: data,
+      axis: axis,
+      childWhenDragging: childWhenDragging,
+      feedbackOffset: feedbackOffset,
+      dragAnchor: dragAnchor,
+      affinity: affinity,
+      maxSimultaneousDrags: maxSimultaneousDrags,
+      onDragStarted: onDragStarted,
+      onDraggableCanceled: onDraggableCanceled,
+      onDragEnd: onDragEnd,
+      onDragCompleted: onDragCompleted,
+      ignoringFeedbackSemantics: ignoringFeedbackSemantics,
+      hapticFeedbackOnStart: hapticFeedbackOnStart,
+    );
+  }
+}
+
+class _Draggable<T> extends Draggable<T> {
   final bool hapticFeedbackOnStart;
 
-  /// Creates a widget that can be dragged in a smooshy-like way.
-  ///
-  /// The [child] and [feedback] arguments must not be null. If
-  /// [maxSimultaneousDrags] is non-null, it must be non-negative.
-  const DraggableDough({
+  const _Draggable({
     Key key,
     @required Widget child,
     @required Widget feedback,
@@ -20,12 +77,13 @@ class DraggableDough<T> extends Draggable<T> {
     Widget childWhenDragging,
     Offset feedbackOffset = Offset.zero,
     DragAnchor dragAnchor = DragAnchor.child,
+    Axis affinity,
     int maxSimultaneousDrags,
     VoidCallback onDragStarted,
     DraggableCanceledCallback onDraggableCanceled,
     DragEndCallback onDragEnd,
     VoidCallback onDragCompleted,
-    this.hapticFeedbackOnStart = true,
+    this.hapticFeedbackOnStart,
     bool ignoringFeedbackSemantics = true,
   }) : super(
           key: key,
@@ -36,6 +94,7 @@ class DraggableDough<T> extends Draggable<T> {
           childWhenDragging: childWhenDragging,
           feedbackOffset: feedbackOffset,
           dragAnchor: dragAnchor,
+          affinity: affinity,
           maxSimultaneousDrags: maxSimultaneousDrags,
           onDragStarted: onDragStarted,
           onDraggableCanceled: onDraggableCanceled,
@@ -48,6 +107,7 @@ class DraggableDough<T> extends Draggable<T> {
   MultiDragGestureRecognizer<MultiDragPointerState> createRecognizer(
     GestureMultiDragStartCallback onStart,
   ) {
+    // TODO use affinity for better query
     // switch (affinity) {
     //   case Axis.horizontal:
     //     return HorizontalMultiDragGestureRecognizer()..onStart = onStart;
@@ -55,7 +115,7 @@ class DraggableDough<T> extends Draggable<T> {
     //     return VerticalMultiDragGestureRecognizer()..onStart = onStart;
     // }
     // return ImmediateMultiDragGestureRecognizer()..onStart = onStart;
-    print('here');
+
     return _MultiThresholdGestureRecognizer(
       axis: axis,
       threshold: 40,
@@ -70,72 +130,3 @@ class DraggableDough<T> extends Draggable<T> {
       };
   }
 }
-
-// class DraggableDough<T> extends Draggable<T> {
-//   final bool hapticFeedbackOnStart;
-
-//   const DraggableDough({
-//     Key key,
-//     @required Widget child,
-//     @required Widget feedback,
-//     T data,
-//     Axis axis,
-//     Widget childWhenDragging,
-//     Offset feedbackOffset = Offset.zero,
-//     DragAnchor dragAnchor = DragAnchor.child,
-//     int maxSimultaneousDrags,
-//     VoidCallback onDragStarted,
-//     DraggableCanceledCallback onDraggableCanceled,
-//     DragEndCallback onDragEnd,
-//     VoidCallback onDragCompleted,
-//     this.hapticFeedbackOnStart = true,
-//     bool ignoringFeedbackSemantics = true,
-//   }) : super(
-//           key: key,
-//           child: child,
-//           feedback: feedback,
-//           data: data,
-//           axis: axis,
-//           childWhenDragging: childWhenDragging,
-//           feedbackOffset: feedbackOffset,
-//           dragAnchor: dragAnchor,
-//           maxSimultaneousDrags: maxSimultaneousDrags,
-//           onDragStarted: onDragStarted,
-//           onDraggableCanceled: onDraggableCanceled,
-//           onDragEnd: onDragEnd,
-//           onDragCompleted: onDragCompleted,
-//           ignoringFeedbackSemantics: ignoringFeedbackSemantics,
-//         );
-
-//   @override
-//   DelayedMultiDragGestureRecognizer createRecognizer(
-//       GestureMultiDragStartCallback onStart) {
-//     return DelayedMultiDragGestureRecognizer(
-//       delay: Duration(seconds: 15),
-//     )..onStart = (Offset position) {
-//         final Drag result = onStart(position);
-//         if (result != null && hapticFeedbackOnStart)
-//           HapticFeedback.selectionClick();
-//         return result;
-//       };
-//   }
-
-// @override
-// _MultiThresholdGestureRecognizer createRecognizer(
-//   GestureMultiDragStartCallback onStart,
-// ) {
-//   print('creating multi drag');
-//   return _MultiThresholdGestureRecognizer(
-//     axis: axis,
-//     threshold: 40,
-//   )..onStart = (Offset position) {
-//       final Drag result = onStart(position);
-
-//       if (result != null && hapticFeedbackOnStart) {
-//         HapticFeedback.selectionClick();
-//       }
-
-//       return result;
-//     };
-// }
-// }
