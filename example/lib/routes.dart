@@ -1,6 +1,7 @@
 import 'main.dart';
 
 import 'dough_demo_pages/pressable_dough.dart';
+import 'dough_demo_pages/draggable_dough.dart';
 
 class Routes {
   static final kHome = '/';
@@ -10,6 +11,6 @@ class Routes {
   static dynamic define() => {
         kHome: (context) => HomePage(),
         kPressableDough: (context) => PressableDoughPage(),
-        kDraggableDough: (context) => PressableDoughPage(),
+        kDraggableDough: (context) => DraggableDoughPage(),
       };
 }

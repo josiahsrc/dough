@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
       ),
       ListTile(
         title: Text('Draggable Dough'),
-        onTap: () => nav.pushNamed(Routes.kPressableDough),
+        onTap: () => nav.pushNamed(Routes.kDraggableDough),
       ),
     ];
 
