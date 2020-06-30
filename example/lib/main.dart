@@ -4,10 +4,10 @@ import 'package:dough/dough.dart';
 import 'routes.dart';
 
 void main() {
-  runApp(AppRoot());
+  runApp(MyApp());
 }
 
-class AppRoot extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app = MaterialApp(
@@ -28,6 +28,33 @@ class AppRoot extends StatelessWidget {
         adhesion: 14,
       ),
       child: app,
+    );
+  }
+}
+
+/// This page just provides links to the different dough widget
+/// examples.
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final nav = Navigator.of(context);
+
+    final links = [
+      ListTile(
+        title: Text('Pressable Dough'),
+        onTap: () => nav.pushNamed(Routes.kPressableDough),
+      ),
+      ListTile(
+        title: Text('Draggable Dough'),
+        onTap: () => nav.pushNamed(Routes.kPressableDough),
+      ),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter Demo Home Page'),
+      ),
+      body: ListView(children: links),
     );
   }
 }
