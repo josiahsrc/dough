@@ -14,7 +14,8 @@ class DoughController with ChangeNotifier {
   /// The starting point of the squish.
   Offset get origin => _origin;
 
-  /// The ending point of the squish.
+  /// The ending point of the squish or where the dough is trying
+  /// to stretch to.
   Offset get target => _target;
 
   /// The difference between the target and the origin. The Dough
@@ -38,7 +39,7 @@ class DoughController with ChangeNotifier {
   /// - If no [origin] is provided, the old [origin] will be used instead.
   /// - If no [target] is provided, the old [target] will be used instead.
   ///
-  /// **A squish can't already be active when calling this message.**
+  /// **A squish can't already be active when calling this function.**
   void start({
     Offset origin,
     Offset target,
@@ -72,7 +73,8 @@ class DoughController with ChangeNotifier {
   }
 
   /// Stops squishing the dough. Sets [isActive] to false. Informs all status
-  /// listeners that the status has changed to [DoughStatus.stopped].
+  /// listeners that the status has changed to [DoughStatus.stopped]. The dough
+  /// will snap back to the origin and its original shape.
   ///
   /// **A squish must already be active when calling this function.**
   void stop() {

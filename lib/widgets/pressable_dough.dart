@@ -15,7 +15,8 @@ typedef PressableDoughReleaseCallback = void Function(
   PressableDoughReleaseDetails details,
 );
 
-/// A smooshable dough widget that reacts to a user's presses.
+/// A smooshable dough widget that morphs into different shapes based
+/// on how the user smooshes the widget.
 class PressableDough extends StatefulWidget {
   /// The child to smoosh.
   final Widget child;
