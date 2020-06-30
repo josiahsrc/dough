@@ -11,8 +11,8 @@ part 'recipe.dart';
 part 'controller.dart';
 part 'utils.dart';
 
-part 'widgets/pressable_dough.dart';
-part 'widgets/draggable_dough.dart';
+part 'widgets/pressable.dart';
+part 'widgets/draggable.dart';
 
 /// Squishes the provided [child] widget based on the provided
 /// [controller] widget in a dough-like fashion.

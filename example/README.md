@@ -2,4 +2,6 @@
 
 This example application demonstrates how to use the `dough` package within a simple Flutter app.
 
+## Pressable Dough
+
 ## Draggable Dough

@@ -1,4 +1,4 @@
-# dough
+# Flutter Dough
 
 This package provides some widgets you can use to create a smooshy
 UI.
@@ -54,5 +54,14 @@ contributing!
 
 **More dough widgets** – Currently only the `PressableDough`
 widget is provided out of the box. Support for more dough
-widgets will be added in the future.
+widgets will be added in the future. Some dough widget ideas
+include...
+
+- DraggableDough – Same as the draggable widget, but it's
+smooshy.
+- ReorderableListDough – Same as the reorderable list widget, 
+but it's smooshy.
+- SliverListDough – Same as the sliver list widget, but it's 
+smooshy.
+
 
