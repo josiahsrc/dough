@@ -69,3 +69,31 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     );
   }
 }
+
+class DraggableDoughTarget<T> extends StatelessWidget {
+  final DragTargetBuilder<T> builder;
+  final DragTargetWillAccept<T> onWillAccept;
+  final DragTargetAccept<T> onAccept;
+  final DragTargetAcceptWithDetails<T> onAcceptWithDetails;
+  final DragTargetLeave onLeave;
+
+  const DraggableDoughTarget({
+    Key key,
+    this.builder,
+    this.onWillAccept,
+    this.onAccept,
+    this.onAcceptWithDetails,
+    this.onLeave,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DragTarget<T>(
+      builder: builder,
+      onWillAccept: onWillAccept,
+      onAccept: onAccept,
+      onAcceptWithDetails: onAcceptWithDetails,
+      onLeave: onLeave,
+    );
+  }
+}
