@@ -1,44 +1,61 @@
 part of dough;
 
-// class _HorizDeltaGestureRecognizer
-//     extends MultiDragGestureRecognizer<_HorizDeltaPointerState> {
-//   final double snapDelta;
+class _MultiThresholdGestureRecognizer
+    extends MultiDragGestureRecognizer<_MultiThresholdPointerState> {
+  final Axis axis;
+  final double threshold;
 
-//   _HorizDeltaGestureRecognizer({
-//     Object debugOwner,
-//     PointerDeviceKind kind,
-//     this.snapDelta,
-//   }) : super(debugOwner: debugOwner, kind: kind);
+  _MultiThresholdGestureRecognizer({
+    Object debugOwner,
+    PointerDeviceKind kind,
+    this.axis,
+    this.threshold,
+  }) : super(debugOwner: debugOwner, kind: kind);
 
-//   @override
-//   _HorizDeltaPointerState createNewPointerState(PointerDownEvent event) {
-//     return _HorizDeltaPointerState(
-//       event.position,
-//       this.snapDelta,
-//     );
-//   }
+  @override
+  _MultiThresholdPointerState createNewPointerState(PointerDownEvent event) {
+    return _MultiThresholdPointerState(
+      event.position,
+      this.threshold,
+      this.axis,
+    );
+  }
 
-//   @override
-//   String get debugDescription => 'horizontal delta multi drag';
-// }
+  @override
+  String get debugDescription => 'multi threshold dough drag';
+}
 
-// class _HorizDeltaPointerState extends MultiDragPointerState {
-//   final double snapDelta;
+class _MultiThresholdPointerState extends MultiDragPointerState {
+  final double threshold;
+  final Axis axis;
 
-//   _HorizDeltaPointerState(
-//     Offset initialPosition,
-//     this.snapDelta,
-//   ) : super(initialPosition);
+  _MultiThresholdPointerState(
+    Offset initialPosition,
+    this.threshold,
+    this.axis,
+  ) : super(initialPosition);
 
-//   @override
-//   void checkForResolutionAfterMove() {
-//     assert(pendingDelta != null);
-//     if (pendingDelta.dx.abs() > snapDelta)
-//       resolve(GestureDisposition.accepted);
-//   }
+  @override
+  void checkForResolutionAfterMove() {
+    assert(pendingDelta != null);
 
-//   @override
-//   void accepted(GestureMultiDragStartCallback starter) {
-//     starter(initialPosition);
-//   }
-// }
+    double sqrDeltaMagnitude;
+    if (axis == Axis.horizontal) {
+      sqrDeltaMagnitude = pendingDelta.dx * pendingDelta.dx;
+    } else if (axis == Axis.vertical) {
+      sqrDeltaMagnitude = pendingDelta.dy * pendingDelta.dy;
+    } else {
+      sqrDeltaMagnitude = (pendingDelta.dy * pendingDelta.dy) +
+          (pendingDelta.dx * pendingDelta.dx);
+    }
+
+    if (sqrDeltaMagnitude > threshold * threshold) {
+      resolve(GestureDisposition.accepted);
+    }
+  }
+
+  @override
+  void accepted(GestureMultiDragStartCallback starter) {
+    starter(initialPosition);
+  }
+}
