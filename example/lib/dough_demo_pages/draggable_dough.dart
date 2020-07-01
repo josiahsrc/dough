@@ -11,7 +11,7 @@ class DraggableDoughPage extends StatelessWidget {
           top: 10,
           child: DoughRecipe(
             data: DoughRecipeData(
-              viscosity: 1000,
+              viscosity: 400,
               adhesion: 4,
               entryDuration: Duration(
                 milliseconds: 10,
