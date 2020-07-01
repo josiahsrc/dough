@@ -11,14 +11,15 @@ class DraggableDoughPage extends StatelessWidget {
           top: 10,
           child: DoughRecipe(
             data: DoughRecipeData(
-              viscosity: 400,
+              viscosity: 10,
               adhesion: 4,
               entryDuration: Duration(
                 milliseconds: 10,
               ),
             ),
             child: DraggableDough<String>(
-              data: "hi",
+              data: 'same as whatever you\'d use for '
+                  'the flutter Draggable data property',
               child: Container(
                 width: 50,
                 height: 50,
@@ -29,9 +30,7 @@ class DraggableDoughPage extends StatelessWidget {
                 height: 50,
                 color: Colors.green,
               ),
-              onDragStarted: () {
-                print('started');
-              },
+              onDragStarted: () {},
             ),
           ),
         ),

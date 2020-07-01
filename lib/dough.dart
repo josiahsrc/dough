@@ -150,6 +150,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
   void _onDoughCtrlStatusUpdated(DoughStatus status) {
     final recipe = DoughRecipe.of(context);
+    print('STATUS UPDATED $status');
 
     setState(() {
       if (status == DoughStatus.started) {

@@ -48,43 +48,16 @@ class DraggableDough<T> extends StatefulWidget {
 }
 
 class _DraggableDoughState<T> extends State<DraggableDough<T>> {
-  final _feedbackKey = GlobalKey();
-  final _draggableKey = GlobalKey();
-
-  DoughController _doughCtrl;
-
-  Offset _findGlobalFeedbackPos() {
-    final rend = _feedbackKey.currentContext.findRenderObject() as RenderBox;
-    return rend.localToGlobal(Offset.zero);
-  }
-
-  Offset _findGlobalDraggablePos() {
-    final rend = _feedbackKey.currentContext.findRenderObject() as RenderBox;
-    return rend.localToGlobal(Offset.zero);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _doughCtrl = DoughController();
-  }
-
-  @override
-  void dispose() {
-    _doughCtrl.dispose();
-    super.dispose();
-  }
+  final _controller = DoughController();
 
   @override
   Widget build(BuildContext context) {
     final doughFeedback = Dough(
-      key: _feedbackKey,
-      controller: _doughCtrl,
+      controller: _controller,
       child: widget.feedback,
     );
 
     final draggable = _Draggable<T>(
-      key: _draggableKey,
       child: widget.child,
       feedback: doughFeedback,
       data: widget.data,
@@ -96,29 +69,43 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       maxSimultaneousDrags: widget.maxSimultaneousDrags,
       ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
       hapticFeedbackOnStart: widget.hapticFeedbackOnStart,
-      onDragStarted: widget.onDragStarted,
       onDraggableCanceled: widget.onDraggableCanceled,
       onDragEnd: widget.onDragEnd,
       onDragCompleted: widget.onDragCompleted,
+      onDragStarted: widget.onDragStarted,
     );
 
     return Listener(
       child: draggable,
       onPointerDown: (event) {
-        print('Down: $event');
+        // wait until the draggable widget instantiates the feedback
+        // widget before starting the squish
+        WidgetsBinding.instance.addPostFrameCallback((details) {
+          _controller.start(
+            origin: event.position,
+            target: event.position,
+          );
+        });
       },
       onPointerMove: (event) {
-        print('Move: $event');
+        if (_controller.isActive) {
+          if (_controller.delta.distanceSquared > 900 * 50) {
+            _controller.stop();
+          } else {
+            _controller.update(
+              origin: event.position,
+            );
+          }
+        }
       },
       onPointerUp: (event) {
-        print('Up: $event');
-        if (_doughCtrl.isActive) {
-          _doughCtrl.stop();
+        if (_controller.isActive) {
+          _controller.stop();
         }
       },
       onPointerCancel: (event) {
-        if (_doughCtrl.isActive) {
-          _doughCtrl.stop();
+        if (_controller.isActive) {
+          _controller.stop();
         }
       },
     );
@@ -162,61 +149,34 @@ class _Draggable<T> extends Draggable<T> {
           onDragCompleted: onDragCompleted,
           ignoringFeedbackSemantics: ignoringFeedbackSemantics,
         );
-
-  @override
-  MultiDragGestureRecognizer<MultiDragPointerState> createRecognizer(
-    GestureMultiDragStartCallback onStart,
-  ) {
-    MultiDragGestureRecognizer<MultiDragPointerState> gesture;
-    switch (affinity) {
-      case Axis.horizontal:
-        gesture = HorizontalMultiDragGestureRecognizer()..onStart = onStart;
-        break;
-      case Axis.vertical:
-        gesture = VerticalMultiDragGestureRecognizer()..onStart = onStart;
-        break;
-      default:
-        gesture = ImmediateMultiDragGestureRecognizer();
-        break;
-    }
-
-    return gesture
-      ..onStart = (position) {
-        final Drag result = onStart(position);
-        if (result != null && hapticFeedbackOnStart) {
-          HapticFeedback.selectionClick();
-        }
-        return result;
-      };
-  }
-
-  // @override
-  // _MultiThresholdGestureRecognizer createRecognizer(
-  //   GestureMultiDragStartCallback onStart,
-  // ) {
-  //   // TODO use affinity for better query!
-  //   // switch (affinity) {
-  //   //   case Axis.horizontal:
-  //   //     return HorizontalMultiDragGestureRecognizer()..onStart = onStart;
-  //   //   case Axis.vertical:
-  //   //     return VerticalMultiDragGestureRecognizer()..onStart = onStart;
-  //   // }
-  //   // return ImmediateMultiDragGestureRecognizer()..onStart = onStart;
-
-  //   return _MultiThresholdGestureRecognizer(
-  //     axis: axis,
-  //     threshold: 90,
-  //     onThresholdGestureStart: onThresholdGestureStart,
-  //     onThresholdGestureUpdate: onThresholdGestureUpdate,
-  //     onThresholdGestureEnd: onThresholdGestureEnd,
-  //   )..onStart = (Offset position) {
-  //       final Drag result = onStart(position);
-
-  //       if (result != null && hapticFeedbackOnStart) {
-  //         HapticFeedback.selectionClick();
-  //       }
-
-  //       return result;
-  //     };
-  // }
 }
+
+// @override
+// _MultiThresholdGestureRecognizer createRecognizer(
+//   GestureMultiDragStartCallback onStart,
+// ) {
+//   // TODO use affinity for better query!
+//   // switch (affinity) {
+//   //   case Axis.horizontal:
+//   //     return HorizontalMultiDragGestureRecognizer()..onStart = onStart;
+//   //   case Axis.vertical:
+//   //     return VerticalMultiDragGestureRecognizer()..onStart = onStart;
+//   // }
+//   // return ImmediateMultiDragGestureRecognizer()..onStart = onStart;
+
+//   return _MultiThresholdGestureRecognizer(
+//     axis: axis,
+//     threshold: 90,
+//     onThresholdGestureStart: onThresholdGestureStart,
+//     onThresholdGestureUpdate: onThresholdGestureUpdate,
+//     onThresholdGestureEnd: onThresholdGestureEnd,
+//   )..onStart = (Offset position) {
+//       final Drag result = onStart(position);
+
+//       if (result != null && hapticFeedbackOnStart) {
+//         HapticFeedback.selectionClick();
+//       }
+
+//       return result;
+//     };
+// }
