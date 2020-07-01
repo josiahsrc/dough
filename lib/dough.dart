@@ -98,6 +98,8 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       fromDirection: vmath.Vector2(1, 1),
     );
 
+    print(recipe.viscosity);
+
     final bendSize = delta.length / recipe.viscosity;
     final t = _effectiveT;
 
@@ -150,7 +152,6 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
   void _onDoughCtrlStatusUpdated(DoughStatus status) {
     final recipe = DoughRecipe.of(context);
-    print('STATUS UPDATED $status');
 
     setState(() {
       if (status == DoughStatus.started) {

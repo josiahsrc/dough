@@ -52,9 +52,17 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final doughFeedback = Dough(
-      controller: _controller,
-      child: widget.feedback,
+    // The feedback widget won't share the same
+    // context once the [Draggable] widget instantiates
+    // it as an overlay. The DoughRecipe has to be copied
+    // directly so it will exist in the overlay's context
+    // as well.
+    final doughFeedback = DoughRecipe(
+      data: DoughRecipe.of(context),
+      child: Dough(
+        controller: _controller,
+        child: widget.feedback,
+      ),
     );
 
     final draggable = _Draggable<T>(
@@ -89,6 +97,7 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       },
       onPointerMove: (event) {
         if (_controller.isActive) {
+          // TODO store in prefs
           if (_controller.delta.distanceSquared > 900 * 50) {
             _controller.stop();
           } else {
