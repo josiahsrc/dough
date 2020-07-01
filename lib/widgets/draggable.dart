@@ -48,7 +48,20 @@ class DraggableDough<T> extends StatefulWidget {
 }
 
 class _DraggableDoughState<T> extends State<DraggableDough<T>> {
+  final _feedbackKey = GlobalKey();
+  final _draggableKey = GlobalKey();
+
   DoughController _doughCtrl;
+
+  Offset _findGlobalFeedbackPos() {
+    final rend = _feedbackKey.currentContext.findRenderObject() as RenderBox;
+    return rend.localToGlobal(Offset.zero);
+  }
+
+  Offset _findGlobalDraggablePos() {
+    final rend = _feedbackKey.currentContext.findRenderObject() as RenderBox;
+    return rend.localToGlobal(Offset.zero);
+  }
 
   @override
   void initState() {
@@ -64,9 +77,16 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final doughFeedback = Dough(
+      key: _feedbackKey,
+      controller: _doughCtrl,
+      child: widget.feedback,
+    );
+
     final draggable = _Draggable<T>(
+      key: _draggableKey,
       child: widget.child,
-      feedback: widget.feedback,
+      feedback: doughFeedback,
       data: widget.data,
       axis: widget.axis,
       childWhenDragging: widget.childWhenDragging,
@@ -74,17 +94,25 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       dragAnchor: widget.dragAnchor,
       affinity: widget.affinity,
       maxSimultaneousDrags: widget.maxSimultaneousDrags,
+      ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
+      hapticFeedbackOnStart: widget.hapticFeedbackOnStart,
       onDragStarted: widget.onDragStarted,
       onDraggableCanceled: widget.onDraggableCanceled,
       onDragEnd: widget.onDragEnd,
       onDragCompleted: widget.onDragCompleted,
-      ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
-      hapticFeedbackOnStart: widget.hapticFeedbackOnStart,
     );
 
-    return Dough(
-      controller: _doughCtrl,
+    return Listener(
       child: draggable,
+      onPointerDown: (event) {
+        print('Down: $event');
+      },
+      onPointerMove: (event) {
+        print('Move: $event');
+      },
+      onPointerUp: (event) {
+        print('Up: $event');
+      },
     );
   }
 }
@@ -144,13 +172,14 @@ class _Draggable<T> extends Draggable<T> {
         break;
     }
 
-    return gesture..onStart = (position) {
-      final Drag result = onStart(position);
-      if (result != null && hapticFeedbackOnStart) {
-        HapticFeedback.selectionClick();
-      }
-      return result;
-    };
+    return gesture
+      ..onStart = (position) {
+        final Drag result = onStart(position);
+        if (result != null && hapticFeedbackOnStart) {
+          HapticFeedback.selectionClick();
+        }
+        return result;
+      };
   }
 
   // @override
