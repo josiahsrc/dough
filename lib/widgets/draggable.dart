@@ -68,7 +68,7 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       ),
     );
 
-    final draggable = _Draggable<T>(
+    final draggable = Draggable<T>(
       child: widget.child,
       feedback: doughFeedback,
       data: widget.data,
@@ -79,7 +79,6 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       affinity: widget.affinity,
       maxSimultaneousDrags: widget.maxSimultaneousDrags,
       ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
-      hapticFeedbackOnStart: widget.hapticFeedbackOnStart,
       onDraggableCanceled: widget.onDraggableCanceled,
       onDragEnd: widget.onDragEnd,
       onDragCompleted: widget.onDragCompleted,
@@ -123,72 +122,3 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     );
   }
 }
-
-class _Draggable<T> extends Draggable<T> {
-  final bool hapticFeedbackOnStart;
-
-  const _Draggable({
-    Key key,
-    @required Widget child,
-    @required Widget feedback,
-    @required T data,
-    @required Axis axis,
-    @required Widget childWhenDragging,
-    @required Offset feedbackOffset,
-    @required DragAnchor dragAnchor,
-    @required Axis affinity,
-    @required int maxSimultaneousDrags,
-    @required VoidCallback onDragStarted,
-    @required DraggableCanceledCallback onDraggableCanceled,
-    @required DragEndCallback onDragEnd,
-    @required VoidCallback onDragCompleted,
-    @required bool ignoringFeedbackSemantics,
-    @required this.hapticFeedbackOnStart,
-  }) : super(
-          key: key,
-          child: child,
-          feedback: feedback,
-          data: data,
-          axis: axis,
-          childWhenDragging: childWhenDragging,
-          feedbackOffset: feedbackOffset,
-          dragAnchor: dragAnchor,
-          affinity: affinity,
-          maxSimultaneousDrags: maxSimultaneousDrags,
-          onDragStarted: onDragStarted,
-          onDraggableCanceled: onDraggableCanceled,
-          onDragEnd: onDragEnd,
-          onDragCompleted: onDragCompleted,
-          ignoringFeedbackSemantics: ignoringFeedbackSemantics,
-        );
-}
-
-// @override
-// _MultiThresholdGestureRecognizer createRecognizer(
-//   GestureMultiDragStartCallback onStart,
-// ) {
-//   // TODO use affinity for better query!
-//   // switch (affinity) {
-//   //   case Axis.horizontal:
-//   //     return HorizontalMultiDragGestureRecognizer()..onStart = onStart;
-//   //   case Axis.vertical:
-//   //     return VerticalMultiDragGestureRecognizer()..onStart = onStart;
-//   // }
-//   // return ImmediateMultiDragGestureRecognizer()..onStart = onStart;
-
-//   return _MultiThresholdGestureRecognizer(
-//     axis: axis,
-//     threshold: 90,
-//     onThresholdGestureStart: onThresholdGestureStart,
-//     onThresholdGestureUpdate: onThresholdGestureUpdate,
-//     onThresholdGestureEnd: onThresholdGestureEnd,
-//   )..onStart = (Offset position) {
-//       final Drag result = onStart(position);
-
-//       if (result != null && hapticFeedbackOnStart) {
-//         HapticFeedback.selectionClick();
-//       }
-
-//       return result;
-//     };
-// }
