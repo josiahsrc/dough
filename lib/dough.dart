@@ -12,7 +12,6 @@ part 'status.dart';
 part 'recipe.dart';
 part 'controller.dart';
 part 'utils.dart';
-part 'gestures.dart';
 
 part 'widgets/pressable.dart';
 part 'widgets/draggable.dart';
@@ -97,8 +96,6 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       toDirection: delta,
       fromDirection: vmath.Vector2(1, 1),
     );
-
-    print(recipe.viscosity);
 
     final bendSize = delta.length / recipe.viscosity;
     final t = _effectiveT;

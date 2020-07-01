@@ -1,5 +1,8 @@
 part of dough;
 
+// TODO add prefs
+// TODO add haptic feedback on break
+
 class DraggableDoughPrefs {}
 
 class DraggableDough<T> extends StatefulWidget {
@@ -98,7 +101,7 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       onPointerMove: (event) {
         if (_controller.isActive) {
           // TODO store in prefs
-          if (_controller.delta.distanceSquared > 900 * 50) {
+          if (_controller.delta.distanceSquared > 500 * 50) {
             _controller.stop();
           } else {
             _controller.update(
