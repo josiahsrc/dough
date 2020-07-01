@@ -52,12 +52,20 @@ class _PressableDoughState extends State<PressableDough> {
         );
       },
       onPanEnd: (details) {
-        _controller.stop();
+        if (_controller.isActive) {
+          _controller.stop();
+        }
+
         widget.onReleased?.call(
           PressableDoughReleaseDetails(
             delta: _controller.delta,
           ),
         );
+      },
+      onPanCancel: () {
+        if (_controller.isActive) {
+          _controller.stop();
+        }
       },
       child: widget.child,
       behavior: HitTestBehavior.translucent,

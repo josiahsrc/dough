@@ -112,6 +112,14 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       },
       onPointerUp: (event) {
         print('Up: $event');
+        if (_doughCtrl.isActive) {
+          _doughCtrl.stop();
+        }
+      },
+      onPointerCancel: (event) {
+        if (_doughCtrl.isActive) {
+          _doughCtrl.stop();
+        }
       },
     );
   }
