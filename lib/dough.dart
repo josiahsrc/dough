@@ -129,13 +129,11 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
     final rotateBack = Matrix4.rotationZ(-deltaAngle);
 
-    print(delta * t / recipe.adhesion);
-
     Matrix4 translate;
     if (invertAdhesion) {
       translate = Matrix4.translationValues(
-        (delta.x - delta.x / recipe.adhesion) * t,
-        (delta.y - delta.y / recipe.adhesion) * t,
+        delta.x * t - delta.x * t / recipe.adhesion,
+        delta.y * t - delta.y * t / recipe.adhesion,
         0,
       );
     } else {

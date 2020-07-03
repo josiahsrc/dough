@@ -15,6 +15,7 @@ class DraggableDoughDemo extends StatelessWidget {
               // adhesion: 8,
               // adhesion: 4,
               // viscosity: 1000,
+              entryDuration: Duration.zero,
               // draggablePrefs: DraggableDoughPrefs(
               //   breakDistance: 150
               // ),
