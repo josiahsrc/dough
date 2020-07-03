@@ -1,28 +1,31 @@
 part of dough;
 
-// TODO add prefs
-// TODO add haptic feedback on break
-
 class DraggableDoughPrefs {
   final double breakDistance;
+  final bool useHapticsOnBreak;
 
   const DraggableDoughPrefs.raw({
     @required this.breakDistance,
+    @required this.useHapticsOnBreak,
   });
 
   factory DraggableDoughPrefs({
     double breakDistance,
+    bool useHapticsOnBreak,
   }) {
     return DraggableDoughPrefs.raw(
       breakDistance: breakDistance ?? 100,
+      useHapticsOnBreak: useHapticsOnBreak ?? true,
     );
   }
 
   DraggableDoughPrefs copyWith({
     double breakDistance,
+    bool useHapticsOnBreak,
   }) {
     return DraggableDoughPrefs.raw(
       breakDistance: breakDistance ?? this.breakDistance,
+      useHapticsOnBreak: useHapticsOnBreak ?? this.useHapticsOnBreak,
     );
   }
 
@@ -32,19 +35,23 @@ class DraggableDoughPrefs {
   bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) return false;
 
-    return other is DraggableDoughPrefs && other.breakDistance == breakDistance;
+    return other is DraggableDoughPrefs &&
+        other.breakDistance == breakDistance &&
+        other.useHapticsOnBreak == useHapticsOnBreak;
   }
 
   @override
   int get hashCode {
-    final values = <Object>[breakDistance];
+    final values = <Object>[
+      breakDistance,
+      useHapticsOnBreak,
+    ];
 
     return hashList(values);
   }
 }
 
 class DraggableDough<T> extends StatefulWidget {
-  final bool hapticFeedbackOnStart;
   final T data;
   final Axis axis;
   final Widget child;
@@ -76,12 +83,10 @@ class DraggableDough<T> extends StatefulWidget {
     this.onDragEnd,
     this.onDragCompleted,
     this.ignoringFeedbackSemantics = true,
-    this.hapticFeedbackOnStart = true,
   })  : assert(child != null),
         assert(feedback != null),
         assert(ignoringFeedbackSemantics != null),
         assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
-        assert(hapticFeedbackOnStart != null),
         super(key: key);
 
   @override
@@ -94,10 +99,7 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
   @override
   Widget build(BuildContext context) {
     final contextualRecipe = DoughRecipe.of(context);
-    final effectiveRecipe = contextualRecipe.copyWith(
-      adhesion: 1 / contextualRecipe.adhesion,
-      viscosity: 1 / contextualRecipe.viscosity,
-    );
+    final effectiveRecipe = contextualRecipe;
 
     // The feedback widget won't share the same
     // context once the [Draggable] widget instantiates
@@ -143,8 +145,8 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       },
       onPointerMove: (event) {
         if (_controller.isActive) {
-          // TODO store in prefs
-          if (_controller.delta.distanceSquared > 500 * 50) {
+          final breakDist = contextualRecipe.draggablePrefs.breakDistance;
+          if (_controller.delta.distanceSquared > breakDist * breakDist) {
             _controller.stop();
           } else {
             _controller.update(
@@ -156,11 +158,17 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       onPointerUp: (event) {
         if (_controller.isActive) {
           _controller.stop();
+          if (contextualRecipe.draggablePrefs.useHapticsOnBreak) {
+            HapticFeedback.lightImpact();
+          }
         }
       },
       onPointerCancel: (event) {
         if (_controller.isActive) {
           _controller.stop();
+          if (contextualRecipe.draggablePrefs.useHapticsOnBreak) {
+            HapticFeedback.lightImpact();
+          }
         }
       },
     );
