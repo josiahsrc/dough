@@ -15,7 +15,7 @@ class DraggableDoughPrefs {
     bool useHapticsOnBreak,
   }) {
     return DraggableDoughPrefs.raw(
-      breakDistance: breakDistance ?? 100,
+      breakDistance: breakDistance ?? 500,
       useHapticsOnBreak: useHapticsOnBreak ?? true,
     );
   }
@@ -106,10 +106,9 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     final recipe = DoughRecipe.of(context);
     final prefs = widget.prefs ?? recipe.draggablePrefs;
 
-    // The feedback widget won't share the same
-    // context once the [Draggable] widget instantiates
-    // it as an overlay. The DoughRecipe has to be copied
-    // directly so it will exist in the overlay's context
+    // The feedback widget won't share the same context once the
+    // [Draggable] widget instantiates it as an overlay. The [DoughRecipe]
+    // has to be copied directly so it will exist in the overlay's context
     // as well.
     final doughFeedback = DoughRecipe(
       data: recipe,
@@ -143,6 +142,8 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
         // wait until the draggable widget instantiates the feedback
         // widget before starting the squish
         WidgetsBinding.instance.addPostFrameCallback((details) {
+          print('');
+          print('start');
           _controller.start(
             origin: event.position,
             target: event.position,

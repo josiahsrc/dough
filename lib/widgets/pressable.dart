@@ -6,8 +6,12 @@ class PressableDoughReleaseDetails {
   /// How far the dough was dragged before it was released.
   final Offset delta;
 
+  /// The global position of where the user released their hold on dough.
+  final Offset position;
+
   const PressableDoughReleaseDetails({
     this.delta,
+    this.position,
   });
 }
 
@@ -16,17 +20,23 @@ typedef PressableDoughReleaseCallback = void Function(
 );
 
 /// A smooshable dough widget that morphs into different shapes based
-/// on how the user smooshes the widget.
+/// on how the user presses on it.
 class PressableDough extends StatefulWidget {
   /// The child to smoosh.
   final Widget child;
 
+  /// A callback raised when a user starts a hold on the widget and has
+  /// begun to squish it around.
+  final VoidCallback onStart;
+
   /// A callback raised when the user releases their hold on the widget.
+  /// (i.e. they stop smooshing the widget).
   final PressableDoughReleaseCallback onReleased;
 
   const PressableDough({
     Key key,
     @required this.child,
+    this.onStart,
     this.onReleased,
   }) : super(key: key);
 
@@ -45,6 +55,7 @@ class _PressableDoughState extends State<PressableDough> {
           origin: details.globalPosition,
           target: details.globalPosition,
         );
+        widget.onStart?.call();
       },
       onPanUpdate: (details) {
         _controller.update(
@@ -59,6 +70,7 @@ class _PressableDoughState extends State<PressableDough> {
         widget.onReleased?.call(
           PressableDoughReleaseDetails(
             delta: _controller.delta,
+            position: _controller.target,
           ),
         );
       },

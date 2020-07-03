@@ -16,7 +16,7 @@ class DoughRecipe extends InheritedWidget {
   }) : super(key: key, child: child);
 
   /// Gets the inherited [DoughRecipeData]. If no recipe is found,
-  /// a default one will be used instead.
+  /// a default one will be returned instead.
   static DoughRecipeData of(BuildContext context) {
     final ih = context.dependOnInheritedWidgetOfExactType<DoughRecipe>();
     return ih?.data ?? _kFallbackRecipe;
@@ -32,13 +32,13 @@ class DoughRecipe extends InheritedWidget {
 @immutable
 class DoughRecipeData {
   /// How 'thick' a [Dough] widget is. Higher values make for harder/less
-  /// elastic [Dough]. A typical value would be something like 10000. Lower 
+  /// elastic [Dough]. A typical value would be something like 7000. Lower 
   /// values like 100 will result in unexpected behaviors.
   final double viscosity;
 
   /// How sticky a [Dough] widget is. Higher values result in [Dough] that
   /// doesn't move around a lot when its dragged. Lower values result in 
-  /// really "slippery" [Dough]. A typical value would be something like 14.
+  /// really "slippery" [Dough]. A typical value would be something like 12.
   final double adhesion;
 
   /// The factor by which a [Dough] widget expands when pressed.
@@ -81,8 +81,8 @@ class DoughRecipeData {
     DraggableDoughPrefs draggablePrefs,
   }) {
     return DoughRecipeData.raw(
-      viscosity: viscosity ?? 5000,
-      adhesion: adhesion ?? 14,
+      viscosity: viscosity ?? 7000,
+      adhesion: adhesion ?? 12,
       expansion: expansion ?? 1,
       entryDuration: entryDuration ?? const Duration(milliseconds: 20),
       entryCurve: entryCurve ?? Curves.easeInOut,

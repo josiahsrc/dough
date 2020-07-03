@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
     // widgets will default to using these settings.
     return DoughRecipe(
       data: DoughRecipeData(
+        viscosity: 5000,
         adhesion: 14,
       ),
       child: app,
