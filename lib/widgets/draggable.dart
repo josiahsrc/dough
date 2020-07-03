@@ -3,7 +3,45 @@ part of dough;
 // TODO add prefs
 // TODO add haptic feedback on break
 
-class DraggableDoughPrefs {}
+class DraggableDoughPrefs {
+  final double breakDistance;
+
+  const DraggableDoughPrefs.raw({
+    @required this.breakDistance,
+  });
+
+  factory DraggableDoughPrefs({
+    double breakDistance,
+  }) {
+    return DraggableDoughPrefs.raw(
+      breakDistance: breakDistance ?? 100,
+    );
+  }
+
+  DraggableDoughPrefs copyWith({
+    double breakDistance,
+  }) {
+    return DraggableDoughPrefs.raw(
+      breakDistance: breakDistance ?? this.breakDistance,
+    );
+  }
+
+  factory DraggableDoughPrefs.fallback() => DraggableDoughPrefs();
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) return false;
+
+    return other is DraggableDoughPrefs && other.breakDistance == breakDistance;
+  }
+
+  @override
+  int get hashCode {
+    final values = <Object>[breakDistance];
+
+    return hashList(values);
+  }
+}
 
 class DraggableDough<T> extends StatefulWidget {
   final bool hapticFeedbackOnStart;
@@ -55,13 +93,19 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final contextualRecipe = DoughRecipe.of(context);
+    final effectiveRecipe = contextualRecipe.copyWith(
+      adhesion: 1 / contextualRecipe.adhesion,
+      viscosity: 1 / contextualRecipe.viscosity,
+    );
+
     // The feedback widget won't share the same
     // context once the [Draggable] widget instantiates
     // it as an overlay. The DoughRecipe has to be copied
     // directly so it will exist in the overlay's context
     // as well.
     final doughFeedback = DoughRecipe(
-      data: DoughRecipe.of(context),
+      data: effectiveRecipe,
       child: Dough(
         controller: _controller,
         child: widget.feedback,
