@@ -1,8 +1,8 @@
 import 'package:dough/dough.dart';
 import 'package:flutter/material.dart';
 
-/// This page demonstrates how to use the pressable dough widget.
-class PressableDoughPage extends StatelessWidget {
+/// This page demonstrates how to use the [PressableDough] widget.
+class PressableDoughDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Just a regular old floating action button
@@ -39,8 +39,8 @@ class PressableDoughPage extends StatelessWidget {
     final doughCenterContainer = DoughRecipe(
       data: DoughRecipeData(
         viscosity: 3000,
-        expansion: 1.2,
-        entryDuration: Duration(milliseconds: 200),
+        // adhesion: 1,
+        expansion: 1.025,
       ),
       child: PressableDough(
         child: centerContainer,

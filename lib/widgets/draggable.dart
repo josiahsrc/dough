@@ -1,5 +1,6 @@
 part of dough;
 
+/// This page demonstrates how to use the [DraggableDough] widget.
 class DraggableDoughPrefs {
   final double breakDistance;
   final bool useHapticsOnBreak;
@@ -52,6 +53,8 @@ class DraggableDoughPrefs {
 }
 
 class DraggableDough<T> extends StatefulWidget {
+  final DraggableDoughPrefs prefs;
+  final VoidCallback onDoughBreak;
   final T data;
   final Axis axis;
   final Widget child;
@@ -69,6 +72,8 @@ class DraggableDough<T> extends StatefulWidget {
 
   const DraggableDough({
     Key key,
+    this.prefs,
+    this.onDoughBreak,
     @required this.child,
     @required this.feedback,
     this.data,
@@ -98,8 +103,8 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final contextualRecipe = DoughRecipe.of(context);
-    final effectiveRecipe = contextualRecipe;
+    final recipe = DoughRecipe.of(context);
+    final prefs = widget.prefs ?? recipe.draggablePrefs;
 
     // The feedback widget won't share the same
     // context once the [Draggable] widget instantiates
@@ -107,10 +112,11 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     // directly so it will exist in the overlay's context
     // as well.
     final doughFeedback = DoughRecipe(
-      data: effectiveRecipe,
+      data: recipe,
       child: Dough(
         controller: _controller,
         child: widget.feedback,
+        invertAdhesion: true,
       ),
     );
 
@@ -145,9 +151,14 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       },
       onPointerMove: (event) {
         if (_controller.isActive) {
-          final breakDist = contextualRecipe.draggablePrefs.breakDistance;
-          if (_controller.delta.distanceSquared > breakDist * breakDist) {
+          final sqrBreakThresh = prefs.breakDistance * prefs.breakDistance;
+          if (_controller.delta.distanceSquared > sqrBreakThresh) {
             _controller.stop();
+
+            widget.onDoughBreak?.call();
+            if (prefs.useHapticsOnBreak) {
+              HapticFeedback.lightImpact();
+            }
           } else {
             _controller.update(
               origin: event.position,
@@ -158,17 +169,11 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       onPointerUp: (event) {
         if (_controller.isActive) {
           _controller.stop();
-          if (contextualRecipe.draggablePrefs.useHapticsOnBreak) {
-            HapticFeedback.lightImpact();
-          }
         }
       },
       onPointerCancel: (event) {
         if (_controller.isActive) {
           _controller.stop();
-          if (contextualRecipe.draggablePrefs.useHapticsOnBreak) {
-            HapticFeedback.lightImpact();
-          }
         }
       },
     );

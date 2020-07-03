@@ -22,13 +22,25 @@ class Dough extends StatefulWidget {
   /// The child to squish.
   final Widget child;
 
-  /// The squish controller. You'll have to manage this yourself.
+  /// The controller which manages how and when the [Dough] will
+  /// smoosh around.
   final DoughController controller;
 
+  /// Whether the effect of the [DoughRecipeData.adhesion] should be inverted.
+  /// 
+  /// If true, the [Dough] will stretch from [DoughController.target] to
+  /// [DoughController.origin]. Otherwise, the [Dough] will stretch from
+  /// [DoughController.origin] to [DoughController.target].
+  /// 
+  /// Defaults to false.
+  final bool invertAdhesion;
+
+  /// Creates a dough widget.
   const Dough({
     Key key,
     @required this.child,
     @required this.controller,
+    this.invertAdhesion,
   })  : assert(controller != null),
         assert(child != null),
         super(key: key);
@@ -90,6 +102,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final recipe = DoughRecipe.of(context);
+    final invertAdhesion = widget.invertAdhesion ?? false;
 
     final delta = _VectorUtils.offsetToVector(widget.controller.delta);
     final deltaAngle = _VectorUtils.computeFullCirculeAngle(
@@ -116,11 +129,20 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
     final rotateBack = Matrix4.rotationZ(-deltaAngle);
 
-    final translate = Matrix4.translationValues(
-      delta.x * t / recipe.adhesion,
-      delta.y * t / recipe.adhesion,
-      0,
-    );
+    Matrix4 translate;
+    if (invertAdhesion) {
+      translate = Matrix4.translationValues(
+        (delta.x - delta.x / recipe.adhesion) * t,
+        (delta.y - delta.y / recipe.adhesion) * t,
+        0,
+      );
+    } else {
+      translate = Matrix4.translationValues(
+        delta.x * t / recipe.adhesion,
+        delta.y * t / recipe.adhesion,
+        0,
+      );
+    }
 
     return Transform(
       alignment: Alignment.center,

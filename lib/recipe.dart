@@ -81,7 +81,7 @@ class DoughRecipeData {
     DraggableDoughPrefs draggablePrefs,
   }) {
     return DoughRecipeData.raw(
-      viscosity: viscosity ?? 10000,
+      viscosity: viscosity ?? 5000,
       adhesion: adhesion ?? 14,
       expansion: expansion ?? 1,
       entryDuration: entryDuration ?? const Duration(milliseconds: 20),
