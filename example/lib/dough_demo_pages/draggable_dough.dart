@@ -13,9 +13,6 @@ class DraggableDoughPage extends StatelessWidget {
             data: DoughRecipeData(
               viscosity: 500,
               adhesion: 1.2,
-              entryDuration: Duration(
-                milliseconds: 10,
-              ),
             ),
             child: DraggableDough<String>(
               data: 'same as whatever you\'d use for '

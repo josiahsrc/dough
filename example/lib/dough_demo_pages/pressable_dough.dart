@@ -40,6 +40,7 @@ class PressableDoughPage extends StatelessWidget {
       data: DoughRecipeData(
         viscosity: 3000,
         expansion: 1.2,
+        entryDuration: Duration(milliseconds: 200),
       ),
       child: PressableDough(
         child: centerContainer,

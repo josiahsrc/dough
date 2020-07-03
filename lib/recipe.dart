@@ -84,7 +84,7 @@ class DoughRecipeData {
       viscosity: viscosity ?? 10000,
       adhesion: adhesion ?? 14,
       expansion: expansion ?? 1,
-      entryDuration: entryDuration ?? const Duration(milliseconds: 200),
+      entryDuration: entryDuration ?? const Duration(milliseconds: 20),
       entryCurve: entryCurve ?? Curves.easeInOut,
       exitDuration: exitDuration ?? const Duration(milliseconds: 500),
       exitCurve: exitCurve ?? Curves.elasticIn,
