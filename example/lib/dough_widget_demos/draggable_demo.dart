@@ -5,48 +5,102 @@ import 'package:flutter/material.dart';
 class DraggableDoughDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final body = Stack(
-      children: [
-        Positioned(
-          left: 50,
-          top: 10,
-          child: DoughRecipe(
-            data: DoughRecipeData(
-              // adhesion: 8,
-              // adhesion: 4,
-              viscosity: 1000,
-              // draggablePrefs: DraggableDoughPrefs(
-              //   breakDistance: 150
-              // ),
-            ),
-            child: DraggableDough<String>(
-              data: 'same as whatever you\'d use for the'
-                  'flutter Draggable widgets data property',
-              child: Container(
-                width: 50,
-                height: 50,
-                color: Colors.red,
-              ),
-              feedback: Container(
-                width: 50,
-                height: 50,
-                color: Colors.green,
-              ),
-              onDragStarted: () {},
-              onDoughBreak: () {
-                print('drag started');
-              },
-            ),
-          ),
+    // This is the widget that appears before being dragged around.
+    final myDraggableChild = Container(
+      width: 100,
+      height: 100,
+      color: Colors.blue,
+      child: Center(
+        child: Text(
+          'Draggable',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).accentTextTheme.bodyText2,
         ),
-      ],
+      ),
     );
 
+    // This is the widget that gets dragged around.
+    // (The material widget is just used to apply the flutter theme).
+    final myFeedbackWidget = Material(
+      child: Container(
+        width: 100,
+        height: 100,
+        color: Colors.green,
+        child: Center(
+          child: Text(
+            'Squishy feedback',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).accentTextTheme.bodyText2,
+          ),
+        ),
+      ),
+    );
+
+    // Create the draggable dough widget using our child and feedback widgets.
+    // Also apply a custom dough recipe to make this widget feel awesome :)
+    final myDraggableDough = DoughRecipe(
+      data: DoughRecipeData(
+        adhesion: 4,
+        viscosity: 700,
+        draggablePrefs: DraggableDoughPrefs(
+          breakDistance: 80,
+          useHapticsOnBreak: true,
+        ),
+      ),
+      child: DraggableDough<String>(
+        data: 'My data!',
+        child: myDraggableChild,
+        feedback: myFeedbackWidget,
+        onDoughBreak: () {
+          // This callback is raised when the dough snaps from its hold at its origin
+          print('Demo dough snapped and is freely being dragged!');
+        },
+      ),
+    );
+
+    // DraggableDough works just like the Flutter Draggable widget, except
+    // it's squishy! So you can just use the already build drag widgets that
+    // Flutter provides, no problem.
+    final myDragTarget = DragTarget<String>(
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+          height: 100,
+          width: 100,
+          color: candidateData.length > 0 ? Colors.lightGreen : Colors.grey,
+          child: Center(
+            child: Text(
+              'Drag target',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).accentTextTheme.bodyText2,
+            ),
+          ),
+        );
+      },
+      onWillAccept: (value) => value == 'My data!',
+      onAccept: (value) { 
+        print('the value "$value" was accepted!'); 
+      },
+    );
+
+    // Now just use the draggable dough widget, and it's good to go!
     return Scaffold(
       appBar: AppBar(
         title: Text('Draggable Dough'),
       ),
-      body: body,
+      body: Stack(
+        children: [
+          Positioned(
+            left: 50,
+            top: 50,
+            child: myDraggableDough,
+          ),
+          Positioned(
+            right: 50,
+            bottom: 50,
+            child: myDragTarget,
+          ),
+        ],
+      ),
     );
   }
 }

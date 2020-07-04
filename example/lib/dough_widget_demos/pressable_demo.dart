@@ -39,7 +39,6 @@ class PressableDoughDemo extends StatelessWidget {
     final doughCenterContainer = DoughRecipe(
       data: DoughRecipeData(
         viscosity: 3000,
-        // adhesion: 1,
         expansion: 1.025,
       ),
       child: PressableDough(
