@@ -7,6 +7,7 @@ class DoughController with ChangeNotifier {
   bool _isActive = false;
   Offset _origin = Offset.zero;
   Offset _target = Offset.zero;
+  DoughStatus _status = DoughStatus.stopped;
 
   /// Is this controller maintaining a squish.
   bool get isActive => _isActive;
@@ -22,6 +23,9 @@ class DoughController with ChangeNotifier {
   /// widget uses this to determine which direction to smoosh its
   /// child.
   Offset get delta => this.target - this.origin;
+
+  /// The last status that was raised.
+  DoughStatus get status => _status;
 
   /// Adds a status listener.
   void addStatusListener(DoughStatusCallback callback) {
@@ -49,9 +53,10 @@ class DoughController with ChangeNotifier {
     _isActive = true;
     _origin = origin ?? _origin;
     _target = target ?? _target;
+    _status = DoughStatus.started;
 
     notifyListeners();
-    _notifyStatusListeners(DoughStatus.started);
+    _notifyStatusListeners(_status);
   }
 
   /// Update the currently active squish.
@@ -81,9 +86,10 @@ class DoughController with ChangeNotifier {
     assert(isActive);
 
     _isActive = false;
-
+    _status = DoughStatus.stopped;
+  
     notifyListeners();
-    _notifyStatusListeners(DoughStatus.stopped);
+    _notifyStatusListeners(_status);
   }
 
   void _notifyStatusListeners(DoughStatus status) {

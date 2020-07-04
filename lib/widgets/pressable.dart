@@ -86,6 +86,7 @@ class _PressableDoughState extends State<PressableDough> {
     return Dough(
       child: pressableInterface,
       controller: _controller,
+      transformer: BasicDoughTransformer(),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:vector_math/vector_math_64.dart' as vmath;
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+part 'transformer.dart';
 part 'status.dart';
 part 'recipe.dart';
 part 'controller.dart';
@@ -26,21 +27,14 @@ class Dough extends StatefulWidget {
   /// smoosh around.
   final DoughController controller;
 
-  /// Whether the effect of the [DoughRecipeData.adhesion] should be inverted.
-  /// 
-  /// If true, the [Dough] will stretch from [DoughController.target] to
-  /// [DoughController.origin]. Otherwise, the [Dough] will stretch from
-  /// [DoughController.origin] to [DoughController.target].
-  /// 
-  /// Defaults to false.
-  final bool invertAdhesion;
+  final DoughTransformer transformer;
 
   /// Creates a dough widget.
   const Dough({
     Key key,
     @required this.child,
     @required this.controller,
-    this.invertAdhesion,
+    this.transformer,
   })  : assert(controller != null),
         assert(child != null),
         super(key: key);
@@ -50,6 +44,8 @@ class Dough extends StatefulWidget {
 }
 
 class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
+  static final _kFallbackTransformer = BasicDoughTransformer();
+
   AnimationController _animCtrl;
   double _effectiveT;
   Curve _effectiveCurve;
@@ -70,6 +66,16 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       ..addListener(_onDoughCtrlUpdated);
 
     Tween<double>(begin: 0.0, end: 1.0).animate(_animCtrl);
+
+    // If the controller was active on start, inform this widget that it
+    // should start squishing (as soon as the context is usable).
+    if (widget.controller.isActive) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.controller.isActive) {
+          _onDoughCtrlStatusUpdated(widget.controller.status);
+        }
+      });
+    }
   }
 
   @override
@@ -102,51 +108,26 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final recipe = DoughRecipe.of(context);
-    final invertAdhesion = widget.invertAdhesion ?? false;
-
-    final delta = _VectorUtils.offsetToVector(widget.controller.delta);
-    final deltaAngle = _VectorUtils.computeFullCirculeAngle(
+    final controller = widget.controller;
+    final delta = _VectorUtils.offsetToVector(controller.delta);
+    final deltaAngle = _VectorUtils.computeFullCirculAngle(
       toDirection: delta,
       fromDirection: vmath.Vector2(1, 1),
     );
 
-    final bendSize = delta.length / recipe.viscosity;
-    final t = _effectiveT;
-
-    // TODO use a homography here to scale non-uniformly?
-    final scaleMagnitude = ui.lerpDouble(1, recipe.expansion, t);
-    final scale = Matrix4.identity()
-      ..scale(scaleMagnitude, scaleMagnitude, scaleMagnitude);
-
-    final rotateTo = Matrix4.rotationZ(deltaAngle);
-
-    final bend = Matrix4.columns(
-      vmath.Vector4(1, t * bendSize, 0, 0),
-      vmath.Vector4(t * bendSize, 1, 0, 0),
-      vmath.Vector4(0, 0, 1, 0),
-      vmath.Vector4(0, 0, 0, 1),
-    )..transpose();
-
-    final rotateBack = Matrix4.rotationZ(-deltaAngle);
-
-    Matrix4 translate;
-    if (invertAdhesion) {
-      translate = Matrix4.translationValues(
-        delta.x * t - delta.x * t / recipe.adhesion,
-        delta.y * t - delta.y * t / recipe.adhesion,
-        0,
-      );
-    } else {
-      translate = Matrix4.translationValues(
-        delta.x * t / recipe.adhesion,
-        delta.y * t / recipe.adhesion,
-        0,
-      );
-    }
+    final effTrfm = widget.transformer ?? _kFallbackTransformer;
+    effTrfm._rawT = _animCtrl.value;
+    effTrfm._t = _effectiveT;
+    effTrfm._recipe = recipe;
+    effTrfm._origin = _VectorUtils.offsetToVector(controller.origin);
+    effTrfm._target = _VectorUtils.offsetToVector(controller.target);
+    effTrfm._delta = _VectorUtils.offsetToVector(controller.delta);
+    effTrfm._delta = delta;
+    effTrfm._deltaAngle = deltaAngle;
 
     return Transform(
       alignment: Alignment.center,
-      transform: translate * rotateBack * bend * rotateTo * scale,
+      transform: effTrfm.createDoughMatrix(),
       child: widget.child,
     );
   }

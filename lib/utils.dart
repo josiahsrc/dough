@@ -1,7 +1,7 @@
 part of dough;
 
 class _VectorUtils {
-  static double computeFullCirculeAngle({
+  static double computeFullCirculAngle({
     @required vmath.Vector2 toDirection,
     vmath.Vector2 fromDirection,
   }) {

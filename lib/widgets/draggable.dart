@@ -1,6 +1,5 @@
 part of dough;
 
-/// This page demonstrates how to use the [DraggableDough] widget.
 class DraggableDoughPrefs {
   final double breakDistance;
   final bool useHapticsOnBreak;
@@ -15,7 +14,7 @@ class DraggableDoughPrefs {
     bool useHapticsOnBreak,
   }) {
     return DraggableDoughPrefs.raw(
-      breakDistance: breakDistance ?? 500,
+      breakDistance: breakDistance ?? 80,
       useHapticsOnBreak: useHapticsOnBreak ?? true,
     );
   }
@@ -115,7 +114,6 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       child: Dough(
         controller: _controller,
         child: widget.feedback,
-        invertAdhesion: true,
       ),
     );
 
@@ -139,16 +137,10 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     return Listener(
       child: draggable,
       onPointerDown: (event) {
-        // wait until the draggable widget instantiates the feedback
-        // widget before starting the squish
-        WidgetsBinding.instance.addPostFrameCallback((details) {
-          print('');
-          print('start');
-          _controller.start(
-            origin: event.position,
-            target: event.position,
-          );
-        });
+        _controller.start(
+          origin: event.position,
+          target: event.position,
+        );
       },
       onPointerMove: (event) {
         if (_controller.isActive) {
@@ -158,11 +150,11 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
             widget.onDoughBreak?.call();
             if (prefs.useHapticsOnBreak) {
-              HapticFeedback.lightImpact();
+              HapticFeedback.selectionClick();
             }
           } else {
             _controller.update(
-              origin: event.position,
+              target: event.position,
             );
           }
         }

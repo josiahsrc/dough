@@ -47,7 +47,7 @@ class PressableDoughDemo extends StatelessWidget {
         onReleased: (details) {
           // This callback is raised when the user release their
           // hold on the pressable dough.
-          print('I was release with ${details.delta} delta!');
+          print('I was released with ${details.delta} delta!');
         },
       ),
     );
