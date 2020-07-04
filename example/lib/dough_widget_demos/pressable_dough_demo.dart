@@ -1,10 +1,11 @@
 import 'package:dough/dough.dart';
 import 'package:flutter/material.dart';
 
-class PressableDoughPage extends StatelessWidget {
+/// This page demonstrates how to use the [PressableDough] widget.
+class PressableDoughDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Just a regular old floating action button
+    // Just a regular old floating action button.
     final fab = FloatingActionButton(
       onPressed: () {},
       child: Icon(Icons.fingerprint),
@@ -23,6 +24,7 @@ class PressableDoughPage extends StatelessWidget {
         child: Text(
           'Drag me around!',
           textAlign: TextAlign.center,
+          style: Theme.of(context).accentTextTheme.bodyText1,
         ),
       ),
       decoration: BoxDecoration(
@@ -32,20 +34,20 @@ class PressableDoughPage extends StatelessWidget {
     );
 
     // Now let's say we want to make the center container
-    // a bit squishier, but we want a different kind of
-    // squish. To do that we just wrap the dough widget
-    // in another recipe! Easy peasy.
+    // squishy, but we want a different kind of squish. To do 
+    // that we just wrap the dough widget in another recipe! 
+    // Easy peasy.
     final doughCenterContainer = DoughRecipe(
       data: DoughRecipeData(
         viscosity: 3000,
-        expansion: 1.2,
+        expansion: 1.025,
       ),
       child: PressableDough(
         child: centerContainer,
         onReleased: (details) {
           // This callback is raised when the user release their
           // hold on the pressable dough.
-          print('I was release with ${details.delta} delta!');
+          print('I was released with ${details.delta} delta!');
         },
       ),
     );

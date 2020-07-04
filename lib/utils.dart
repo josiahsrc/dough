@@ -1,7 +1,9 @@
 part of dough;
 
 class _VectorUtils {
-  static double computeFullCirculeAngle({
+  /// Computes the angle between [toDirection] and [fromDirection],
+  /// with the result ranging between 0 and 2PI radians.
+  static double computeFullCircleAngle({
     @required vmath.Vector2 toDirection,
     vmath.Vector2 fromDirection,
   }) {
@@ -16,14 +18,15 @@ class _VectorUtils {
     }
   }
 
-  // static Offset vectorToOffset(vmath.Vector2 vector) {
-  //   return Offset(vector.x, vector.y);
-  // }
-
+  /// Converts an [Offset] to a [Vector2].
   static vmath.Vector2 offsetToVector(Offset offset) {
     return vmath.Vector2(offset.dx, offset.dy);
   }
 
+  // static Offset vectorToOffset(vmath.Vector2 vector) {
+  //   return Offset(vector.x, vector.y);
+  // }
+  //
   // static vmath.Vector2 lerp(
   //   vmath.Vector2 a,
   //   vmath.Vector2 b,
