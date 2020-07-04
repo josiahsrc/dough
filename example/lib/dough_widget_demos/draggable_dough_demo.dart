@@ -59,7 +59,7 @@ class DraggableDoughDemo extends StatelessWidget {
     );
 
     // DraggableDough works just like the Flutter Draggable widget, except
-    // it's squishy! So you can just use the already build drag widgets that
+    // it's squishy! So you can just use the already built drag widgets that
     // Flutter provides, no problem.
     final myDragTarget = DragTarget<String>(
       builder: (context, candidateData, rejectedData) {

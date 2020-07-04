@@ -36,10 +36,13 @@ class _CustomDoughDemoState extends State<CustomDoughDemo> {
               'https://i.pinimg.com/originals/21/51/b8/2151b8dbdd5aba485f09dd5b74d679c9.png'),
         ),
         controller: doughController,
+        // transformer: You can create your own transformer to change how the dough morphs,
+        // but you'll have to read the source code to understand how to do this. This is a
+        // bit more complicated and requires a general knowledge of linear algebra.
       ),
     );
 
-    // A toggle for our dough stretching. Releastically, you'll probably want
+    // A toggle for our dough stretching. Realistically, you'll probably want
     // to use a GestureDetector or Listener to determine where to start and end presses
     // based on user input. But for the sake of the demo this will be used instead.
     final doughToggle = Switch(
