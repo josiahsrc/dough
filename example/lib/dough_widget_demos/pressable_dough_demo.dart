@@ -34,8 +34,8 @@ class PressableDoughDemo extends StatelessWidget {
     );
 
     // Now let's say we want to make the center container
-    // squishy, but we want a different kind of squish. To do 
-    // that we just wrap the dough widget in another recipe! 
+    // squishy, but we want a different kind of squish. To do
+    // that we just wrap the dough widget in another recipe!
     // Easy peasy.
     final doughCenterContainer = DoughRecipe(
       data: DoughRecipeData(

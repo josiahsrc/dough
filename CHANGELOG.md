@@ -22,3 +22,12 @@
 
 * Fixed dough vsync disposal ordering issue
 * Improved example project structure
+
+## [0.1.0] - July 4, 2020.
+
+* Added support for DraggableDough
+* Added draggable dough preferences
+* Improved examples
+* Applied strategy pattern to dough transformations
+* Added some built-in `DoughTransformer` strategies
+* Improved documentation

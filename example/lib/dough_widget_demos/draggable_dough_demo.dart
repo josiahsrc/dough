@@ -19,7 +19,7 @@ class DraggableDoughDemo extends StatelessWidget {
       ),
     );
 
-    // This is the widget that gets dragged around (the material widget is just 
+    // This is the widget that gets dragged around (the material widget is just
     // used to apply the flutter theme).
     final myFeedbackWidget = Material(
       child: Container(
@@ -77,8 +77,8 @@ class DraggableDoughDemo extends StatelessWidget {
         );
       },
       onWillAccept: (value) => value == 'My data!',
-      onAccept: (value) { 
-        print('the value "$value" was accepted!'); 
+      onAccept: (value) {
+        print('the value "$value" was accepted!');
       },
     );
 

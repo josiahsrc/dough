@@ -67,8 +67,8 @@ class DraggableDoughPrefs {
 /// [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html)
 /// for the [Draggable] widget.
 class DraggableDough<T> extends StatefulWidget {
-  /// Preferences for the behavior of this [DraggableDough] widget. This can be specified 
-  /// here or in the context of a [DoughRecipe] widget. This will override the contextual 
+  /// Preferences for the behavior of this [DraggableDough] widget. This can be specified
+  /// here or in the context of a [DoughRecipe] widget. This will override the contextual
   /// [DoughRecipeData.draggablePrefs] if provided.
   final DraggableDoughPrefs prefs;
 
@@ -148,7 +148,7 @@ class DraggableDough<T> extends StatefulWidget {
   _DraggableDoughState<T> createState() => _DraggableDoughState<T>();
 }
 
-/// The state of a [DraggableDough] widget which controls how the [Dough] morphs 
+/// The state of a [DraggableDough] widget which controls how the [Dough] morphs
 /// as the feedback is dragged around.
 class _DraggableDoughState<T> extends State<DraggableDough<T>> {
   final _controller = DoughController();
