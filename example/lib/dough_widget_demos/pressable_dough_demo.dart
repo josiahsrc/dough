@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class PressableDoughDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Just a regular old floating action button
+    // Just a regular old floating action button.
     final fab = FloatingActionButton(
       onPressed: () {},
       child: Icon(Icons.fingerprint),
@@ -24,6 +24,7 @@ class PressableDoughDemo extends StatelessWidget {
         child: Text(
           'Drag me around!',
           textAlign: TextAlign.center,
+          style: Theme.of(context).accentTextTheme.bodyText1,
         ),
       ),
       decoration: BoxDecoration(
@@ -33,9 +34,9 @@ class PressableDoughDemo extends StatelessWidget {
     );
 
     // Now let's say we want to make the center container
-    // a bit squishier, but we want a different kind of
-    // squish. To do that we just wrap the dough widget
-    // in another recipe! Easy peasy.
+    // squishy, but we want a different kind of squish. To do 
+    // that we just wrap the dough widget in another recipe! 
+    // Easy peasy.
     final doughCenterContainer = DoughRecipe(
       data: DoughRecipeData(
         viscosity: 3000,

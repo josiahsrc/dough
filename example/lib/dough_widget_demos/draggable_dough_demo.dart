@@ -19,8 +19,8 @@ class DraggableDoughDemo extends StatelessWidget {
       ),
     );
 
-    // This is the widget that gets dragged around.
-    // (The material widget is just used to apply the flutter theme).
+    // This is the widget that gets dragged around (the material widget is just 
+    // used to apply the flutter theme).
     final myFeedbackWidget = Material(
       child: Container(
         width: 100,
@@ -52,7 +52,7 @@ class DraggableDoughDemo extends StatelessWidget {
         child: myDraggableChild,
         feedback: myFeedbackWidget,
         onDoughBreak: () {
-          // This callback is raised when the dough snaps from its hold at its origin
+          // This callback is raised when the dough snaps from its hold at its origin.
           print('Demo dough snapped and is freely being dragged!');
         },
       ),
@@ -82,7 +82,8 @@ class DraggableDoughDemo extends StatelessWidget {
       },
     );
 
-    // Now just use the draggable dough widget, and it's good to go!
+    // Now just use the draggable dough widget however you'd normally use
+    // Flutter's Draggable widget.
     return Scaffold(
       appBar: AppBar(
         title: Text('Draggable Dough'),

@@ -1,14 +1,23 @@
 part of dough;
 
+/// Preferences applied to [DraggableDough] widgets.
 class DraggableDoughPrefs {
+  /// The logical pixel distance at which the [DraggableDough] should
+  /// elastically break its hold on the origin and enter a freely movable
+  /// state.
   final double breakDistance;
+
+  /// Whether [DraggableDough] widgets should trigger haptic feedback when
+  /// the dough breaks its hold on the origin.
   final bool useHapticsOnBreak;
 
+  /// Creates raw [DraggableDough] preferences, all values must be specified.
   const DraggableDoughPrefs.raw({
     @required this.breakDistance,
     @required this.useHapticsOnBreak,
   });
 
+  /// Creates [DraggableDough] preferences.
   factory DraggableDoughPrefs({
     double breakDistance,
     bool useHapticsOnBreak,
@@ -19,6 +28,10 @@ class DraggableDoughPrefs {
     );
   }
 
+  /// The fallback [DraggableDough] preferences.
+  factory DraggableDoughPrefs.fallback() => DraggableDoughPrefs();
+
+  /// Copies these preferences with some new values.
   DraggableDoughPrefs copyWith({
     double breakDistance,
     bool useHapticsOnBreak,
@@ -28,8 +41,6 @@ class DraggableDoughPrefs {
       useHapticsOnBreak: useHapticsOnBreak ?? this.useHapticsOnBreak,
     );
   }
-
-  factory DraggableDoughPrefs.fallback() => DraggableDoughPrefs();
 
   @override
   bool operator ==(Object other) {
@@ -51,24 +62,64 @@ class DraggableDoughPrefs {
   }
 }
 
+/// A widget which mimics the behavior of Flutter's [Draggable] widget, only this
+/// one is squishy! For details on what each field does for this widget, view
+/// [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html)
+/// for the [Draggable] widget.
 class DraggableDough<T> extends StatefulWidget {
+  /// Preferences for the behavior of this [DraggableDough] widget. This can be specified 
+  /// here or in the context of a [DoughRecipe] widget. This will override the contextual 
+  /// [DoughRecipeData.draggablePrefs] if provided.
   final DraggableDoughPrefs prefs;
+
+  /// A callback raised when the user drags the feedback widget beyond the
+  /// [DraggableDoughPrefs.breakDistance] and the [Dough] snaps back into
+  /// its original form.
   final VoidCallback onDoughBreak;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final T data;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Axis axis;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Widget child;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Widget childWhenDragging;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Widget feedback;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Offset feedbackOffset;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DragAnchor dragAnchor;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final bool ignoringFeedbackSemantics;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Axis affinity;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final int maxSimultaneousDrags;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final VoidCallback onDragStarted;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DraggableCanceledCallback onDraggableCanceled;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final VoidCallback onDragCompleted;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DragEndCallback onDragEnd;
 
+  /// Creates a [DraggableDough] widget.
   const DraggableDough({
     Key key,
     this.prefs,
@@ -97,6 +148,8 @@ class DraggableDough<T> extends StatefulWidget {
   _DraggableDoughState<T> createState() => _DraggableDoughState<T>();
 }
 
+/// The state of a [DraggableDough] widget which controls how the [Dough] morphs 
+/// as the feedback is dragged around.
 class _DraggableDoughState<T> extends State<DraggableDough<T>> {
   final _controller = DoughController();
 

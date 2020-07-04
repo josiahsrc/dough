@@ -1,6 +1,6 @@
 part of dough;
 
-/// Some details about a dough release after being pressed.
+/// Details for a [PressableDoughReleaseCallback].
 @immutable
 class PressableDoughReleaseDetails {
   /// How far the dough was dragged before it was released.
@@ -15,6 +15,7 @@ class PressableDoughReleaseDetails {
   });
 }
 
+/// Raised when a user releases their hold on a [PressableDough] widget.
 typedef PressableDoughReleaseCallback = void Function(
   PressableDoughReleaseDetails details,
 );
@@ -44,6 +45,8 @@ class PressableDough extends StatefulWidget {
   _PressableDoughState createState() => _PressableDoughState();
 }
 
+/// The state of a [PressableDough] widget which updates a [Dough] widget
+/// based on user input.
 class _PressableDoughState extends State<PressableDough> {
   final _controller = DoughController();
 

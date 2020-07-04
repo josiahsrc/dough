@@ -9,7 +9,6 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 part 'transformer.dart';
-part 'status.dart';
 part 'recipe.dart';
 part 'controller.dart';
 part 'utils.dart';
@@ -23,13 +22,17 @@ class Dough extends StatefulWidget {
   /// The child to squish.
   final Widget child;
 
-  /// The controller which manages how and when the [Dough] will
-  /// smoosh around.
+  /// Manages when the [child] will smoosh around.
   final DoughController controller;
 
+  /// The strategy for how to transform the [child]. This controls **how** the
+  /// [child] gets smooshed. You can create your own transformers by inheriting 
+  /// from [DoughTransformer] or use one of the provided transformers. If no 
+  /// transformer is specified, a default transformer of type [BasicDoughTransformer] 
+  /// will be used.
   final DoughTransformer transformer;
 
-  /// Creates a dough widget.
+  /// Creates a [Dough] widget.
   const Dough({
     Key key,
     @required this.child,
@@ -43,6 +46,8 @@ class Dough extends StatefulWidget {
   _DoughState createState() => _DoughState();
 }
 
+/// The state of a [Dough] widget which manages an animation controller
+/// to gracefully transform a widget over time.
 class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   final _fallbackTransformer = BasicDoughTransformer();
 
@@ -110,11 +115,12 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     final recipe = DoughRecipe.of(context);
     final controller = widget.controller;
     final delta = _VectorUtils.offsetToVector(controller.delta);
-    final deltaAngle = _VectorUtils.computeFullCirculAngle(
+    final deltaAngle = _VectorUtils.computeFullCircleAngle(
       toDirection: delta,
       fromDirection: vmath.Vector2(1, 1),
     );
 
+    // Provide the transformer with details on how to squish the child widget.
     final effTrfm = widget.transformer ?? _fallbackTransformer;
     effTrfm._rawT = _animCtrl.value;
     effTrfm._t = _effectiveT;

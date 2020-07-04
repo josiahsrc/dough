@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
     // Optionally, apply your own default dough recipe to your
     // whole app if you don't like the built in recipe. All dough
-    // widgets will default to using these settings.
+    // widgets will then default to use these settings.
     return DoughRecipe(
       data: DoughRecipeData(
         viscosity: 5000,
@@ -33,14 +33,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// This page just provides links to the different dough widget
-/// examples.
+/// This page just provides links to the different dough widget examples.
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nav = Navigator.of(context);
 
     final links = [
+      ListTile(
+        title: Text('Custom Dough'),
+        onTap: () => nav.pushNamed(Routes.kCustomDough),
+      ),
       ListTile(
         title: Text('Pressable Dough'),
         onTap: () => nav.pushNamed(Routes.kPressableDough),

@@ -9,6 +9,7 @@ class DoughRecipe extends InheritedWidget {
   /// The settings to use.
   final DoughRecipeData data;
 
+  /// Creates a [DoughRecipe] widget.
   const DoughRecipe({
     Key key,
     @required Widget child,
@@ -59,6 +60,7 @@ class DoughRecipeData {
   /// Default settings applied to [DraggableDough] widgets.
   final DraggableDoughPrefs draggablePrefs;
 
+  /// Creates a raw recipe, all values must be specified.
   const DoughRecipeData.raw({
     @required this.viscosity,
     @required this.adhesion,
@@ -70,6 +72,7 @@ class DoughRecipeData {
     @required this.draggablePrefs,
   });
 
+  /// Creates a recipe.
   factory DoughRecipeData({
     double viscosity,
     double adhesion,
@@ -92,15 +95,19 @@ class DoughRecipeData {
     );
   }
 
+  /// Creates the fallback recipe.
   factory DoughRecipeData.fallback() => DoughRecipeData();
 
   // TODO :-)
+  // /// A constructor designed to be used by the finest chefs. 
   // factory DoughRecipeData.leChef({
   //   double poundsOfFlour = 10,
   //   double cupsOfWater = 5,
-  //   double teaspoonsOfHoney,
+  //   double teaspoonsOfHoney = 2,
   // }) {
-  //   throw UnimplementedError();
+  //   return DoughRecipeData(
+  //     viscosity: 100 * poundsOfFlour - cupsOfWater * 50,
+  //   );
   // }
 
   /// Copies the current recipe with some new values.
