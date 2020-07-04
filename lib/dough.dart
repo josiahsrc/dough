@@ -26,9 +26,9 @@ class Dough extends StatefulWidget {
   final DoughController controller;
 
   /// The strategy for how to transform the [child]. This controls **how** the
-  /// [child] gets smooshed. You can create your own transformers by inheriting 
-  /// from [DoughTransformer] or use one of the provided transformers. If no 
-  /// transformer is specified, a default transformer of type [BasicDoughTransformer] 
+  /// [child] gets smooshed. You can create your own transformers by inheriting
+  /// from [DoughTransformer] or use one of the provided transformers. If no
+  /// transformer is specified, a default transformer of type [BasicDoughTransformer]
   /// will be used.
   final DoughTransformer transformer;
 

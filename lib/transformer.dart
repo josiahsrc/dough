@@ -26,20 +26,20 @@ abstract class DoughTransformer {
   /// The contexual recipe applied to the associated [Dough] widget.
   DoughRecipeData get recipe => _recipe;
 
-  /// The origin of the dough squish. This value is equivalent to 
+  /// The origin of the dough squish. This value is equivalent to
   /// [DoughController.origin], but is a vector instead of an offset.
   vmath.Vector2 get origin => _origin;
 
-  /// The target of the dough squish. This value is equivalent to 
+  /// The target of the dough squish. This value is equivalent to
   /// [DoughController.target], but is a vector instead of an offset.
   vmath.Vector2 get target => _target;
 
-  /// The delta of the dough squish. This value is equivalent to 
+  /// The delta of the dough squish. This value is equivalent to
   /// [DoughController.delta], but is a vector instead of an offset.
   vmath.Vector2 get delta => _delta;
 
   /// The full-circle delta angle of the [delta] value, relative to the
-  /// [Dough] widgets up direction. This value ranges between 0 radians 
+  /// [Dough] widgets up direction. This value ranges between 0 radians
   /// and 2PI radians.
   double get deltaAngle => _deltaAngle;
 
@@ -114,8 +114,7 @@ class BasicDoughTransformer extends DoughTransformer {
 /// to the child widget while being dragged to give the illusion that the draggable
 /// widget is "resisting" being dragged until [DoughController.stop] is called.
 class DraggableOverlayDoughTransformer extends DoughTransformer {
-
-  /// Whether the controller's delta should be applied to the widget. This will offset 
+  /// Whether the controller's delta should be applied to the widget. This will offset
   /// the widget being dragged by [delta].
   final bool applyDelta;
 

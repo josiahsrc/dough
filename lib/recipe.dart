@@ -33,12 +33,12 @@ class DoughRecipe extends InheritedWidget {
 @immutable
 class DoughRecipeData {
   /// How 'thick' a [Dough] widget is. Higher values make for harder/less
-  /// elastic [Dough]. A typical value would be something like 7000. Lower 
+  /// elastic [Dough]. A typical value would be something like 7000. Lower
   /// values like 100 will result in unexpected behaviors.
   final double viscosity;
 
   /// How sticky a [Dough] widget is. Higher values result in [Dough] that
-  /// doesn't move around a lot when its dragged. Lower values result in 
+  /// doesn't move around a lot when its dragged. Lower values result in
   /// really "slippery" [Dough]. A typical value would be something like 12.
   final double adhesion;
 
@@ -99,7 +99,7 @@ class DoughRecipeData {
   factory DoughRecipeData.fallback() => DoughRecipeData();
 
   // TODO :-)
-  // /// A constructor designed to be used by the finest chefs. 
+  // /// A constructor designed to be used by the finest chefs.
   // factory DoughRecipeData.leChef({
   //   double poundsOfFlour = 10,
   //   double cupsOfWater = 5,

@@ -3,7 +3,7 @@ part of dough;
 /// A callback used to indicate a change in [DoughStatus].
 typedef DoughStatusCallback = void Function(DoughStatus status);
 
-/// Represents the state of a [Dough] widget's animation based on it's associated 
+/// Represents the state of a [Dough] widget's animation based on it's associated
 /// [DoughController].
 enum DoughStatus {
   /// Indicates that the [DoughController] has entered an active state
