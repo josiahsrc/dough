@@ -112,8 +112,12 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     final doughFeedback = DoughRecipe(
       data: recipe,
       child: Dough(
-        controller: _controller,
         child: widget.feedback,
+        controller: _controller,
+        transformer: DraggableOverlayDoughTransformer(
+          snapToTargetOnStop: true,
+          applyDelta: true,
+        ),
       ),
     );
 

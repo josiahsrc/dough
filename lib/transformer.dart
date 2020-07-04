@@ -8,6 +8,7 @@ abstract class DoughTransformer {
   vmath.Vector2 _target;
   vmath.Vector2 _delta;
   double _deltaAngle;
+  DoughController _controller;
 
   double get rawT => _rawT;
   double get t => _t;
@@ -16,6 +17,7 @@ abstract class DoughTransformer {
   vmath.Vector2 get target => _target;
   vmath.Vector2 get delta => _delta;
   double get deltaAngle => _deltaAngle;
+  DoughController get controller => _controller;
 
   vmath.Matrix4 createDoughMatrix();
 
@@ -68,4 +70,41 @@ class BasicDoughTransformer extends DoughTransformer {
   }
 }
 
-// class DraggableOverlayDoughTransformer extends DoughTransformer {}
+class DraggableOverlayDoughTransformer extends DoughTransformer {
+  final bool applyDelta;
+  final bool snapToTargetOnStop;
+
+  DraggableOverlayDoughTransformer({
+    @required this.applyDelta,
+    @required this.snapToTargetOnStop,
+  });
+
+  @override
+  Matrix4 createDoughMatrix() {
+    final adhesiveDx = delta.x * t / recipe.adhesion;
+    final adhesiveDy = delta.y * t / recipe.adhesion;
+
+    Matrix4 translate;
+    if (applyDelta) {
+      if (snapToTargetOnStop) {
+        final dx = -delta.x * (controller.isActive ? 1 : t);
+        final dy = -delta.y * (controller.isActive ? 1 : t);
+        translate = Matrix4.translationValues(
+          dx + adhesiveDx,
+          dy + adhesiveDy,
+          0,
+        );
+      } else {
+        translate = Matrix4.translationValues(
+          -delta.x + adhesiveDx,
+          -delta.y + adhesiveDy,
+          0,
+        );
+      }
+    } else {
+      translate = Matrix4.translationValues(adhesiveDx, adhesiveDy, 0);
+    }
+
+    return translate * bendWithDeltaMatrix() * expansionMatrix();
+  }
+}

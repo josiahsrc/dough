@@ -44,7 +44,7 @@ class Dough extends StatefulWidget {
 }
 
 class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
-  static final _kFallbackTransformer = BasicDoughTransformer();
+  final _fallbackTransformer = BasicDoughTransformer();
 
   AnimationController _animCtrl;
   double _effectiveT;
@@ -115,7 +115,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       fromDirection: vmath.Vector2(1, 1),
     );
 
-    final effTrfm = widget.transformer ?? _kFallbackTransformer;
+    final effTrfm = widget.transformer ?? _fallbackTransformer;
     effTrfm._rawT = _animCtrl.value;
     effTrfm._t = _effectiveT;
     effTrfm._recipe = recipe;
@@ -124,6 +124,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     effTrfm._delta = _VectorUtils.offsetToVector(controller.delta);
     effTrfm._delta = delta;
     effTrfm._deltaAngle = deltaAngle;
+    effTrfm._controller = controller;
 
     return Transform(
       alignment: Alignment.center,
