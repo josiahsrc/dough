@@ -8,44 +8,15 @@ Some links for this package
 
 ## How to use
 
-Simply wrap any widget in a dough widget like so:
-
-```
-PressableDough(
-    child: FloatingActionButton( ... ),
-);
-```
-
-That's it. Now your UI is smooshy! It will look something like [this](#pressable-dough).
-See the [Dough Widgets](#dough-widgets) section for more info on the available Dough widgets.
-
-## Customization
-
-If you don't like the default dough settings, you can easily change how 
-the dough feels. Just wrap any widget that uses `Dough` in a `DoughRecipe` 
-and you're good to go.
-
-```
-DoughRecipe(
-    data: DoughRecipeData(
-        adhesion: 8,
-        viscosity: 3000,
-        ...
-    ),
-    child: PressableDough( ... ),
-);
-```
-
----
-
-## Dough Widgets
-
-This package provides a few `Dough` widgets out of the box. For complete examples on how 
-to use these widgets, checkout the [example project](./example) provided on GitHub.
+This package provides squishy widgets you can use right out of the box. Optionally,
+you can create custom Dough widgets for a custom squish effect. For a more complete
+overview on how to use the Dough library, check out the [example project](./example) 
+provided on GitHub.
 
 ### Pressable Dough
 
-Wrap any widget in `PressableDough` to make it squishable based on how a user presses on it.
+Wrap any widget in `PressableDough` to make it squish based on a user's input
+gestures.
 
 ```
 PressableDough(
@@ -78,12 +49,29 @@ You can find a full example of how to use this widget
 
 ### Custom Dough
 
-If none of the above widgets are exactly what you're looking for, you can easily 
+If the above widgets aren't exactly what you're looking for, you can easily 
 create your own squishy widget using the provided `Dough` widget! See the
 [example project](./example/lib/dough_widget_demos/custom_dough_demo.dart) 
 for more details on how to do this.
 
 ![CustomDough Demo](assets/gifs/custom-dough.gif)
+
+## Customize how the dough feels
+
+If you don't like the default dough settings, you can easily change how 
+the dough feels. Just wrap any widget that uses `Dough` in a `DoughRecipe` 
+and you're good to go.
+
+```
+DoughRecipe(
+    data: DoughRecipeData(
+        adhesion: 8,
+        viscosity: 3000,
+        ...
+    ),
+    child: PressableDough( ... ),
+);
+```
 
 ---
 
