@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 
 /// This page demonstrates how to use the [DraggableDough] widget.
 class DraggableDoughDemo extends StatelessWidget {
+  final doughUrl =
+      'https://i.pinimg.com/originals/21/51/b8/2151b8dbdd5aba485f09dd5b74d679c9.png';
+
   @override
   Widget build(BuildContext context) {
     // This is the widget that appears before being dragged around.
     final myDraggableChild = Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.blue,
+      ),
       width: 100,
       height: 100,
-      color: Colors.blue,
       child: Center(
         child: Text(
           'Draggable',
@@ -19,31 +25,17 @@ class DraggableDoughDemo extends StatelessWidget {
       ),
     );
 
-    // This is the widget that gets dragged around (the material widget is just
-    // used to apply the flutter theme).
-    final myFeedbackWidget = Material(
-      child: Container(
-        width: 100,
-        height: 100,
-        color: Colors.green,
-        child: Center(
-          child: Text(
-            'Squishy feedback',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).accentTextTheme.bodyText2,
-          ),
-        ),
-      ),
-    );
+    // This is the widget that gets dragged around.
+    final myFeedbackWidget = Image.network(doughUrl, width: 100, height: 100);
 
     // Create the draggable dough widget using our child and feedback widgets.
     // Also apply a custom dough recipe to make this widget feel awesome :)
     final myDraggableDough = DoughRecipe(
       data: DoughRecipeData(
-        adhesion: 4,
-        viscosity: 700,
+        adhesion: 2,
+        viscosity: 250,
         draggablePrefs: DraggableDoughPrefs(
-          breakDistance: 80,
+          breakDistance: 120,
           useHapticsOnBreak: true,
         ),
       ),
@@ -51,6 +43,7 @@ class DraggableDoughDemo extends StatelessWidget {
         data: 'My data!',
         child: myDraggableChild,
         feedback: myFeedbackWidget,
+        childWhenDragging: Container(),
         onDoughBreak: () {
           // This callback is raised when the dough snaps from its hold at its origin.
           print('Demo dough snapped and is freely being dragged!');

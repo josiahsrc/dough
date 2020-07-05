@@ -52,9 +52,30 @@ abstract class DoughTransformer {
   /// A utility method which returns a matrix that scales widgets.
   @protected
   vmath.Matrix4 expansionMatrix() {
-    // TODO use a homography here to scale non-uniformly?
     final scaleMag = ui.lerpDouble(1, recipe.expansion, t);
-    return Matrix4.identity()..scale(scaleMag, scaleMag, scaleMag);
+    final adhesiveDx = delta.x * t / recipe.adhesion;
+    final adhesiveDy = delta.y * t / recipe.adhesion;
+    final dx = -delta.x * (controller.isActive ? 1 : t);
+    final dy = -delta.y * (controller.isActive ? 1 : t);
+    return Matrix4.identity()
+      ..scale(scaleMag, scaleMag, scaleMag)
+      ..setEntry(3, 2, 0.01)
+      ..rotateY(-(dx + adhesiveDx) * 0.006)
+      ..rotateX((dy + adhesiveDy) * 0.006)
+      ..scale(
+        math.sqrt(
+                  math.pow(
+                        dx + adhesiveDx,
+                        2,
+                      ) +
+                      math.pow(
+                        dy + adhesiveDy,
+                        2,
+                      ),
+                ) *
+                0.006 +
+            1,
+      );
   }
 
   /// A utility method which returns a matrix that rotates widgets in the direction
