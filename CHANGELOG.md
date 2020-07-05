@@ -31,3 +31,7 @@
 * Applied strategy pattern to dough transformations
 * Added some built-in `DoughTransformer` strategies
 * Improved documentation
+
+## [0.1.1] - July 4, 2020.
+
+* Improved README.md layout
