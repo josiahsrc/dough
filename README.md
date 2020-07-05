@@ -1,8 +1,6 @@
-# Flutter Dough
+![Flutter Dough](./assets/images/dough-logo@repo.png)
 
 This package provides some widgets you can use to create a smooshy UI. 
-
-Some links for this package
 - [Flutter package hosted on pub.dev](https://pub.dev/packages/dough)
 - [Source code](https://github.com/HatFeather/flutter_dough)
 

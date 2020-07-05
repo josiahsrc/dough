@@ -35,3 +35,7 @@
 ## [0.1.1] - July 4, 2020.
 
 * Improved README.md layout
+
+## [0.1.2] - July 4, 2020.
+
+* Created logo and updated README.md
