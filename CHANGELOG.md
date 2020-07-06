@@ -39,3 +39,9 @@
 ## [0.1.2] - July 4, 2020.
 
 * Created logo and updated README.md
+
+## [0.2.0] - July 5, 2020.
+
+* Added in perspective warp feature
+* Added dough recipe example which uses perspective warp
+* Refactored transformation code
