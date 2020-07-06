@@ -39,11 +39,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final nav = Navigator.of(context);
 
-    final links = [
+    final pageList = [
       ListTile(
-        title: Text('Custom Dough'),
-        onTap: () => nav.pushNamed(Routes.kCustomDough),
+        title: Text('Dough Recipe'),
+        onTap: () => nav.pushNamed(Routes.kDoughRecipeDemo),
       ),
+      Divider(),
       ListTile(
         title: Text('Pressable Dough'),
         onTap: () => nav.pushNamed(Routes.kPressableDough),
@@ -52,13 +53,18 @@ class HomePage extends StatelessWidget {
         title: Text('Draggable Dough'),
         onTap: () => nav.pushNamed(Routes.kDraggableDough),
       ),
+      Divider(),
+      ListTile(
+        title: Text('Custom Dough'),
+        onTap: () => nav.pushNamed(Routes.kCustomDough),
+      ),
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Demo Home Page'),
       ),
-      body: ListView(children: links),
+      body: ListView(children: pageList),
     );
   }
 }

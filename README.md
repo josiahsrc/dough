@@ -54,6 +54,8 @@ for more details on how to do this.
 
 ![CustomDough Demo](assets/gifs/custom-dough.gif)
 
+---
+
 ## Customize how the dough feels
 
 If you don't like the default dough settings, you can easily change how 
@@ -63,26 +65,29 @@ and you're good to go.
 ```
 DoughRecipe(
     data: DoughRecipeData(
-        adhesion: 8,
-        viscosity: 3000,
+        adhesion: 4,
+        viscosity: 250, // a more jello like substance
+        usePerspectiveWarp: true, // use for added jiggly-ness
+        perspectiveWarpDepth: 0.02,
+        exitDuration: Duration(milliseconds: 600),
         ...
     ),
     child: PressableDough( ... ),
 );
 ```
 
+You can find a full example of how to use this widget
+[here](./example/lib/dough_widget_demos/dough_recipe_demo.dart).
+
+![DoughRecipe Demo](assets/gifs/dough-recipe.gif)
+
 ---
 
 ## Future improvements
 
-**Scaling** – The expansion property for the dough currently
-only scales widgets uniformly. Ideally, when you press
-on the dough widget, the pixels closest to your finger
-would scale more than the pixels farther away (as you'd
-expect from pressing something squishy). A possible solution
-to this would be to use some sort of homography. If you
-have any ideas for how to achieve this, please consider
-contributing!
+**Dough expansion** – Ideally, pressing on a dough widget would push pixels away
+from your finger, as if you were pressing on dough (possibly using a mesh-grid?).
+If you have any ideas for how to achieve this, please consider contributing!
 
 **More dough widgets** – Support for more out-of-the-box dough widgets 
 will be added in the future. Some dough widget ideas include...

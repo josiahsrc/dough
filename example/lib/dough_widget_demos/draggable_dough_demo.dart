@@ -7,9 +7,9 @@ class DraggableDoughDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     // This is the widget that appears before being dragged around.
     final myDraggableChild = Container(
+      color: Colors.blue,
       width: 100,
       height: 100,
-      color: Colors.blue,
       child: Center(
         child: Text(
           'Draggable',
@@ -19,19 +19,16 @@ class DraggableDoughDemo extends StatelessWidget {
       ),
     );
 
-    // This is the widget that gets dragged around (the material widget is just
-    // used to apply the flutter theme).
-    final myFeedbackWidget = Material(
-      child: Container(
-        width: 100,
-        height: 100,
-        color: Colors.green,
-        child: Center(
-          child: Text(
-            'Squishy feedback',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).accentTextTheme.bodyText2,
-          ),
+    // This is the widget that gets dragged around.
+    final myFeedbackWidget = Container(
+      color: Colors.green,
+      width: 100,
+      height: 100,
+      child: Center(
+        child: Text(
+          'Squishy feedback',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).accentTextTheme.bodyText2,
         ),
       ),
     );
@@ -41,7 +38,7 @@ class DraggableDoughDemo extends StatelessWidget {
     final myDraggableDough = DoughRecipe(
       data: DoughRecipeData(
         adhesion: 4,
-        viscosity: 700,
+        viscosity: 500,
         draggablePrefs: DraggableDoughPrefs(
           breakDistance: 80,
           useHapticsOnBreak: true,
@@ -51,6 +48,7 @@ class DraggableDoughDemo extends StatelessWidget {
         data: 'My data!',
         child: myDraggableChild,
         feedback: myFeedbackWidget,
+        childWhenDragging: Container(),
         onDoughBreak: () {
           // This callback is raised when the dough snaps from its hold at its origin.
           print('Demo dough snapped and is freely being dragged!');
@@ -82,8 +80,8 @@ class DraggableDoughDemo extends StatelessWidget {
       },
     );
 
-    // Now just use the draggable dough widget however you'd normally use
-    // Flutter's Draggable widget.
+    // Now just use the DraggableDough widget however you'd normally use
+    // Flutter's native Draggable widget.
     return Scaffold(
       appBar: AppBar(
         title: Text('Draggable Dough'),
