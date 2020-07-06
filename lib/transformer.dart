@@ -46,73 +46,82 @@ abstract class DoughTransformer {
   /// The controller for the associated [Dough] widget.
   DoughController get controller => _controller;
 
-  /// Create the matrix which will be used to transform the [Dough.child] widget.
-  vmath.Matrix4 createDoughMatrix();
+  /// Creates the [Matrix4] which will be used to transform the [Dough.child] widget.
+  Matrix4 createDoughMatrix();
 
-  /// A utility method which returns a matrix that scales widgets.
+  /// A utility method which creates a [Matrix4] that scales widgets by a factor of
+  /// [DoughRecipe.expansion].
   @protected
-  vmath.Matrix4 expansionMatrix() {
+  Matrix4 createExpansionMatrix() {
+    // TODO:
+    // Try to recreate photoshop's liquify effect to push pixels closest to the press
+    // point (target) away (1/x). This could give illusion that the screen is squishy
+    // dough.
     final scaleMag = ui.lerpDouble(1, recipe.expansion, t);
-    final adhesiveDx = delta.x * t / recipe.adhesion;
-    final adhesiveDy = delta.y * t / recipe.adhesion;
-    final dx = -delta.x * (controller.isActive ? 1 : t);
-    final dy = -delta.y * (controller.isActive ? 1 : t);
+    return Matrix4.identity()..scale(scaleMag);
+  }
+
+  /// A utility method which creates a [Matrix4] that perspectively rotates wigets around
+  /// their yaw and pitch axes based on [delta] and [DoughRecipe.viscosity].
+  @protected
+  Matrix4 createPerspectiveWarpMatrix() {
+    if (!recipe.usePerspectiveWarp) {
+      return Matrix4.identity();
+    }
+
+    final perspDelta = -delta * t / recipe.viscosity;
     return Matrix4.identity()
-      ..scale(scaleMag, scaleMag, scaleMag)
-      ..setEntry(3, 2, 0.01)
-      ..rotateY(-(dx + adhesiveDx) * 0.006)
-      ..rotateX((dy + adhesiveDy) * 0.006)
-      ..scale(
-        math.sqrt(
-                  math.pow(
-                        dx + adhesiveDx,
-                        2,
-                      ) +
-                      math.pow(
-                        dy + adhesiveDy,
-                        2,
-                      ),
-                ) *
-                0.006 +
-            1,
-      );
+      ..setEntry(3, 2, recipe.perspectiveWarpDepth)
+      ..rotateY(-perspDelta.x)
+      ..rotateX(perspDelta.y)
+      ..scale(perspDelta.length / recipe.viscosity + 1);
   }
 
-  /// A utility method which returns a matrix that rotates widgets in the direction
-  /// of the [deltaAngle] property.
+  /// A utility method which creates a [Matrix4] that skews widgets in the direction
+  /// of the [delta] based on the [DoughRecipe.viscosity].
   @protected
-  vmath.Matrix4 rotateTowardDeltaMatrix() {
-    return Matrix4.rotationZ(deltaAngle);
-  }
+  Matrix4 createViscositySkewMatrix() {
+    final rotateAway = Matrix4.rotationZ(-deltaAngle);
+    final rotateTowards = Matrix4.rotationZ(deltaAngle);
 
-  /// A utility method which returns a matrix that rotates widgets int the opposite
-  /// direction of the [deltaAngle] property.
-  @protected
-  vmath.Matrix4 rotateAwayFromDeltaMatrix() {
-    return Matrix4.rotationZ(-deltaAngle);
-  }
-
-  /// A utility method which returns a matrix that skews widgets based on the
-  /// [DoughRecipe.viscosity] property.
-  @protected
-  vmath.Matrix4 skewWithViscosityMatrix() {
-    final skewSize = delta.length / recipe.viscosity;
-    return Matrix4.columns(
-      vmath.Vector4(1, t * skewSize, 0, 0),
-      vmath.Vector4(t * skewSize, 1, 0, 0),
+    final skewSize = t * delta.length / recipe.viscosity;
+    final skew = Matrix4.columns(
+      vmath.Vector4(1, skewSize, 0, 0),
+      vmath.Vector4(skewSize, 1, 0, 0),
       vmath.Vector4(0, 0, 1, 0),
       vmath.Vector4(0, 0, 0, 1),
     );
+
+    return rotateAway * skew * rotateTowards;
   }
 
-  /// A utility method which creates the "dough-squish" matrix. The resulting
-  /// [Matrix4] will bend widgets in a dough-like fashion, without adhesion applied.
+  /// A utility method which creates the default dough squishing [Matrix4]. The resulting
+  /// [Matrix4] doesn't apply translations, only other warping deformations based on the
+  /// [recipe].
+  ///
+  /// You can basically think of this as the core squish behavior.
   @protected
-  vmath.Matrix4 bendWithDeltaMatrix() {
-    return rotateAwayFromDeltaMatrix() *
-        skewWithViscosityMatrix() *
-        rotateTowardDeltaMatrix();
+  Matrix4 createSquishDeformationMatrix() {
+    return createPerspectiveWarpMatrix() *
+        createViscositySkewMatrix() *
+        createExpansionMatrix();
   }
+
+  @Deprecated('Use createExpansionMatrix() instead')
+  @protected
+  Matrix4 expansionMatrix() => createExpansionMatrix();
+
+  @Deprecated('Use Matrix4.rotationZ(deltaAngle) instead')
+  @protected
+  Matrix4 rotateTowardDeltaMatrix() => Matrix4.rotationZ(deltaAngle);
+
+  @Deprecated('Use Matrix4.rotationZ(-deltaAngle) instead')
+  @protected
+  Matrix4 rotateAwayFromDeltaMatrix() => Matrix4.rotationZ(-deltaAngle);
+
+  @Deprecated('Use createViscositySkewMatrix() instead')
+  @protected
+  Matrix4 bendWithDeltaMatrix() => createViscositySkewMatrix();
 }
 
 /// Transforms [Dough.child] widgets such that they stretch from their origin towards
@@ -126,7 +135,7 @@ class BasicDoughTransformer extends DoughTransformer {
       0,
     );
 
-    return translate * bendWithDeltaMatrix() * expansionMatrix();
+    return translate * createSquishDeformationMatrix();
   }
 }
 
@@ -150,30 +159,32 @@ class DraggableOverlayDoughTransformer extends DoughTransformer {
 
   @override
   Matrix4 createDoughMatrix() {
-    final adhesiveDx = delta.x * t / recipe.adhesion;
-    final adhesiveDy = delta.y * t / recipe.adhesion;
+    final adhesiveDelta = delta * t / recipe.adhesion;
 
     Matrix4 translate;
     if (applyDelta) {
       if (snapToTargetOnStop) {
-        final dx = -delta.x * (controller.isActive ? 1 : t);
-        final dy = -delta.y * (controller.isActive ? 1 : t);
+        final effDelta = -delta * (controller.isActive ? 1 : t);
         translate = Matrix4.translationValues(
-          dx + adhesiveDx,
-          dy + adhesiveDy,
+          effDelta.x + adhesiveDelta.x,
+          effDelta.y + adhesiveDelta.y,
           0,
         );
       } else {
         translate = Matrix4.translationValues(
-          -delta.x + adhesiveDx,
-          -delta.y + adhesiveDy,
+          -delta.x + adhesiveDelta.x,
+          -delta.y + adhesiveDelta.y,
           0,
         );
       }
     } else {
-      translate = Matrix4.translationValues(adhesiveDx, adhesiveDy, 0);
+      translate = Matrix4.translationValues(
+        adhesiveDelta.x,
+        adhesiveDelta.y,
+        0,
+      );
     }
 
-    return translate * bendWithDeltaMatrix() * expansionMatrix();
+    return translate * createSquishDeformationMatrix();
   }
 }

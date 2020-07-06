@@ -42,8 +42,16 @@ class DoughRecipeData {
   /// really "slippery" [Dough]. A typical value would be something like 12.
   final double adhesion;
 
-  /// The factor by which a [Dough] widget expands when pressed.
+  /// The factor by which a [Dough] widget expands when activated.
   final double expansion;
+
+  /// Whether perspective warping should be used. When enabled, [Dough] widgets
+  /// will perform a 3D rotation slightly towards [DoughController.delta]. This
+  /// will give the illusion that the dough has mass and make it feel more jiggly.
+  final bool usePerspectiveWarp;
+
+  /// The depth of the perspective warp. A typical value would be something like 0.015.
+  final double perspectiveWarpDepth;
 
   /// How long a [Dough] widget takes to transition into a squished state.
   final Duration entryDuration;
@@ -65,6 +73,8 @@ class DoughRecipeData {
     @required this.viscosity,
     @required this.adhesion,
     @required this.expansion,
+    @required this.usePerspectiveWarp,
+    @required this.perspectiveWarpDepth,
     @required this.entryDuration,
     @required this.entryCurve,
     @required this.exitDuration,
@@ -77,6 +87,8 @@ class DoughRecipeData {
     double viscosity,
     double adhesion,
     double expansion,
+    bool usePerspectiveWarp,
+    double perspectiveWarpDepth,
     Duration entryDuration,
     Curve entryCurve,
     Duration exitDuration,
@@ -87,6 +99,8 @@ class DoughRecipeData {
       viscosity: viscosity ?? 7000,
       adhesion: adhesion ?? 12,
       expansion: expansion ?? 1,
+      usePerspectiveWarp: usePerspectiveWarp ?? false,
+      perspectiveWarpDepth: perspectiveWarpDepth ?? 0.015,
       entryDuration: entryDuration ?? const Duration(milliseconds: 20),
       entryCurve: entryCurve ?? Curves.easeInOut,
       exitDuration: exitDuration ?? const Duration(milliseconds: 500),
@@ -115,6 +129,8 @@ class DoughRecipeData {
     double viscosity,
     double adhesion,
     double expansion,
+    bool usePerspectiveWarp,
+    double perspectiveWarpDepth,
     Duration entryDuration,
     Curve entryCurve,
     Duration exitDuration,
@@ -125,6 +141,8 @@ class DoughRecipeData {
       viscosity: viscosity ?? this.viscosity,
       adhesion: adhesion ?? this.adhesion,
       expansion: expansion ?? this.expansion,
+      usePerspectiveWarp: usePerspectiveWarp ?? this.usePerspectiveWarp,
+      perspectiveWarpDepth: perspectiveWarpDepth ?? this.perspectiveWarpDepth,
       entryDuration: entryDuration ?? this.entryDuration,
       entryCurve: entryCurve ?? this.entryCurve,
       exitDuration: exitDuration ?? this.exitDuration,
@@ -141,6 +159,8 @@ class DoughRecipeData {
         other.viscosity == viscosity &&
         other.adhesion == adhesion &&
         other.expansion == expansion &&
+        other.usePerspectiveWarp == usePerspectiveWarp &&
+        other.perspectiveWarpDepth == perspectiveWarpDepth &&
         other.entryDuration == entryDuration &&
         other.entryCurve == entryCurve &&
         other.exitDuration == exitDuration &&
@@ -154,6 +174,8 @@ class DoughRecipeData {
       viscosity,
       adhesion,
       expansion,
+      usePerspectiveWarp,
+      perspectiveWarpDepth,
       entryDuration,
       entryCurve,
       exitDuration,

@@ -132,7 +132,7 @@ class DraggableDough<T> extends StatefulWidget {
     this.feedbackOffset = Offset.zero,
     this.dragAnchor = DragAnchor.child,
     this.affinity,
-    this.maxSimultaneousDrags,
+    this.maxSimultaneousDrags = 1,
     this.onDragStarted,
     this.onDraggableCanceled,
     this.onDragEnd,
@@ -174,6 +174,9 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
       ),
     );
 
+    // TODO
+    // Fix bug for maxSimultaneousDrags, each draggable shouldn't share the
+    // same dough controller. They should each have their own controllers.
     final draggable = Draggable<T>(
       child: widget.child,
       feedback: doughFeedback,

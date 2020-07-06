@@ -3,17 +3,11 @@ import 'package:flutter/material.dart';
 
 /// This page demonstrates how to use the [DraggableDough] widget.
 class DraggableDoughDemo extends StatelessWidget {
-  final doughUrl =
-      'https://i.pinimg.com/originals/21/51/b8/2151b8dbdd5aba485f09dd5b74d679c9.png';
-
   @override
   Widget build(BuildContext context) {
     // This is the widget that appears before being dragged around.
     final myDraggableChild = Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.blue,
-      ),
+      color: Colors.blue,
       width: 100,
       height: 100,
       child: Center(
@@ -26,16 +20,27 @@ class DraggableDoughDemo extends StatelessWidget {
     );
 
     // This is the widget that gets dragged around.
-    final myFeedbackWidget = Image.network(doughUrl, width: 100, height: 100);
+    final myFeedbackWidget = Container(
+      color: Colors.green,
+      width: 100,
+      height: 100,
+      child: Center(
+        child: Text(
+          'Squishy feedback',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).accentTextTheme.bodyText2,
+        ),
+      ),
+    );
 
     // Create the draggable dough widget using our child and feedback widgets.
     // Also apply a custom dough recipe to make this widget feel awesome :)
     final myDraggableDough = DoughRecipe(
       data: DoughRecipeData(
-        adhesion: 2,
-        viscosity: 250,
+        adhesion: 4,
+        viscosity: 500,
         draggablePrefs: DraggableDoughPrefs(
-          breakDistance: 120,
+          breakDistance: 80,
           useHapticsOnBreak: true,
         ),
       ),
@@ -75,8 +80,8 @@ class DraggableDoughDemo extends StatelessWidget {
       },
     );
 
-    // Now just use the draggable dough widget however you'd normally use
-    // Flutter's Draggable widget.
+    // Now just use the DraggableDough widget however you'd normally use
+    // Flutter's native Draggable widget.
     return Scaffold(
       appBar: AppBar(
         title: Text('Draggable Dough'),
