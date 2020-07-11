@@ -45,3 +45,7 @@
 * Added in perspective warp feature
 * Added dough recipe example which uses perspective warp
 * Refactored transformation code
+
+## [0.2.1] - July 11, 2020.
+
+* Added multi-drag support for the DraggableDough widget

@@ -176,8 +176,8 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     final recipe = DoughRecipe.of(context);
     final prefs = widget.prefs ?? recipe.draggablePrefs;
 
-    // The feedback widget won't share the same context once the [Draggable] 
-    // widget instantiates it as an overlay. The [DoughRecipe] has to be copied 
+    // The feedback widget won't share the same context once the [Draggable]
+    // widget instantiates it as an overlay. The [DoughRecipe] has to be copied
     // directly so it will exist in the overlay's context as well.
     final doughFeedback = DoughRecipe(
       data: recipe,
