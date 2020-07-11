@@ -1,7 +1,7 @@
 ![Flutter Dough](./assets/images/dough-logo@repo.png)
 
 This package provides some widgets you can use to create a smooshy UI. 
-- [Flutter package hosted on pub.dev](https://pub.dev/packages/dough)
+- [Flutter package](https://pub.dev/packages/dough)
 - [Source code](https://github.com/HatFeather/flutter_dough)
 
 ## How to use
@@ -92,10 +92,9 @@ If you have any ideas for how to achieve this, please consider contributing!
 **More dough widgets** – Support for more out-of-the-box dough widgets 
 will be added in the future. Some dough widget ideas include...
 
-- ReorderableListDough – Same as the reorderable list widget, 
-but it's smooshy.
-- SliverListDough – Same as the sliver list widget, but it's 
-smooshy.
+- ReorderableListDough – Same as the reorderable list widget, but it's smooshy.
+- SliverListDough – Same as the sliver list widget, but it's  smooshy.
+- GyroDough - Dough that morphs based on device physical-space motion.
 
 ## Contributing
 

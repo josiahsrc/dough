@@ -132,7 +132,7 @@ class DraggableDough<T> extends StatefulWidget {
     this.feedbackOffset = Offset.zero,
     this.dragAnchor = DragAnchor.child,
     this.affinity,
-    this.maxSimultaneousDrags = 1,
+    this.maxSimultaneousDrags,
     this.onDragStarted,
     this.onDraggableCanceled,
     this.onDragEnd,
@@ -151,32 +151,42 @@ class DraggableDough<T> extends StatefulWidget {
 /// The state of a [DraggableDough] widget which controls how the [Dough] morphs
 /// as the feedback is dragged around.
 class _DraggableDoughState<T> extends State<DraggableDough<T>> {
-  final _controller = DoughController();
+  final _controllerTracker = _DragControllerTracker();
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerTracker.reset();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controllerTracker.reset();
+  }
+
+  @override
+  void didUpdateWidget(covariant DraggableDough<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _controllerTracker.reset();
+  }
 
   @override
   Widget build(BuildContext context) {
     final recipe = DoughRecipe.of(context);
     final prefs = widget.prefs ?? recipe.draggablePrefs;
 
-    // The feedback widget won't share the same context once the
-    // [Draggable] widget instantiates it as an overlay. The [DoughRecipe]
-    // has to be copied directly so it will exist in the overlay's context
-    // as well.
+    // The feedback widget won't share the same context once the [Draggable] 
+    // widget instantiates it as an overlay. The [DoughRecipe] has to be copied 
+    // directly so it will exist in the overlay's context as well.
     final doughFeedback = DoughRecipe(
       data: recipe,
-      child: Dough(
+      child: _DragFeedback(
+        controllerTracker: _controllerTracker,
         child: widget.feedback,
-        controller: _controller,
-        transformer: DraggableOverlayDoughTransformer(
-          snapToTargetOnStop: true,
-          applyDelta: true,
-        ),
       ),
     );
 
-    // TODO
-    // Fix bug for maxSimultaneousDrags, each draggable shouldn't share the
-    // same dough controller. They should each have their own controllers.
     final draggable = Draggable<T>(
       child: widget.child,
       feedback: doughFeedback,
@@ -197,38 +207,156 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
     return Listener(
       child: draggable,
       onPointerDown: (event) {
-        _controller.start(
-          origin: event.position,
-          target: event.position,
-        );
+        _controllerTracker.enqueueHintControllerID(event.pointer);
+        _controllerTracker.initController(event.pointer)
+          ..start(
+            origin: event.position,
+            target: event.position,
+          );
       },
       onPointerMove: (event) {
-        if (_controller.isActive) {
+        final controller = _controllerTracker.getcontroller(event.pointer);
+        if (controller.isActive) {
           final sqrBreakThresh = prefs.breakDistance * prefs.breakDistance;
-          if (_controller.delta.distanceSquared > sqrBreakThresh) {
-            _controller.stop();
-
+          if (controller.delta.distanceSquared > sqrBreakThresh) {
+            controller.stop();
             widget.onDoughBreak?.call();
             if (prefs.useHapticsOnBreak) {
               HapticFeedback.selectionClick();
             }
           } else {
-            _controller.update(
+            controller.update(
               target: event.position,
             );
           }
         }
       },
       onPointerUp: (event) {
-        if (_controller.isActive) {
-          _controller.stop();
+        final controller = _controllerTracker.getcontroller(event.pointer);
+        if (controller != null) {
+          _controllerTracker.tearDownController(event.pointer);
         }
       },
       onPointerCancel: (event) {
-        if (_controller.isActive) {
-          _controller.stop();
+        final controller = _controllerTracker.getcontroller(event.pointer);
+        if (controller != null) {
+          _controllerTracker.tearDownController(event.pointer);
         }
       },
     );
+  }
+}
+
+/// A helper drag feedback widget which maintains a pointer ID to control the Dough.
+class _DragFeedback extends StatefulWidget {
+  final Widget child;
+  final _DragControllerTracker controllerTracker;
+
+  const _DragFeedback({
+    Key key,
+    @required this.controllerTracker,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  _DragFeedbackState createState() => _DragFeedbackState();
+}
+
+/// The state of a [_DragFeedback] widget.
+class _DragFeedbackState extends State<_DragFeedback> {
+  int _controllerID;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Save the next hint to determine which controller to bind to.
+    assert(widget.controllerTracker.hasHintControllerID);
+    _controllerID = widget.controllerTracker.dequeueHintControllerID();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dough(
+      child: widget.child,
+      controller: widget.controllerTracker.getcontroller(_controllerID),
+      transformer: DraggableOverlayDoughTransformer(
+        snapToTargetOnStop: true,
+        applyDelta: true,
+      ),
+    );
+  }
+}
+
+/// A helper class to keep track of various dough controllers based on
+/// the pointer IDs they're associated with when being dragged.
+class _DragControllerTracker {
+  final _controllers = <int, DoughController>{};
+  final _hintControllerIDs = ListQueue<int>();
+
+  /// Whether a hint controller was specified.
+  bool get hasHintControllerID => !_hintControllerIDs.isEmpty;
+
+  /// Enqueues an [id] to hint at the [DoughController] that the next
+  /// [_DragFeedback] widget should use when smooshing the dough.
+  void enqueueHintControllerID(int id) {
+    _hintControllerIDs.addLast(id);
+  }
+
+  /// Enqueues an [id] that hints at which [DoughController] to use next,
+  /// (ensures that the hint is valid).
+  int dequeueHintControllerID() {
+    while (!_hintControllerIDs.isEmpty) {
+      final id = _hintControllerIDs.removeFirst();
+      if (containsController(id)) {
+        return id;
+      }
+    }
+
+    return -1;
+  }
+
+  /// Initializes a [DoughController] for the specified [id].
+  DoughController initController(int id) {
+    assert(!_controllers.containsKey(id));
+    final controller = DoughController();
+    _controllers[id] = controller;
+    return controller;
+  }
+
+  /// Returns whether a [DoughController] with the specified [id] exists.
+  bool containsController(int id) {
+    return _controllers.containsKey(id);
+  }
+
+  /// Gets a [DoughController] for the specified [id].
+  DoughController getcontroller(int id) {
+    assert(_controllers.containsKey(id));
+    return _controllers[id];
+  }
+
+  /// Tears down the [DoughController] cached at the specified [id].
+  DoughController tearDownController(int id) {
+    assert(_controllers.containsKey(id));
+
+    final controller = _controllers[id];
+    if (controller.isActive) {
+      controller.stop();
+    }
+
+    return _controllers.remove(id);
+  }
+
+  /// Cleans up the controller and hint cache.
+  void reset() {
+    for (final id in _controllers.keys) {
+      final controller = _controllers[id];
+      if (controller.isActive) {
+        controller.stop();
+      }
+    }
+
+    _hintControllerIDs.clear();
+    _controllers.clear();
   }
 }

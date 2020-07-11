@@ -48,7 +48,6 @@ class DraggableDoughDemo extends StatelessWidget {
         data: 'My data!',
         child: myDraggableChild,
         feedback: myFeedbackWidget,
-        childWhenDragging: Container(),
         onDoughBreak: () {
           // This callback is raised when the dough snaps from its hold at its origin.
           print('Demo dough snapped and is freely being dragged!');
