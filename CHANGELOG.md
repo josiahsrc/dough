@@ -49,3 +49,7 @@
 ## [0.2.1] - July 11, 2020.
 
 * Added multi-drag support for the DraggableDough widget
+
+## [0.2.2] - July 15, 2020.
+
+* Added keywords to README.md

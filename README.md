@@ -106,3 +106,9 @@ Contributions to this package are always welcome!
 that you want to share with the community, feel free to fork the 
 [repository](https://github.com/HatFeather/flutter_dough) and submit 
 a pull request!
+
+---
+
+keywords: dough, rubber, elastic, rubber-band, rubberband, stretchy, squishy,
+smooshy, linear-algebra, matrix, transformation, flexible, draggable, drag,
+pressable, custom, ui, ux, interactive, animation, engage
