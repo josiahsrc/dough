@@ -129,7 +129,6 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     effTrfm._recipe = recipe;
     effTrfm._origin = _VectorUtils.offsetToVector(controller.origin);
     effTrfm._target = _VectorUtils.offsetToVector(controller.target);
-    effTrfm._delta = _VectorUtils.offsetToVector(controller.delta);
     effTrfm._delta = delta;
     effTrfm._deltaAngle = deltaAngle;
     effTrfm._controller = controller;
