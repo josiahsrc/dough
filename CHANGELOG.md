@@ -42,7 +42,7 @@
 
 ## [0.2.0] - July 5, 2020.
 
-* Added in perspective warp feature
+* Added in perspective warp feature (thanks @Schwusch)
 * Added dough recipe example which uses perspective warp
 * Refactored transformation code
 
@@ -53,3 +53,8 @@
 ## [0.2.2] - July 15, 2020.
 
 * Added keywords to README.md
+
+## [0.2.3] - July 15, 2020.
+
+* Fixed some doc typos and removed redundant line (thanks @kmdinake)
+* Refactored lib structure
