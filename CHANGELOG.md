@@ -1,6 +1,6 @@
 ## [0.0.1] - June 28, 2020.
 
-* Added support for dough
+* Added support for `Dough`
 * Added dough controller
 * Created recipe for all types of dough
 * Created a simple pressable dough widget
@@ -25,7 +25,7 @@
 
 ## [0.1.0] - July 4, 2020.
 
-* Added support for DraggableDough
+* Added support for `DraggableDough`
 * Added draggable dough preferences
 * Improved examples
 * Applied strategy pattern to dough transformations
@@ -38,7 +38,7 @@
 
 ## [0.1.2] - July 4, 2020.
 
-* Created logo and updated README.md
+* Created logo and updated `README.md`
 
 ## [0.2.0] - July 5, 2020.
 
@@ -52,9 +52,9 @@
 
 ## [0.2.2] - July 15, 2020.
 
-* Added keywords to README.md
+* Added keywords to `README.md`
 
-## [0.2.3] - July 15, 2020.
+## [0.2.3] - July 30, 2020.
 
-* Fixed some doc typos and removed redundant line (thanks @kmdinake)
-* Refactored lib structure
+* Fixed a doc typo and removed redundant line (thanks @kmdinake)
+* Refactored `lib` structure to use `src` directory standard
