@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - sensors (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - sensors (from `.symlinks/plugins/sensors/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  sensors:
+    :path: ".symlinks/plugins/sensors/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
+
+PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+
+COCOAPODS: 1.9.1

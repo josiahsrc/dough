@@ -1,5 +1,6 @@
 part of dough;
 
+/// A Vector utility class.
 class _VectorUtils {
   /// Computes the angle between [toDirection] and [fromDirection],
   /// with the result ranging between 0 and 2PI radians.
@@ -22,19 +23,4 @@ class _VectorUtils {
   static vmath.Vector2 offsetToVector(Offset offset) {
     return vmath.Vector2(offset.dx, offset.dy);
   }
-
-  // static Offset vectorToOffset(vmath.Vector2 vector) {
-  //   return Offset(vector.x, vector.y);
-  // }
-  //
-  // static vmath.Vector2 lerp(
-  //   vmath.Vector2 a,
-  //   vmath.Vector2 b,
-  //   double t,
-  // ) {
-  //   return vmath.Vector2(
-  //     ui.lerpDouble(a.x, b.x, t),
-  //     ui.lerpDouble(a.y, b.y, t),
-  //   );
-  // }
 }

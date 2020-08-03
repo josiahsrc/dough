@@ -3,8 +3,8 @@ part of dough;
 /// A callback used to indicate a change in [DoughStatus].
 typedef DoughStatusCallback = void Function(DoughStatus status);
 
-/// Represents the state of a [Dough] widget's animation based on it's associated
-/// [DoughController].
+/// Represents the state of a [Dough] widget's animation based on its
+/// associated [DoughController].
 enum DoughStatus {
   /// Indicates that the [DoughController] has entered an active state
   /// and [DoughController.isActive] has been set to true.
@@ -22,6 +22,9 @@ enum DoughStatus {
 /// - Use [DoughController.update] to update a squish.
 /// - Use [DoughController.stop] to finish a squish.
 class DoughController with ChangeNotifier {
+  /// Creates a [DoughController].
+  DoughController() : super();
+
   final _statusListeners = ObserverList<DoughStatusCallback>();
 
   bool _isActive = false;
@@ -42,7 +45,7 @@ class DoughController with ChangeNotifier {
 
   /// The difference between the [target] and the [origin]. The [Dough]
   /// widget uses this to determine which direction to smoosh its [Dough.child].
-  Offset get delta => this.target - this.origin;
+  Offset get delta => target - origin;
 
   /// The last [DoughStatus] that was raised.
   DoughStatus get status => _status;
@@ -98,8 +101,8 @@ class DoughController with ChangeNotifier {
   }
 
   /// Stops squishing the [Dough]. Sets [isActive] to false. Informs all status
-  /// listeners that the [status] has changed to [DoughStatus.stopped]. The [dough]
-  /// will snap back to the origin and its original shape.
+  /// listeners that the [status] has changed to [DoughStatus.stopped]. The
+  /// [dough] will snap back to the origin and its original shape.
   ///
   /// **A squish must already be active when calling this function.**
   void stop() {
@@ -113,6 +116,8 @@ class DoughController with ChangeNotifier {
   }
 
   void _notifyStatusListeners(DoughStatus status) {
-    _statusListeners.forEach((fn) => fn(status));
+    for (final listener in _statusListeners) {
+      listener?.call(status);
+    }
   }
 }
