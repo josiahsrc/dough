@@ -1,0 +1,5 @@
+analyzer:
+  errors:
+
+linter:
+  rules:
