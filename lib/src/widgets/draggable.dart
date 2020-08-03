@@ -1,7 +1,7 @@
 part of dough;
 
 /// Preferences applied to [DraggableDough] widgets.
-class DraggableDoughPrefs {
+class DraggableDoughPrefs extends Equatable {
   /// The logical pixel distance at which the [DraggableDough] should
   /// elastically break its hold on the origin and enter a freely movable
   /// state.
@@ -43,23 +43,13 @@ class DraggableDoughPrefs {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
-
-    return other is DraggableDoughPrefs &&
-        other.breakDistance == breakDistance &&
-        other.useHapticsOnBreak == useHapticsOnBreak;
-  }
+  List<Object> get props => [
+        breakDistance,
+        useHapticsOnBreak,
+      ];
 
   @override
-  int get hashCode {
-    final values = <Object>[
-      breakDistance,
-      useHapticsOnBreak,
-    ];
-
-    return hashList(values);
-  }
+  bool get stringify => true;
 }
 
 /// A widget which mimics the behavior of Flutter's [Draggable] widget, only this

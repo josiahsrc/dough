@@ -31,7 +31,7 @@ class DoughRecipe extends InheritedWidget {
 
 /// Settings which will be applied to the [DoughWidget] on build.
 @immutable
-class DoughRecipeData {
+class DoughRecipeData extends Equatable {
   /// How 'thick' a [Dough] widget is. Higher values make for harder/less
   /// elastic [Dough]. A typical value would be something like 7000. Lower
   /// values like 100 will result in unexpected behaviors.
@@ -152,37 +152,19 @@ class DoughRecipeData {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
-
-    return other is DoughRecipeData &&
-        other.viscosity == viscosity &&
-        other.adhesion == adhesion &&
-        other.expansion == expansion &&
-        other.usePerspectiveWarp == usePerspectiveWarp &&
-        other.perspectiveWarpDepth == perspectiveWarpDepth &&
-        other.entryDuration == entryDuration &&
-        other.entryCurve == entryCurve &&
-        other.exitDuration == exitDuration &&
-        other.exitCurve == exitCurve &&
-        other.draggablePrefs == draggablePrefs;
-  }
+  List<Object> get props => [
+        viscosity,
+        adhesion,
+        expansion,
+        usePerspectiveWarp,
+        perspectiveWarpDepth,
+        entryDuration,
+        entryCurve,
+        exitDuration,
+        exitCurve,
+        draggablePrefs,
+      ];
 
   @override
-  int get hashCode {
-    final values = <Object>[
-      viscosity,
-      adhesion,
-      expansion,
-      usePerspectiveWarp,
-      perspectiveWarpDepth,
-      entryDuration,
-      entryCurve,
-      exitDuration,
-      exitCurve,
-      draggablePrefs,
-    ];
-
-    return hashList(values);
-  }
+  bool get stringify => true;
 }
