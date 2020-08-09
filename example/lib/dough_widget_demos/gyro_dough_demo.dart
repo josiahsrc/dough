@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class GyroDoughDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('build');
     final myWidgetToSquish = Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -20,8 +21,13 @@ class GyroDoughDemo extends StatelessWidget {
       ),
     );
 
-    final mySquishyGyroWidget = GyroDough(
-      child: PressableDough(child: myWidgetToSquish),
+    final mySquishyGyroWidget = DoughRecipe(
+      data: DoughRecipeData(
+        adhesion: 21,
+      ),
+      child: GyroDough(
+        child: myWidgetToSquish,
+      ),
     );
 
     return Scaffold(
