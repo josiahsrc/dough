@@ -21,11 +21,36 @@ import 'package:flutter/material.dart';
 //     );
 //   }
 // }
+
 class Squash extends StatefulWidget {
   final Widget child;
-  final Function onTap;
-  const Squash({Key key, @required this.child, @required this.onTap})
-      : super(key: key);
+  final Function() onTap;
+  final double scaleFrom;
+  final double scaleTo;
+  final Curve curve;
+  final TextStyle textStyle;
+  final Decoration decoration;
+  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
+  final double height;
+  final double width;
+  final AlignmentGeometry alignment;
+
+  const Squash({
+    Key key,
+    @required this.child,
+    @required this.onTap,
+    this.scaleFrom,
+    this.scaleTo,
+    this.curve,
+    this.textStyle,
+    this.padding,
+    this.decoration,
+    this.margin,
+    this.height,
+    this.width,
+    this.alignment,
+  }) : super(key: key);
   @override
   State<StatefulWidget> createState() => _SquashState();
 }
@@ -34,13 +59,16 @@ class _SquashState extends State<Squash>
     with SingleTickerProviderStateMixin<Squash> {
   AnimationController controller;
   Animation<double> easeInAnimation;
+
   @override
   void initState() {
     super.initState();
     controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 200), value: 1.0);
-    easeInAnimation = Tween(begin: 1.0, end: 1.5)
-        .animate(CurvedAnimation(parent: controller, curve: Curves.easeOut));
+    easeInAnimation =
+        Tween(begin: widget.scaleFrom ?? 1.0, end: widget.scaleTo ?? 1.25)
+            .animate(CurvedAnimation(
+                parent: controller, curve: widget.curve ?? Curves.easeOut));
     controller.reverse();
   }
 
@@ -59,7 +87,18 @@ class _SquashState extends State<Squash>
       onTap: widget.onTap,
       child: ScaleTransition(
         scale: easeInAnimation,
-        child: widget.child,
+        child: Container(
+          margin: widget.margin,
+          padding: widget.padding,
+          height: widget.height,
+          width: widget.width,
+          alignment: widget.alignment,
+          decoration: widget.decoration,
+          child: DefaultTextStyle(
+            style: widget.textStyle ?? Theme.of(context).textTheme.button,
+            child: widget.child,
+          ),
+        ),
       ),
     );
   }
