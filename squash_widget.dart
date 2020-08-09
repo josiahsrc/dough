@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //   @override
 //   Widget build(BuildContext context) {
 //     return Container(
+//       color: Colors.white,
 //       alignment: Alignment.center,
 //       child: Column(
 //         mainAxisSize: MainAxisSize.min,
@@ -80,23 +81,25 @@ class _SquashState extends State<Squash>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (TapDownDetails d) => controller.fling(),
-      onTapCancel: () => controller.reverse(),
-      onTapUp: (TapUpDetails d) => controller.reverse(),
-      onTap: widget.onTap,
-      child: ScaleTransition(
-        scale: easeInAnimation,
-        child: Container(
-          margin: widget.margin,
-          padding: widget.padding,
-          height: widget.height,
-          width: widget.width,
-          alignment: widget.alignment,
-          decoration: widget.decoration,
-          child: DefaultTextStyle(
-            style: widget.textStyle ?? Theme.of(context).textTheme.button,
-            child: widget.child,
+    return Padding(
+      padding: widget.margin ?? EdgeInsets.zero,
+      child: GestureDetector(
+        onTapDown: (TapDownDetails d) => controller.fling(),
+        onTapCancel: () => controller.reverse(),
+        onTapUp: (TapUpDetails d) => controller.reverse(),
+        onTap: widget.onTap,
+        child: ScaleTransition(
+          scale: easeInAnimation,
+          child: Container(
+            padding: widget.padding,
+            height: widget.height,
+            width: widget.width,
+            alignment: widget.alignment,
+            decoration: widget.decoration,
+            child: DefaultTextStyle(
+              style: widget.textStyle ?? Theme.of(context).textTheme.button,
+              child: widget.child,
+            ),
           ),
         ),
       ),
