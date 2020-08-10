@@ -65,3 +65,8 @@
 * Introduced `provider` package for stronger contextual dependency control
 * Added `analysis_options.yaml` to enforce consistent practices in codebase
 * Added a new `GyroDough` widget
+
+## [0.3.1] - August 10, 2020.
+
+* Resized `GyroDough` sample gif
+* Refactored util file structure
