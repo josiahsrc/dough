@@ -95,11 +95,14 @@ class _GyroDoughState extends State<GyroDough> {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // final recipe = DoughRecipe.of(context).
+      final prefs = DoughRecipe.of(context).gyroPrefs;
 
-      _rollingSamples = List<Offset>.filled(10, Offset.zero);
       _rollingSum = Offset.zero;
       _rollingIndex = 0;
+      _rollingSamples = List<Offset>.filled(
+        prefs.sampleCount,
+        Offset.zero,
+      );
 
       _accelSub = accelerometerEvents.listen(_onAccelEvent);
     });
@@ -123,7 +126,8 @@ class _GyroDoughState extends State<GyroDough> {
 
   void _onAccelEvent(AccelerometerEvent event) {
     setState(() {
-      final sample = Offset(-event.x, event.y) * 100;
+      final prefs = DoughRecipe.of(context).gyroPrefs;
+      final sample = Offset(-event.x, event.y) * prefs.gyroMultiplier;
 
       _rollingIndex = (_rollingIndex + 1) % _rollingSamples.length;
       _rollingSum -= _rollingSamples[_rollingIndex];
