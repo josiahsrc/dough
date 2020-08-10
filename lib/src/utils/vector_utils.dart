@@ -2,6 +2,8 @@ part of dough;
 
 /// A Vector utility class.
 class _VectorUtils {
+  const _VectorUtils._();
+
   /// Computes the angle between [toDirection] and [fromDirection],
   /// with the result ranging between 0 and 2PI radians.
   static double computeFullCircleAngle({

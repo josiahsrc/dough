@@ -18,7 +18,7 @@ part 'src/controller.dart';
 part 'src/dough.dart';
 part 'src/recipe.dart';
 part 'src/transformer.dart';
-part 'src/utils.dart';
+part 'src/utils/vector_utils.dart';
 part 'src/widgets/draggable.dart';
 part 'src/widgets/gyro.dart';
 part 'src/widgets/pressable.dart';
