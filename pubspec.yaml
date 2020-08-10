@@ -1,5 +1,5 @@
 name: dough
-description: This library provides widgets that can be used to 
+description: This library provides widgets that can be used to
   create a smooshy user interface.
 version: 0.2.3
 repository: https://github.com/HatFeather/flutter_dough
@@ -11,9 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sensors: ^0.4.2+2
+  sensors: ">=0.4.2+2 <2.0.0"
   equatable: ^1.2.3
   vector_math: ^2.0.8
+  provider: ^4.3.2
 
 dev_dependencies:
   flutter_test:

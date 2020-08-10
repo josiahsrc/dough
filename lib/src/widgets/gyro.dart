@@ -6,8 +6,8 @@ class GyroDoughPrefs extends Equatable {
   const GyroDoughPrefs.raw({
     @required this.sampleCount,
     @required this.gyroMultiplier,
-  })  : assert(sampleCount != null && sampleCount >= 2),
-        super();
+  })  : assert(sampleCount != null && sampleCount >= 1),
+        assert(gyroMultiplier != null);
 
   /// Creates [GyroDough] preferences.
   factory GyroDoughPrefs({
@@ -23,17 +23,20 @@ class GyroDoughPrefs extends Equatable {
   /// Creates fallback [GyroDough] preferences.
   factory GyroDoughPrefs.fallback() => GyroDoughPrefs();
 
-  /// The number of samples to use in the final gyro output. Higher
-  /// values result in smoother gyro effects (slow-ish dough), lower
-  /// values result in quick (and possibly more jagged) dough effects.
+  /// The number of samples to use in the final gyro output. In technical
+  /// terms, this value controls the intensity of 'low-pass filter' applied
+  /// to a device's accelerometer.
+  ///
+  /// Higher values result in smoother gyro effects (slow-ish [Dough]), while
+  /// lower values result in quick (and possibly more jagged) [Dough] effects.
   ///
   /// A typical value would be something like `10`. The minimum accepted
-  /// sample count is `2`.
+  /// sample count is `1`.
   final int sampleCount;
 
   /// The value by which accelerometer values are multiplied. Higher
-  /// [gyroMultiplier] values will result in [Dough] that is more
-  /// sensitive to motion.
+  /// [gyroMultiplier] values will result in [Dough] that is more sensitive to
+  /// motion.
   ///
   /// A typical value would be something like `100`.
   final double gyroMultiplier;
@@ -45,7 +48,7 @@ class GyroDoughPrefs extends Equatable {
   }) {
     return GyroDoughPrefs.raw(
       sampleCount: sampleCount ?? this.sampleCount,
-      gyroMultiplier: gyroMultiplier ?? this.sampleCount,
+      gyroMultiplier: gyroMultiplier ?? this.gyroMultiplier,
     );
   }
 
@@ -60,7 +63,8 @@ class GyroDoughPrefs extends Equatable {
 }
 
 /// A widget that stretches its child in a dough-like fashion based
-/// on physical device accelerometer inputs.
+/// on physical device accelerometer inputs (e.g. the [Dough] jiggles
+/// when you move your phone around).
 ///
 /// **This widget ONLY works on devices that have accelerometers.**
 class GyroDough extends StatefulWidget {
@@ -85,27 +89,16 @@ class _GyroDoughState extends State<GyroDough> {
   List<Offset> _rollingSamples;
   Offset _rollingSum;
   int _rollingIndex;
+  bool _hasInitialized = false;
   StreamSubscription<dynamic> _accelSub;
 
   @override
   void initState() {
+    _accelSub = accelerometerEvents.listen(_onAccelEvent);
     _controller.start(
       origin: Offset.zero,
       target: Offset.zero,
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final prefs = DoughRecipe.of(context).gyroPrefs;
-
-      _rollingSum = Offset.zero;
-      _rollingIndex = 0;
-      _rollingSamples = List<Offset>.filled(
-        prefs.sampleCount,
-        Offset.zero,
-      );
-
-      _accelSub = accelerometerEvents.listen(_onAccelEvent);
-    });
 
     super.initState();
   }
@@ -117,6 +110,41 @@ class _GyroDoughState extends State<GyroDough> {
   }
 
   @override
+  void didChangeDependencies() {
+    final prefs = DoughRecipe.watch(context).gyroPrefs;
+
+    if (!_hasInitialized) {
+      _rollingSum = Offset.zero;
+      _rollingIndex = 0;
+      _rollingSamples = List<Offset>.filled(
+        prefs.sampleCount,
+        Offset.zero,
+      );
+
+      _hasInitialized = true;
+    } else {
+      _rollingSum = Offset.zero;
+
+      final oldSamples = _rollingSamples;
+      final newSamples = List<Offset>.filled(
+        prefs.sampleCount,
+        Offset.zero,
+      );
+
+      // Sync the samples to the new gyro preferences.
+      for (var i = 0; i < newSamples.length; ++i) {
+        newSamples[i] = oldSamples[i % oldSamples.length];
+        _rollingSum += newSamples[i];
+      }
+
+      _rollingSamples = newSamples;
+      _rollingIndex = _rollingIndex % newSamples.length;
+    }
+
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Dough(
       controller: _controller,
@@ -125,18 +153,17 @@ class _GyroDoughState extends State<GyroDough> {
   }
 
   void _onAccelEvent(AccelerometerEvent event) {
-    setState(() {
-      final prefs = DoughRecipe.of(context).gyroPrefs;
-      final sample = Offset(-event.x, event.y) * prefs.gyroMultiplier;
+    final prefs = DoughRecipe.read(context).gyroPrefs;
+    final sample = Offset(-event.x, event.y) * prefs.gyroMultiplier;
 
-      _rollingIndex = (_rollingIndex + 1) % _rollingSamples.length;
-      _rollingSum -= _rollingSamples[_rollingIndex];
-      _rollingSamples[_rollingIndex] = sample;
-      _rollingSum += sample;
+    _rollingIndex = (_rollingIndex + 1) % _rollingSamples.length;
+    _rollingSum -= _rollingSamples[_rollingIndex];
+    _rollingSamples[_rollingIndex] = sample;
+    _rollingSum += sample;
 
-      _controller.update(
-        target: _rollingSum / _rollingSamples.length.toDouble(),
-      );
-    });
+    // Apply a low-pass filter to smooth out the accelerometer values.
+    _controller.update(
+      target: _rollingSum / _rollingSamples.length.toDouble(),
+    );
   }
 }

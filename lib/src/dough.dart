@@ -96,7 +96,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DoughRecipe.of(context);
+    final recipe = DoughRecipe.watch(context);
     final controller = widget.controller;
     final delta = _VectorUtils.offsetToVector(controller.delta);
     final effTrfm = widget.transformer ?? _fallbackTransformer;
@@ -142,7 +142,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   }
 
   void _onDoughCtrlStatusUpdated(DoughStatus status) {
-    final recipe = DoughRecipe.of(context);
+    final recipe = DoughRecipe.read(context);
 
     setState(() {
       if (status == DoughStatus.started) {

@@ -6,7 +6,8 @@ class DraggableDoughPrefs extends Equatable {
   const DraggableDoughPrefs.raw({
     @required this.breakDistance,
     @required this.useHapticsOnBreak,
-  });
+  })  : assert(breakDistance != null),
+        assert(useHapticsOnBreak != null);
 
   /// Creates [DraggableDough] preferences.
   factory DraggableDoughPrefs({
@@ -163,7 +164,7 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DoughRecipe.of(context);
+    final recipe = DoughRecipe.watch(context);
     final prefs = widget.prefs ?? recipe.draggablePrefs;
 
     // The feedback widget won't share the same context once the [Draggable]

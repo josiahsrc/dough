@@ -3,30 +3,57 @@ part of dough;
 /// Inherited settings for [Dough] widgets. Use this to override
 /// the default [Dough] settings.
 @immutable
-class DoughRecipe extends InheritedWidget {
+class DoughRecipe extends StatelessWidget {
   /// Creates a [DoughRecipe] widget.
   const DoughRecipe({
     Key key,
-    @required Widget child,
+    @required this.child,
     this.data,
-  }) : super(key: key, child: child);
+  })  : assert(child != null),
+        super(key: key);
 
   /// The fallback recipe.
   static final DoughRecipeData _kFallbackRecipe = DoughRecipeData.fallback();
 
-  /// The settings to use.
+  /// This widget's child. Any [Dough] widget below this widget will inherit
+  /// the [data] provided in this recipe.
+  final Widget child;
+
+  /// The settings to be applied to all [Dough] widgets below this widget.
   final DoughRecipeData data;
 
   /// Gets the inherited [DoughRecipeData]. If no recipe is found,
   /// a default one will be returned instead.
-  static DoughRecipeData of(BuildContext context) {
-    final ih = context.dependOnInheritedWidgetOfExactType<DoughRecipe>();
-    return ih?.data ?? _kFallbackRecipe;
+  static DoughRecipeData of(
+    BuildContext context, [
+    bool listen = true,
+  ]) {
+    assert(listen != null);
+    try {
+      return Provider.of<DoughRecipeData>(context, listen: listen);
+    } on ProviderNotFoundException catch (_) {
+      return _kFallbackRecipe;
+    }
+  }
+
+  /// Gets the inherited [DoughRecipeData] without listening to it. If no
+  /// recipe is found, a default one will be returned instead.
+  static DoughRecipeData read(BuildContext context) {
+    return of(context, false);
+  }
+
+  /// Gets the inherited [DoughRecipeData] and listens to it. If no recipe
+  /// is found, a default one will be returned instead.
+  static DoughRecipeData watch(BuildContext context) {
+    return of(context, true);
   }
 
   @override
-  bool updateShouldNotify(covariant DoughRecipe oldWidget) {
-    return data != oldWidget.data;
+  Widget build(BuildContext context) {
+    return Provider.value(
+      value: data ?? _kFallbackRecipe,
+      child: child,
+    );
   }
 }
 
@@ -46,7 +73,17 @@ class DoughRecipeData extends Equatable {
     @required this.exitCurve,
     @required this.draggablePrefs,
     @required this.gyroPrefs,
-  });
+  })  : assert(viscosity != null),
+        assert(adhesion != null),
+        assert(expansion != null),
+        assert(usePerspectiveWarp != null),
+        assert(perspectiveWarpDepth != null),
+        assert(entryDuration != null),
+        assert(entryCurve != null),
+        assert(exitDuration != null),
+        assert(exitCurve != null),
+        assert(draggablePrefs != null),
+        assert(gyroPrefs != null);
 
   /// Creates a recipe.
   factory DoughRecipeData({
