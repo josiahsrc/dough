@@ -52,12 +52,12 @@ class DoughRecipeDemo extends StatelessWidget {
     final myDraggableDoughWithNewSettings = DoughRecipe(
       data: DoughRecipeData(
         adhesion: 4,
-        viscosity: 250,
+        viscosity: 300,
         usePerspectiveWarp: true,
         perspectiveWarpDepth: 0.02,
         exitDuration: Duration(milliseconds: 600),
         draggablePrefs: DraggableDoughPrefs(
-          breakDistance: 80,
+          breakDistance: 100,
           useHapticsOnBreak: true,
         ),
       ),

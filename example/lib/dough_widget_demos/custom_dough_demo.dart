@@ -33,7 +33,8 @@ class _CustomDoughDemoState extends State<CustomDoughDemo> {
           width: 100,
           // An image of a cookie.
           child: Image.network(
-              'https://i.pinimg.com/originals/21/51/b8/2151b8dbdd5aba485f09dd5b74d679c9.png'),
+            'https://i.pinimg.com/originals/21/51/b8/2151b8dbdd5aba485f09dd5b74d679c9.png',
+          ),
         ),
         controller: doughController,
         // transformer: You can create your own transformer to change how the dough morphs,

@@ -1,21 +1,13 @@
 part of dough;
 
 /// Preferences applied to [DraggableDough] widgets.
-class DraggableDoughPrefs {
-  /// The logical pixel distance at which the [DraggableDough] should
-  /// elastically break its hold on the origin and enter a freely movable
-  /// state.
-  final double breakDistance;
-
-  /// Whether [DraggableDough] widgets should trigger haptic feedback when
-  /// the dough breaks its hold on the origin.
-  final bool useHapticsOnBreak;
-
+class DraggableDoughPrefs extends Equatable {
   /// Creates raw [DraggableDough] preferences, all values must be specified.
   const DraggableDoughPrefs.raw({
     @required this.breakDistance,
     @required this.useHapticsOnBreak,
-  });
+  })  : assert(breakDistance != null),
+        assert(useHapticsOnBreak != null);
 
   /// Creates [DraggableDough] preferences.
   factory DraggableDoughPrefs({
@@ -28,8 +20,17 @@ class DraggableDoughPrefs {
     );
   }
 
-  /// The fallback [DraggableDough] preferences.
+  /// Creates fallback [DraggableDough] preferences.
   factory DraggableDoughPrefs.fallback() => DraggableDoughPrefs();
+
+  /// The logical pixel distance at which the [DraggableDough] should
+  /// elastically break its hold on the origin and enter a freely movable
+  /// state.
+  final double breakDistance;
+
+  /// Whether [DraggableDough] widgets should trigger haptic feedback when
+  /// the dough breaks its hold on the origin.
+  final bool useHapticsOnBreak;
 
   /// Copies these preferences with some new values.
   DraggableDoughPrefs copyWith({
@@ -43,33 +44,48 @@ class DraggableDoughPrefs {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
-
-    return other is DraggableDoughPrefs &&
-        other.breakDistance == breakDistance &&
-        other.useHapticsOnBreak == useHapticsOnBreak;
-  }
+  List<Object> get props => [
+        breakDistance,
+        useHapticsOnBreak,
+      ];
 
   @override
-  int get hashCode {
-    final values = <Object>[
-      breakDistance,
-      useHapticsOnBreak,
-    ];
-
-    return hashList(values);
-  }
+  bool get stringify => true;
 }
 
-/// A widget which mimics the behavior of Flutter's [Draggable] widget, only this
-/// one is squishy! For details on what each field does for this widget, view
-/// [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html)
+/// A widget which mimics the behavior of Flutter's [Draggable] widget, only
+/// this one is squishy! For details on what each field does for this widget,
+/// view [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html)
 /// for the [Draggable] widget.
 class DraggableDough<T> extends StatefulWidget {
-  /// Preferences for the behavior of this [DraggableDough] widget. This can be specified
-  /// here or in the context of a [DoughRecipe] widget. This will override the contextual
-  /// [DoughRecipeData.draggablePrefs] if provided.
+  /// Creates a [DraggableDough] widget.
+  const DraggableDough({
+    Key key,
+    this.prefs,
+    this.onDoughBreak,
+    @required this.child,
+    @required this.feedback,
+    this.data,
+    this.axis,
+    this.childWhenDragging,
+    this.feedbackOffset = Offset.zero,
+    this.dragAnchor = DragAnchor.child,
+    this.affinity,
+    this.maxSimultaneousDrags,
+    this.onDragStarted,
+    this.onDraggableCanceled,
+    this.onDragEnd,
+    this.onDragCompleted,
+    this.ignoringFeedbackSemantics = true,
+  })  : assert(child != null),
+        assert(feedback != null),
+        assert(ignoringFeedbackSemantics != null),
+        assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
+        super(key: key);
+
+  /// Preferences for the behavior of this [DraggableDough] widget. This can
+  /// be specified here or in the context of a [DoughRecipe] widget. This will
+  /// override the contextual [DoughRecipeData.draggablePrefs] if provided.
   final DraggableDoughPrefs prefs;
 
   /// A callback raised when the user drags the feedback widget beyond the
@@ -119,31 +135,6 @@ class DraggableDough<T> extends StatefulWidget {
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DragEndCallback onDragEnd;
 
-  /// Creates a [DraggableDough] widget.
-  const DraggableDough({
-    Key key,
-    this.prefs,
-    this.onDoughBreak,
-    @required this.child,
-    @required this.feedback,
-    this.data,
-    this.axis,
-    this.childWhenDragging,
-    this.feedbackOffset = Offset.zero,
-    this.dragAnchor = DragAnchor.child,
-    this.affinity,
-    this.maxSimultaneousDrags,
-    this.onDragStarted,
-    this.onDraggableCanceled,
-    this.onDragEnd,
-    this.onDragCompleted,
-    this.ignoringFeedbackSemantics = true,
-  })  : assert(child != null),
-        assert(feedback != null),
-        assert(ignoringFeedbackSemantics != null),
-        assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
-        super(key: key);
-
   @override
   _DraggableDoughState<T> createState() => _DraggableDoughState<T>();
 }
@@ -173,7 +164,7 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DoughRecipe.of(context);
+    final recipe = DoughRecipe.watch(context);
     final prefs = widget.prefs ?? recipe.draggablePrefs;
 
     // The feedback widget won't share the same context once the [Draggable]
@@ -247,16 +238,21 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
   }
 }
 
-/// A helper drag feedback widget which maintains a pointer ID to control the Dough.
+/// A helper drag feedback widget which maintains a pointer ID to control
+/// the Dough.
 class _DragFeedback extends StatefulWidget {
-  final Widget child;
-  final _DragControllerTracker controllerTracker;
-
+  /// Creates a [_DragFeedback] widget.
   const _DragFeedback({
     Key key,
     @required this.controllerTracker,
     @required this.child,
   }) : super(key: key);
+
+  /// The widget being dragged.
+  final Widget child;
+
+  /// A reference to track pointer IDs.
+  final _DragControllerTracker controllerTracker;
 
   @override
   _DragFeedbackState createState() => _DragFeedbackState();

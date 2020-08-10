@@ -3,19 +3,6 @@ part of dough;
 /// Squishes the provided [child] widget based on the provided
 /// [controller] widget in a dough-like fashion.
 class Dough extends StatefulWidget {
-  /// The child to squish.
-  final Widget child;
-
-  /// Manages when the [child] will smoosh around.
-  final DoughController controller;
-
-  /// The strategy for how to transform the [child]. This controls **how** the
-  /// [child] gets smooshed. You can create your own transformers by inheriting
-  /// from [DoughTransformer] or use one of the provided transformers. If no
-  /// transformer is specified, a default transformer of type [BasicDoughTransformer]
-  /// will be used.
-  final DoughTransformer transformer;
-
   /// Creates a [Dough] widget.
   const Dough({
     Key key,
@@ -25,6 +12,19 @@ class Dough extends StatefulWidget {
   })  : assert(controller != null),
         assert(child != null),
         super(key: key);
+
+  /// The child to squish.
+  final Widget child;
+
+  /// Manages when the [child] will smoosh around.
+  final DoughController controller;
+
+  /// The strategy for how to transform the [child]. This controls **how**
+  /// the [child] gets smooshed. You can create your own transformers by
+  /// inheriting from [DoughTransformer] or use one of the provided
+  /// transformers. If no transformer is specified, a default transformer
+  /// of type [BasicDoughTransformer] will be used.
+  final DoughTransformer transformer;
 
   @override
   _DoughState createState() => _DoughState();
@@ -96,24 +96,25 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DoughRecipe.of(context);
+    final recipe = DoughRecipe.watch(context);
     final controller = widget.controller;
     final delta = _VectorUtils.offsetToVector(controller.delta);
+    final effTrfm = widget.transformer ?? _fallbackTransformer;
     final deltaAngle = _VectorUtils.computeFullCircleAngle(
       toDirection: delta,
       fromDirection: vmath.Vector2(1, 1),
     );
 
     // Provide the transformer with details on how to squish the child widget.
-    final effTrfm = widget.transformer ?? _fallbackTransformer;
-    effTrfm._rawT = _animCtrl.value;
-    effTrfm._t = _effectiveT;
-    effTrfm._recipe = recipe;
-    effTrfm._origin = _VectorUtils.offsetToVector(controller.origin);
-    effTrfm._target = _VectorUtils.offsetToVector(controller.target);
-    effTrfm._delta = delta;
-    effTrfm._deltaAngle = deltaAngle;
-    effTrfm._controller = controller;
+    effTrfm
+      .._rawT = _animCtrl.value
+      .._t = _effectiveT
+      .._recipe = recipe
+      .._origin = _VectorUtils.offsetToVector(controller.origin)
+      .._target = _VectorUtils.offsetToVector(controller.target)
+      .._delta = delta
+      .._deltaAngle = deltaAngle
+      .._controller = controller;
 
     return Transform(
       alignment: Alignment.center,
@@ -141,7 +142,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   }
 
   void _onDoughCtrlStatusUpdated(DoughStatus status) {
-    final recipe = DoughRecipe.of(context);
+    final recipe = DoughRecipe.read(context);
 
     setState(() {
       if (status == DoughStatus.started) {
