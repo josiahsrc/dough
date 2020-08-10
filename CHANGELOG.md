@@ -58,3 +58,10 @@
 
 * Fixed a doc typo and removed redundant line (thanks @kmdinake)
 * Refactored `lib` structure to use `src` directory standard
+
+## [0.3.0] - August 10, 2020.
+
+* Introduced `equatable` package for easier equality checking
+* Introduced `provider` package for stronger contextual dependency control
+* Added `analysis_options.yaml` to enforce consistent practices in codebase
+* Added a new `GyroDough` widget
