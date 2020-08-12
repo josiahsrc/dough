@@ -1,3 +1,7 @@
+## [0.3.4] - August 11, 2020.
+
+- Reordered `CHANGELOG.md` (thanks @agungnursatria)
+
 ## [0.3.3] - August 10, 2020.
 
 - Resolved `GyroDough` sample gif issue (was referencing `master` branch)
