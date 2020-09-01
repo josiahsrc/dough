@@ -1,5 +1,8 @@
 ![Flutter Dough](./assets/images/dough-logo@repo.png)
 
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
+[![Awesome: Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
+
 This package provides some widgets you can use to create a smooshy UI. 
 - [Flutter package](https://pub.dev/packages/dough)
 - [Source code](https://github.com/HatFeather/flutter_dough)

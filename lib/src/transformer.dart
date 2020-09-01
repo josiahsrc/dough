@@ -54,7 +54,7 @@ abstract class DoughTransformer {
   Matrix4 createDoughMatrix();
 
   /// A utility method which creates a [Matrix4] that scales widgets by a
-  /// factor of [DoughRecipe.expansion].
+  /// factor of the `DoughRecipe.expansion` property.
   @protected
   Matrix4 createExpansionMatrix() {
     // TODO:
@@ -67,7 +67,7 @@ abstract class DoughTransformer {
 
   /// A utility method which creates a [Matrix4] that perspectively rotates
   /// wigets around their yaw and pitch axes based on [delta] and
-  /// [DoughRecipe.viscosity].
+  /// `DoughRecipe.viscosity`.
   @protected
   Matrix4 createPerspectiveWarpMatrix() {
     if (!recipe.usePerspectiveWarp) {
@@ -83,7 +83,7 @@ abstract class DoughTransformer {
   }
 
   /// A utility method which creates a [Matrix4] that skews widgets in the
-  /// direction of the [delta] based on the [DoughRecipe.viscosity].
+  /// direction of the [delta] based on the `DoughRecipe.viscosity`.
   @protected
   Matrix4 createViscositySkewMatrix() {
     final rotateAway = Matrix4.rotationZ(-deltaAngle);

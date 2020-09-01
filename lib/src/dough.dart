@@ -85,11 +85,14 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   void didUpdateWidget(covariant Dough oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    oldWidget.controller
+    final lastController = oldWidget.controller;
+    final nextController = widget.controller;
+
+    lastController
       ..removeListener(_onDoughCtrlUpdated)
       ..removeStatusListener(_onDoughCtrlStatusUpdated);
 
-    widget.controller
+    nextController
       ..addListener(_onDoughCtrlUpdated)
       ..addStatusListener(_onDoughCtrlStatusUpdated);
   }
@@ -147,16 +150,14 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     setState(() {
       if (status == DoughStatus.started) {
         _effectiveCurve = recipe.entryCurve;
-        _animCtrl.duration = recipe.entryDuration;
-
         _animCtrl
+          ..duration = recipe.entryDuration
           ..stop()
           ..forward(from: _effectiveT);
       } else if (status == DoughStatus.stopped) {
         _effectiveCurve = recipe.exitCurve;
-        _animCtrl.duration = recipe.exitDuration;
-
         _animCtrl
+          ..duration = recipe.exitDuration
           ..stop()
           ..reverse(from: _effectiveT);
       } else {

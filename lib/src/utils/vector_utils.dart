@@ -21,7 +21,7 @@ class _VectorUtils {
     }
   }
 
-  /// Converts an [Offset] to a [Vector2].
+  /// Converts an [Offset] to a [vmath.Vector2].
   static vmath.Vector2 offsetToVector(Offset offset) {
     return vmath.Vector2(offset.dx, offset.dy);
   }

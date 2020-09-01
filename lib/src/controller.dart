@@ -102,7 +102,7 @@ class DoughController with ChangeNotifier {
 
   /// Stops squishing the [Dough]. Sets [isActive] to false. Informs all status
   /// listeners that the [status] has changed to [DoughStatus.stopped]. The
-  /// [dough] will snap back to the origin and its original shape.
+  /// [Dough] will snap back to the origin and its original shape.
   ///
   /// **A squish must already be active when calling this function.**
   void stop() {

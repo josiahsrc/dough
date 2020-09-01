@@ -1,3 +1,9 @@
+## [0.3.5] - September 1, 2020.
+
+- Added `awesome_flutter` badge
+- Added `very_good_analysis` badge
+- Updated environment sdk to `>=2.8.0 <3.0.0`
+
 ## [0.3.4] - August 11, 2020.
 
 - Reordered `CHANGELOG.md` (thanks @agungnursatria)

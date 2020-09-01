@@ -57,7 +57,7 @@ class DoughRecipe extends StatelessWidget {
   }
 }
 
-/// Settings which will be applied to the [DoughWidget] on build.
+/// Settings which will be applied to the [Dough] widget at runtime.
 @immutable
 class DoughRecipeData extends Equatable {
   /// Creates a raw recipe, all values must be specified.

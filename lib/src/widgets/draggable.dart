@@ -299,7 +299,7 @@ class _DragControllerTracker {
     _hintControllerIDs.addLast(id);
   }
 
-  /// Dequeues an [id] that hints at which [DoughController] to use next,
+  /// Dequeues an `id` that hints at which [DoughController] to use next,
   /// (ensures that the hint is valid).
   int dequeueHintControllerID() {
     while (!_hintControllerIDs.isEmpty) {
