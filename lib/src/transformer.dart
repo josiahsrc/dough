@@ -18,6 +18,7 @@ abstract class DoughTransformer {
   vmath.Vector2 _delta;
   double _deltaAngle;
   DoughController _controller;
+  Axis _axis;
 
   /// The unscaled animation time clamped between 0 and 1.
   double get rawT => _rawT;
@@ -48,6 +49,8 @@ abstract class DoughTransformer {
 
   /// The controller for the associated [Dough] widget.
   DoughController get controller => _controller;
+
+  Axis get axis => _axis;
 
   /// Creates the [Matrix4] which will be used to transform the [Dough.child]
   /// widget.
@@ -83,13 +86,20 @@ abstract class DoughTransformer {
   }
 
   /// A utility method which creates a [Matrix4] that skews widgets in the
-  /// direction of the [delta] based on the `DoughRecipe.viscosity`.
+  /// direction of the [delta] based on the `DoughRecipe.viscosity`. If an
+  /// [axis] is specified, the resulting matrix will be constrained to the
+  /// provided axis.
   @protected
   Matrix4 createViscositySkewMatrix() {
+    final skewSize = t * delta.length / recipe.viscosity;
+    if (axis == Axis.vertical) {
+      return Matrix4.identity()..scale(1, skewSize, 1);
+    } else if (axis == Axis.horizontal) {
+      return Matrix4.identity()..scale(skewSize, 1, 1);
+    }
+
     final rotateAway = Matrix4.rotationZ(-deltaAngle);
     final rotateTowards = Matrix4.rotationZ(deltaAngle);
-
-    final skewSize = t * delta.length / recipe.viscosity;
     final skew = Matrix4.columns(
       vmath.Vector4(1, skewSize, 0, 0),
       vmath.Vector4(skewSize, 1, 0, 0),

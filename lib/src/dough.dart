@@ -8,6 +8,7 @@ class Dough extends StatefulWidget {
     Key key,
     @required this.child,
     @required this.controller,
+    this.axis,
     this.transformer,
   })  : assert(controller != null),
         assert(child != null),
@@ -25,6 +26,8 @@ class Dough extends StatefulWidget {
   /// transformers. If no transformer is specified, a default transformer
   /// of type [BasicDoughTransformer] will be used.
   final DoughTransformer transformer;
+
+  final Axis axis;
 
   @override
   _DoughState createState() => _DoughState();
@@ -101,6 +104,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final recipe = DoughRecipe.watch(context);
     final controller = widget.controller;
+    final axis = widget.axis;
     final delta = _VectorUtils.offsetToVector(controller.delta);
     final effTrfm = widget.transformer ?? _fallbackTransformer;
     final deltaAngle = _VectorUtils.computeFullCircleAngle(
@@ -117,7 +121,8 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       .._target = _VectorUtils.offsetToVector(controller.target)
       .._delta = delta
       .._deltaAngle = deltaAngle
-      .._controller = controller;
+      .._controller = controller
+      .._axis = axis;
 
     return Transform(
       alignment: Alignment.center,
