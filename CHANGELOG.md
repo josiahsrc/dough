@@ -1,3 +1,7 @@
+## [0.3.6] - September 13, 2020.
+
+- Reverted to environment `sdk: ">=2.7.0 <3.0.0"`
+
 ## [0.3.5] - September 1, 2020.
 
 - Added `awesome_flutter` badge
