@@ -5,7 +5,7 @@
 
 This package provides some widgets you can use to create a smooshy UI. 
 - [Flutter package](https://pub.dev/packages/dough)
-- [Source code](https://github.com/HatFeather/flutter_dough)
+- [Source code](https://github.com/josiahsrc/flutter_dough)
 
 ## How to use
 
@@ -98,8 +98,8 @@ You can find a full example of how to use this widget [here](./example/lib/dough
 ## Contributing
 
 Contributions to this package are always welcome! Please read the [contributing guidlines](./CONTRIBUTING.md).
-- If you have an idea/suggestion/bug-report, feel free to [create a ticket](https://github.com/HatFeather/flutter_dough/issues).
-- If you created a custom `Dough` widget or some other awesome feature that you want to share with the community, feel free to fork the [repository](https://github.com/HatFeather/flutter_dough) and submit a pull request!
+- If you have an idea/suggestion/bug-report, feel free to [create a ticket](https://github.com/josiahsrc/flutter_dough/issues).
+- If you created a custom `Dough` widget or some other awesome feature that you want to share with the community, feel free to fork the [repository](https://github.com/josiahsrc/flutter_dough) and submit a pull request!
 
 ---
 

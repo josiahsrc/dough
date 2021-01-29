@@ -138,6 +138,13 @@ class DraggableDough<T> extends StatefulWidget {
   final DragEndCallback onDragEnd;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/LongPressDraggable-class.html).
+  /// 
+  /// ## NOTICE 
+  /// 
+  /// There is a known issue where, if enabled, the [onDoughBreak]
+  /// callback will still be triggered, even if the draggable widget
+  /// does not become visible. This behavior will be fixed in a future
+  /// update, but it will be a breaking change.
   final bool longPress;
 
   @override

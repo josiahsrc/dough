@@ -1,6 +1,6 @@
 ## [0.3.7] - January 29, 2021.
 
-- Added support for `LongPressDraggable`
+- Added support for long-press `Draggable` behavior
 
 ## [0.3.6] - September 13, 2020.
 
