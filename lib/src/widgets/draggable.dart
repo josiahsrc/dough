@@ -77,9 +77,11 @@ class DraggableDough<T> extends StatefulWidget {
     this.onDragEnd,
     this.onDragCompleted,
     this.ignoringFeedbackSemantics = true,
+    this.longPress = false,
   })  : assert(child != null),
         assert(feedback != null),
         assert(ignoringFeedbackSemantics != null),
+        assert(longPress != null),
         assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
         super(key: key);
 
@@ -135,6 +137,9 @@ class DraggableDough<T> extends StatefulWidget {
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DragEndCallback onDragEnd;
 
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/LongPressDraggable-class.html).
+  final bool longPress;
+
   @override
   _DraggableDoughState<T> createState() => _DraggableDoughState<T>();
 }
@@ -177,23 +182,41 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
         child: widget.feedback,
       ),
     );
-
-    final draggable = Draggable<T>(
-      child: widget.child,
-      feedback: doughFeedback,
-      data: widget.data,
-      axis: widget.axis,
-      childWhenDragging: widget.childWhenDragging,
-      feedbackOffset: widget.feedbackOffset,
-      dragAnchor: widget.dragAnchor,
-      affinity: widget.affinity,
-      maxSimultaneousDrags: widget.maxSimultaneousDrags,
-      ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
-      onDraggableCanceled: widget.onDraggableCanceled,
-      onDragEnd: widget.onDragEnd,
-      onDragCompleted: widget.onDragCompleted,
-      onDragStarted: widget.onDragStarted,
-    );
+    Widget draggable;
+    if (widget.longPress) {
+      draggable = LongPressDraggable<T>(
+        child: widget.child,
+        feedback: doughFeedback,
+        data: widget.data,
+        axis: widget.axis,
+        childWhenDragging: widget.childWhenDragging,
+        feedbackOffset: widget.feedbackOffset,
+        dragAnchor: widget.dragAnchor,
+        maxSimultaneousDrags: widget.maxSimultaneousDrags,
+        ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
+        onDraggableCanceled: widget.onDraggableCanceled,
+        onDragEnd: widget.onDragEnd,
+        onDragCompleted: widget.onDragCompleted,
+        onDragStarted: widget.onDragStarted,
+      );
+    } else {
+      draggable = Draggable<T>(
+        child: widget.child,
+        feedback: doughFeedback,
+        data: widget.data,
+        axis: widget.axis,
+        childWhenDragging: widget.childWhenDragging,
+        feedbackOffset: widget.feedbackOffset,
+        dragAnchor: widget.dragAnchor,
+        affinity: widget.affinity,
+        maxSimultaneousDrags: widget.maxSimultaneousDrags,
+        ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
+        onDraggableCanceled: widget.onDraggableCanceled,
+        onDragEnd: widget.onDragEnd,
+        onDragCompleted: widget.onDragCompleted,
+        onDragStarted: widget.onDragStarted,
+      );
+    }
 
     return Listener(
       child: draggable,
