@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   sensors: ">=0.4.2+2 <2.0.0"
-  equatable: ^1.2.3
+  equatable: ^1.2.5
   vector_math: ^2.0.8
   provider: ^4.3.2
 
