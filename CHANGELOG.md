@@ -1,3 +1,7 @@
+## [0.3.7] - January 29, 2021.
+
+- Added support for `LongPressDraggable`
+
 ## [0.3.6] - September 13, 2020.
 
 - Reverted to environment `sdk: ">=2.7.0 <3.0.0"`
