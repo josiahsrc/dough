@@ -1,6 +1,5 @@
 name: dough
-description: This library provides widgets that can be used to
-  create a smooshy user interface.
+description: This library provides widgets that can be used to create a smooshy user interface.
 version: 0.3.7
 repository: https://github.com/josiahsrc/flutter_dough
 homepage: https://josiahsaunders.com/
