@@ -4,7 +4,7 @@
 - Migrate existing code to null safety.
     - ~~Transformer should be late final.~~
     - ~~Ensure all APIs are good.~~
-    - Migrate the example to null safety.
+    - ~~Migrate the example to null safety.~~
     - Make sure the widgets are still functional.
 - Deprecate prefs and use data instead.
 - Create recipe for each widget that uses data.
