@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class DoughRecipeDemo extends StatelessWidget {
   @override
-  Widget build(Object context) {
+  Widget build(BuildContext context) {
     final myDraggableChild = Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
