@@ -10,15 +10,15 @@ abstract class DoughTransformer {
   /// Creates a DoughTransformer.
   DoughTransformer() : super();
 
-  double _rawT;
-  double _t;
-  DoughRecipeData _recipe;
-  vmath.Vector2 _origin;
-  vmath.Vector2 _target;
-  vmath.Vector2 _delta;
-  double _deltaAngle;
-  DoughController _controller;
-  Axis _axis;
+  late double _rawT;
+  late double _t;
+  late DoughRecipeData _recipe;
+  late vmath.Vector2 _origin;
+  late vmath.Vector2 _target;
+  late vmath.Vector2 _delta;
+  late double _deltaAngle;
+  late DoughController _controller;
+  Axis? _axis;
 
   /// The unscaled animation time clamped between 0 and 1.
   double get rawT => _rawT;
@@ -50,7 +50,11 @@ abstract class DoughTransformer {
   /// The controller for the associated [Dough] widget.
   DoughController get controller => _controller;
 
-  Axis get axis => _axis;
+  /// Whether or not this transformer has an axis to constrain to.
+  bool get hasAxis => _axis != null;
+
+  /// The axis on which to constrain any stretching.
+  Axis? get axis => _axis;
 
   /// Creates the [Matrix4] which will be used to transform the [Dough.child]
   /// widget.
@@ -60,7 +64,7 @@ abstract class DoughTransformer {
   /// factor of the `DoughRecipe.expansion` property.
   @protected
   Matrix4 createExpansionMatrix() {
-    // TODO:
+    // TODO(josiahsrc):
     // Try to recreate photoshop's liquify effect to push pixels closest to the
     // press point (target) away (1/x). This could give illusion that the screen
     // is squishy dough.
@@ -170,8 +174,8 @@ class BasicDoughTransformer extends DoughTransformer {
 class DraggableOverlayDoughTransformer extends DoughTransformer {
   /// Creates a DraggableOverlayDoughTransformer.
   DraggableOverlayDoughTransformer({
-    @required this.applyDelta,
-    @required this.snapToTargetOnStop,
+    required this.applyDelta,
+    required this.snapToTargetOnStop,
   }) : super();
 
   /// Whether the controller's delta should be applied to the widget.

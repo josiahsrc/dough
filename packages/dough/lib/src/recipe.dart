@@ -6,11 +6,10 @@ part of dough;
 class DoughRecipe extends StatelessWidget {
   /// Creates a [DoughRecipe] widget.
   const DoughRecipe({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.data,
-  })  : assert(child != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The fallback recipe.
   static final DoughRecipeData _kFallbackRecipe = DoughRecipeData.fallback();
@@ -20,7 +19,7 @@ class DoughRecipe extends StatelessWidget {
   final Widget child;
 
   /// The settings to be applied to all [Dough] widgets below this widget.
-  final DoughRecipeData data;
+  final DoughRecipeData? data;
 
   /// Gets the inherited [DoughRecipeData]. If no recipe is found,
   /// a default one will be returned instead.
@@ -28,7 +27,6 @@ class DoughRecipe extends StatelessWidget {
     BuildContext context, [
     bool listen = true,
   ]) {
-    assert(listen != null);
     try {
       return Provider.of<DoughRecipeData>(context, listen: listen);
     } on ProviderNotFoundException catch (_) {
@@ -62,42 +60,33 @@ class DoughRecipe extends StatelessWidget {
 class DoughRecipeData extends Equatable {
   /// Creates a raw recipe, all values must be specified.
   const DoughRecipeData.raw({
-    @required this.viscosity,
-    @required this.adhesion,
-    @required this.expansion,
-    @required this.usePerspectiveWarp,
-    @required this.perspectiveWarpDepth,
-    @required this.entryDuration,
-    @required this.entryCurve,
-    @required this.exitDuration,
-    @required this.exitCurve,
-    @required this.draggablePrefs,
-    @required this.gyroPrefs,
-  })  : assert(viscosity != null),
-        assert(adhesion != null),
-        assert(expansion != null),
-        assert(usePerspectiveWarp != null),
-        assert(perspectiveWarpDepth != null),
-        assert(entryDuration != null),
-        assert(entryCurve != null),
-        assert(exitDuration != null),
-        assert(exitCurve != null),
-        assert(draggablePrefs != null),
-        assert(gyroPrefs != null);
+    required this.viscosity,
+    required this.adhesion,
+    required this.expansion,
+    required this.usePerspectiveWarp,
+    required this.perspectiveWarpDepth,
+    required this.entryDuration,
+    required this.entryCurve,
+    required this.exitDuration,
+    required this.exitCurve,
+    required this.draggablePrefs,
+    required this.gyroPrefs,
+  });
 
-  /// Creates a recipe.
+  /// Creates a recipe. Defaults are implied for any values not
+  /// specified.
   factory DoughRecipeData({
-    double viscosity,
-    double adhesion,
-    double expansion,
-    bool usePerspectiveWarp,
-    double perspectiveWarpDepth,
-    Duration entryDuration,
-    Curve entryCurve,
-    Duration exitDuration,
-    Curve exitCurve,
-    DraggableDoughPrefs draggablePrefs,
-    GyroDoughPrefs gyroPrefs,
+    double? viscosity,
+    double? adhesion,
+    double? expansion,
+    bool? usePerspectiveWarp,
+    double? perspectiveWarpDepth,
+    Duration? entryDuration,
+    Curve? entryCurve,
+    Duration? exitDuration,
+    Curve? exitCurve,
+    DraggableDoughPrefs? draggablePrefs,
+    GyroDoughPrefs? gyroPrefs,
   }) {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? 7000,
@@ -172,17 +161,17 @@ class DoughRecipeData extends Equatable {
 
   /// Copies the current recipe with some new values.
   DoughRecipeData copyWith({
-    double viscosity,
-    double adhesion,
-    double expansion,
-    bool usePerspectiveWarp,
-    double perspectiveWarpDepth,
-    Duration entryDuration,
-    Curve entryCurve,
-    Duration exitDuration,
-    Curve exitCurve,
-    DraggableDoughPrefs draggablePrefs,
-    GyroDoughPrefs gyroPrefs,
+    double? viscosity,
+    double? adhesion,
+    double? expansion,
+    bool? usePerspectiveWarp,
+    double? perspectiveWarpDepth,
+    Duration? entryDuration,
+    Curve? entryCurve,
+    Duration? exitDuration,
+    Curve? exitCurve,
+    DraggableDoughPrefs? draggablePrefs,
+    GyroDoughPrefs? gyroPrefs,
   }) {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? this.viscosity,

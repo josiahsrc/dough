@@ -4,15 +4,14 @@ part of dough;
 class DraggableDoughPrefs extends Equatable {
   /// Creates raw [DraggableDough] preferences, all values must be specified.
   const DraggableDoughPrefs.raw({
-    @required this.breakDistance,
-    @required this.useHapticsOnBreak,
-  })  : assert(breakDistance != null),
-        assert(useHapticsOnBreak != null);
+    required this.breakDistance,
+    required this.useHapticsOnBreak,
+  });
 
   /// Creates [DraggableDough] preferences.
   factory DraggableDoughPrefs({
-    double breakDistance,
-    bool useHapticsOnBreak,
+    double? breakDistance,
+    bool? useHapticsOnBreak,
   }) {
     return DraggableDoughPrefs.raw(
       breakDistance: breakDistance ?? 80,
@@ -34,8 +33,8 @@ class DraggableDoughPrefs extends Equatable {
 
   /// Copies these preferences with some new values.
   DraggableDoughPrefs copyWith({
-    double breakDistance,
-    bool useHapticsOnBreak,
+    double? breakDistance,
+    bool? useHapticsOnBreak,
   }) {
     return DraggableDoughPrefs.raw(
       breakDistance: breakDistance ?? this.breakDistance,
@@ -57,14 +56,14 @@ class DraggableDoughPrefs extends Equatable {
 /// this one is squishy! For details on what each field does for this widget,
 /// view [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html)
 /// for the [Draggable] widget.
-class DraggableDough<T> extends StatefulWidget {
+class DraggableDough<T extends Object> extends StatefulWidget {
   /// Creates a [DraggableDough] widget.
   const DraggableDough({
-    Key key,
+    Key? key,
     this.prefs,
     this.onDoughBreak,
-    @required this.child,
-    @required this.feedback,
+    required this.child,
+    required this.feedback,
     this.data,
     this.axis,
     this.childWhenDragging,
@@ -78,34 +77,30 @@ class DraggableDough<T> extends StatefulWidget {
     this.onDragCompleted,
     this.ignoringFeedbackSemantics = true,
     this.longPress = false,
-  })  : assert(child != null),
-        assert(feedback != null),
-        assert(ignoringFeedbackSemantics != null),
-        assert(longPress != null),
-        assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
+  })  : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
         super(key: key);
 
   /// Preferences for the behavior of this [DraggableDough] widget. This can
   /// be specified here or in the context of a [DoughRecipe] widget. This will
   /// override the contextual [DoughRecipeData.draggablePrefs] if provided.
-  final DraggableDoughPrefs prefs;
+  final DraggableDoughPrefs? prefs;
 
   /// A callback raised when the user drags the feedback widget beyond the
   /// [DraggableDoughPrefs.breakDistance] and the [Dough] snaps back into
   /// its original form.
-  final VoidCallback onDoughBreak;
+  final VoidCallback? onDoughBreak;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final T data;
+  final T? data;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final Axis axis;
+  final Axis? axis;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Widget child;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final Widget childWhenDragging;
+  final Widget? childWhenDragging;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Widget feedback;
@@ -120,28 +115,26 @@ class DraggableDough<T> extends StatefulWidget {
   final bool ignoringFeedbackSemantics;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final Axis affinity;
+  final Axis? affinity;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final int maxSimultaneousDrags;
+  final int? maxSimultaneousDrags;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final VoidCallback onDragStarted;
+  final VoidCallback? onDragStarted;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final DraggableCanceledCallback onDraggableCanceled;
+  final DraggableCanceledCallback? onDraggableCanceled;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final VoidCallback onDragCompleted;
+  final VoidCallback? onDragCompleted;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  final DragEndCallback onDragEnd;
+  final DragEndCallback? onDragEnd;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/LongPressDraggable-class.html).
-  /// 
-  /// ## NOTICE 
-  /// 
-  /// There is a known issue where, if enabled, the [onDoughBreak]
+  ///
+  /// **NOTE:** There is a known issue where, if enabled, the [onDoughBreak]
   /// callback will still be triggered, even if the draggable widget
   /// does not become visible. This behavior will be fixed in a future
   /// update, but it will be a breaking change.
@@ -153,7 +146,7 @@ class DraggableDough<T> extends StatefulWidget {
 
 /// The state of a [DraggableDough] widget which controls how the [Dough] morphs
 /// as the feedback is dragged around.
-class _DraggableDoughState<T> extends State<DraggableDough<T>> {
+class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
   final _controllerTracker = _DragControllerTracker();
 
   @override
@@ -236,6 +229,11 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
           );
       },
       onPointerMove: (event) {
+        // This should never happen. But just in case, be safe.
+        if (!_controllerTracker.containsController(event.pointer)) {
+          return;
+        }
+
         final controller = _controllerTracker.getcontroller(event.pointer);
         if (controller.isActive) {
           final sqrBreakThresh = prefs.breakDistance * prefs.breakDistance;
@@ -253,14 +251,12 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
         }
       },
       onPointerUp: (event) {
-        final controller = _controllerTracker.getcontroller(event.pointer);
-        if (controller != null) {
+        if (_controllerTracker.containsController(event.pointer)) {
           _controllerTracker.tearDownController(event.pointer);
         }
       },
       onPointerCancel: (event) {
-        final controller = _controllerTracker.getcontroller(event.pointer);
-        if (controller != null) {
+        if (_controllerTracker.containsController(event.pointer)) {
           _controllerTracker.tearDownController(event.pointer);
         }
       },
@@ -273,9 +269,9 @@ class _DraggableDoughState<T> extends State<DraggableDough<T>> {
 class _DragFeedback extends StatefulWidget {
   /// Creates a [_DragFeedback] widget.
   const _DragFeedback({
-    Key key,
-    @required this.controllerTracker,
-    @required this.child,
+    Key? key,
+    required this.controllerTracker,
+    required this.child,
   }) : super(key: key);
 
   /// The widget being dragged.
@@ -290,7 +286,7 @@ class _DragFeedback extends StatefulWidget {
 
 /// The state of a [_DragFeedback] widget.
 class _DragFeedbackState extends State<_DragFeedback> {
-  int _controllerID;
+  late int _controllerID;
 
   @override
   void initState() {
@@ -344,7 +340,7 @@ class _DragControllerTracker {
 
   /// Initializes a [DoughController] for the specified [id].
   DoughController initController(int id) {
-    assert(!_controllers.containsKey(id));
+    assert(!containsController(id));
     final controller = DoughController();
     _controllers[id] = controller;
     return controller;
@@ -357,26 +353,25 @@ class _DragControllerTracker {
 
   /// Gets a [DoughController] for the specified [id].
   DoughController getcontroller(int id) {
-    assert(_controllers.containsKey(id));
-    return _controllers[id];
+    assert(containsController(id));
+    return _controllers[id]!;
   }
 
   /// Tears down the [DoughController] cached at the specified [id].
   DoughController tearDownController(int id) {
-    assert(_controllers.containsKey(id));
-
-    final controller = _controllers[id];
+    assert(containsController(id));
+    final controller = getcontroller(id);
     if (controller.isActive) {
       controller.stop();
     }
 
-    return _controllers.remove(id);
+    return _controllers.remove(id)!;
   }
 
   /// Cleans up the controller and hint cache.
   void reset() {
     for (final id in _controllers.keys) {
-      final controller = _controllers[id];
+      final controller = getcontroller(id);
       if (controller.isActive) {
         controller.stop();
       }

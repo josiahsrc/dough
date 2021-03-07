@@ -7,8 +7,8 @@ class _VectorUtils {
   /// Computes the angle between [toDirection] and [fromDirection],
   /// with the result ranging between 0 and 2PI radians.
   static double computeFullCircleAngle({
-    @required vmath.Vector2 toDirection,
-    vmath.Vector2 fromDirection,
+    required vmath.Vector2 toDirection,
+    vmath.Vector2? fromDirection,
   }) {
     final a = fromDirection ?? vmath.Vector2(1, 0);
     final b = toDirection;

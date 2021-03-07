@@ -4,15 +4,14 @@ part of dough;
 class GyroDoughPrefs extends Equatable {
   /// Creates raw [GyroDough] preferences, all values must be specified.
   const GyroDoughPrefs.raw({
-    @required this.sampleCount,
-    @required this.gyroMultiplier,
-  })  : assert(sampleCount != null && sampleCount >= 1),
-        assert(gyroMultiplier != null);
+    required this.sampleCount,
+    required this.gyroMultiplier,
+  });
 
   /// Creates [GyroDough] preferences.
   factory GyroDoughPrefs({
-    int sampleCount,
-    double gyroMultiplier,
+    int? sampleCount,
+    double? gyroMultiplier,
   }) {
     return GyroDoughPrefs.raw(
       sampleCount: sampleCount ?? 10,
@@ -43,8 +42,8 @@ class GyroDoughPrefs extends Equatable {
 
   /// Copies these preferences with some new values.
   GyroDoughPrefs copyWith({
-    int sampleCount,
-    double gyroMultiplier,
+    int? sampleCount,
+    double? gyroMultiplier,
   }) {
     return GyroDoughPrefs.raw(
       sampleCount: sampleCount ?? this.sampleCount,
@@ -70,8 +69,8 @@ class GyroDoughPrefs extends Equatable {
 class GyroDough extends StatefulWidget {
   /// Creates a [GyroDough] widget.
   const GyroDough({
-    Key key,
-    this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   /// The child to stretch based on physical device motion.
@@ -86,11 +85,11 @@ class GyroDough extends StatefulWidget {
 class _GyroDoughState extends State<GyroDough> {
   final _controller = DoughController();
 
-  List<Offset> _rollingSamples;
-  Offset _rollingSum;
-  int _rollingIndex;
+  late List<Offset> _rollingSamples;
+  late Offset _rollingSum;
+  late int _rollingIndex;
   bool _hasInitialized = false;
-  StreamSubscription<dynamic> _accelSub;
+  StreamSubscription<dynamic>? _accelSub;
 
   @override
   void initState() {
@@ -106,6 +105,7 @@ class _GyroDoughState extends State<GyroDough> {
   @override
   void dispose() {
     _accelSub?.cancel();
+    _accelSub = null;
     super.dispose();
   }
 

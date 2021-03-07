@@ -2,6 +2,9 @@
 
 - ~~Place dough in it's own package.~~
 - Migrate existing code to null safety.
+    - ~~Transformer should be late final.~~
+    - ~~Ensure all APIs are good.~~
+    - Make sure the widgets are still functional.
 - Deprecate prefs and use data instead.
 - Create recipe for each widget that uses data.
 - Move dough that uses sensors to it's own `dough_sensors` package.

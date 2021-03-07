@@ -5,14 +5,12 @@ part of dough;
 class Dough extends StatefulWidget {
   /// Creates a [Dough] widget.
   const Dough({
-    Key key,
-    @required this.child,
-    @required this.controller,
-    this.axis,
+    Key? key,
+    required this.child,
+    required this.controller,
     this.transformer,
-  })  : assert(controller != null),
-        assert(child != null),
-        super(key: key);
+    this.axis,
+  }) : super(key: key);
 
   /// The child to squish.
   final Widget child;
@@ -25,9 +23,13 @@ class Dough extends StatefulWidget {
   /// inheriting from [DoughTransformer] or use one of the provided
   /// transformers. If no transformer is specified, a default transformer
   /// of type [BasicDoughTransformer] will be used.
-  final DoughTransformer transformer;
+  final DoughTransformer? transformer;
 
-  final Axis axis;
+  /// The axis on which to constrain any stretching. If no axis is specified,
+  /// the [Dough] will not be constrained to any access.
+  ///
+  /// **Note that this feature is still under development.**
+  final Axis? axis;
 
   @override
   _DoughState createState() => _DoughState();
@@ -36,18 +38,23 @@ class Dough extends StatefulWidget {
 /// The state of a [Dough] widget which manages an animation controller
 /// to gracefully transform a widget over time.
 class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
+  /// A fallback [DoughTransformer] which will be used if none is specified.
+  /// This is not static because it's values are modified based on the state
+  /// of this widget.
   final _fallbackTransformer = BasicDoughTransformer();
 
-  AnimationController _animCtrl;
-  double _effectiveT;
-  Curve _effectiveCurve;
+  /// The controller to drive the squish animation.
+  late AnimationController _animCtrl;
+
+  /// The current normalized time into the squish animation.
+  double _effectiveT = 0.0;
+
+  /// The curve along which the squish will animate.
+  Curve _effectiveCurve = Curves.linear;
 
   @override
   void initState() {
     super.initState();
-
-    _effectiveT = 0.0;
-    _effectiveCurve = null;
 
     _animCtrl = AnimationController(vsync: this)
       ..addListener(_onAnimCtrlUpdated)
@@ -62,7 +69,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     // If the controller was active on start, inform this widget that it
     // should start squishing (as soon as the context is usable).
     if (widget.controller.isActive) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (widget.controller.isActive) {
           _onDoughCtrlStatusUpdated(widget.controller.status);
         }
