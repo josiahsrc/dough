@@ -1,3 +1,9 @@
+## [1.0.0] - March 24, 2021.
+
+- Migrated to null-safety.
+- Updated the `DoughTransformer` API to be more extendable and easier to work with.
+- Updated project structure to be consistent with common projects.
+
 ## [0.3.7] - January 29, 2021.
 
 - Added support for long-press `Draggable` behavior

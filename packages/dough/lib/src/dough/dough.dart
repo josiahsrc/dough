@@ -125,22 +125,26 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       fromDirection: vmath.Vector2(1, 1),
     );
 
-    // Provide the transformer with details on how to squish the child widget.
-    // TODO: Either keep package private or make something to set the values.
-    effTrfm
-      .._rawT = _animCtrl.value
-      .._t = _effectiveT
-      .._recipe = recipe
-      .._origin = VectorUtils.offsetToVector(controller.origin)
-      .._target = VectorUtils.offsetToVector(controller.target)
-      .._delta = delta
-      .._deltaAngle = deltaAngle
-      .._controller = controller
-      .._axis = axis;
+    final tContext = DoughTransformerContext(
+      rawT: _animCtrl.value,
+      t: _effectiveT,
+      recipe: recipe,
+      origin: VectorUtils.offsetToVector(controller.origin),
+      target: VectorUtils.offsetToVector(controller.target),
+      delta: delta,
+      deltaAngle: deltaAngle,
+      controller: controller,
+      axis: axis,
+    );
+
+    // Run the transform life-cycle.
+    effTrfm.onPreTransform(tContext);
+    final transform = effTrfm.transform(tContext);
+    effTrfm.onPostTransform(tContext);
 
     return Transform(
       alignment: Alignment.center,
-      transform: effTrfm.createDoughMatrix(),
+      transform: transform,
       child: widget.child,
     );
   }
@@ -180,9 +184,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
           ..stop()
           ..reverse(from: _effectiveT);
       } else {
-        throw UnimplementedError(
-          'Status ${status.toString()} not implemented!',
-        );
+        throw UnimplementedError('Status $status not implemented.');
       }
     });
   }

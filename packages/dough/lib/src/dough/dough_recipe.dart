@@ -2,9 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '_to_remove.dart';
 import 'dough.dart';
+import 'dough_controller.dart';
+import 'draggable.dart';
 import 'draggable_recipe.dart';
+import 'gyro.dart';
+import 'gyro_recipe.dart';
 
 /// Inherited settings for [Dough] widgets. Use this to override
 /// the default [Dough] settings.
@@ -111,18 +114,6 @@ class DoughRecipeData extends Equatable {
 
   /// Creates the fallback recipe.
   factory DoughRecipeData.fallback() => DoughRecipeData();
-
-  // TODO :-)
-  // /// A constructor designed to be used by the finest chefs.
-  // factory DoughRecipeData.leChef({
-  //   double poundsOfFlour = 10,
-  //   double cupsOfWater = 5,
-  //   double teaspoonsOfHoney = 2,
-  // }) {
-  //   return DoughRecipeData(
-  //     viscosity: 100 * poundsOfFlour - cupsOfWater * 50,
-  //   );
-  // }
 
   /// How 'thick' a [Dough] widget is. Higher values make for harder/less
   /// elastic [Dough]. A typical value would be something like 7000. Lower
