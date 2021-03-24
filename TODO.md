@@ -6,7 +6,7 @@
     - ~~Ensure all APIs are good.~~
     - ~~Migrate the example to null safety.~~
     - ~~Make sure the widgets are still functional.~~
-- Move dough that uses sensors to it's own `dough_sensors` package.
+- Move dough that uses sensors to it's own `dough_sensors` package because they introduce platform dependency.
     - Use the [web support](https://github.com/fluttercommunity/plus_plugins/tree/main/packages/sensors_plus) for sensors.
 - Deprecate prefs and use data instead.
 - Create recipe for each widget that uses data.
