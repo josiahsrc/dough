@@ -16,7 +16,7 @@ class GyroDoughDemo extends StatelessWidget {
         child: Text(
           'Shake the phone',
           textAlign: TextAlign.center,
-          style: Theme.of(context).accentTextTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ),
     );

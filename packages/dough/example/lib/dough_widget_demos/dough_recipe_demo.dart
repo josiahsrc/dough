@@ -15,7 +15,7 @@ class DoughRecipeDemo extends StatelessWidget {
         child: Text(
           'Draggable',
           textAlign: TextAlign.center,
-          style: Theme.of(context).accentTextTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ),
     );
@@ -32,7 +32,7 @@ class DoughRecipeDemo extends StatelessWidget {
         child: Text(
           'Feedback',
           textAlign: TextAlign.center,
-          style: Theme.of(context).accentTextTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ),
     );

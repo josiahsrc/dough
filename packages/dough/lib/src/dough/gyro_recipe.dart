@@ -4,16 +4,10 @@ import 'dough.dart';
 import 'gyro.dart';
 
 /// Preferences applied to [GyroDough] widgets.
-/// 
+///
 /// Please note that this widget will be moved over to a separate package
 /// to remove a platform depedency.
 class GyroDoughPrefs extends Equatable {
-  /// Creates raw [GyroDough] preferences, all values must be specified.
-  const GyroDoughPrefs.raw({
-    required this.sampleCount,
-    required this.gyroMultiplier,
-  });
-
   /// Creates [GyroDough] preferences.
   factory GyroDoughPrefs({
     int? sampleCount,
@@ -24,6 +18,12 @@ class GyroDoughPrefs extends Equatable {
       gyroMultiplier: gyroMultiplier ?? 100,
     );
   }
+
+  /// Creates raw [GyroDough] preferences, all values must be specified.
+  const GyroDoughPrefs.raw({
+    required this.sampleCount,
+    required this.gyroMultiplier,
+  });
 
   /// Creates fallback [GyroDough] preferences.
   factory GyroDoughPrefs.fallback() => GyroDoughPrefs();

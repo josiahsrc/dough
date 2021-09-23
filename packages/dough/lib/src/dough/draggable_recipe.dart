@@ -4,12 +4,6 @@ import 'draggable.dart';
 
 /// Preferences applied to [DraggableDough] widgets.
 class DraggableDoughPrefs extends Equatable {
-  /// Creates raw [DraggableDough] preferences, all values must be specified.
-  const DraggableDoughPrefs.raw({
-    required this.breakDistance,
-    required this.useHapticsOnBreak,
-  });
-
   /// Creates [DraggableDough] preferences.
   factory DraggableDoughPrefs({
     double? breakDistance,
@@ -20,6 +14,12 @@ class DraggableDoughPrefs extends Equatable {
       useHapticsOnBreak: useHapticsOnBreak ?? true,
     );
   }
+
+  /// Creates raw [DraggableDough] preferences, all values must be specified.
+  const DraggableDoughPrefs.raw({
+    required this.breakDistance,
+    required this.useHapticsOnBreak,
+  });
 
   /// Creates fallback [DraggableDough] preferences.
   factory DraggableDoughPrefs.fallback() => DraggableDoughPrefs();

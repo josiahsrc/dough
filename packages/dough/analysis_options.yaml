@@ -1,1 +1,5 @@
 include: package:very_good_analysis/analysis_options.yaml
+
+linter:
+  rules:
+    always_use_package_imports: false

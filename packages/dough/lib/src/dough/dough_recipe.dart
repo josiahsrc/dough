@@ -52,7 +52,7 @@ class DoughRecipe extends StatelessWidget {
   /// Gets the inherited [DoughRecipeData] and listens to it. If no recipe
   /// is found, a default one will be returned instead.
   static DoughRecipeData watch(BuildContext context) {
-    return of(context, true);
+    return of(context);
   }
 
   @override
@@ -67,21 +67,6 @@ class DoughRecipe extends StatelessWidget {
 /// Settings which will be applied to the [Dough] widget at runtime.
 @immutable
 class DoughRecipeData extends Equatable {
-  /// Creates a raw recipe, all values must be specified.
-  const DoughRecipeData.raw({
-    required this.viscosity,
-    required this.adhesion,
-    required this.expansion,
-    required this.usePerspectiveWarp,
-    required this.perspectiveWarpDepth,
-    required this.entryDuration,
-    required this.entryCurve,
-    required this.exitDuration,
-    required this.exitCurve,
-    required this.draggablePrefs,
-    required this.gyroPrefs,
-  });
-
   /// Creates a recipe. Defaults are implied for any values not
   /// specified.
   factory DoughRecipeData({
@@ -111,6 +96,21 @@ class DoughRecipeData extends Equatable {
       gyroPrefs: gyroPrefs ?? GyroDoughPrefs.fallback(),
     );
   }
+
+  /// Creates a raw recipe, all values must be specified.
+  const DoughRecipeData.raw({
+    required this.viscosity,
+    required this.adhesion,
+    required this.expansion,
+    required this.usePerspectiveWarp,
+    required this.perspectiveWarpDepth,
+    required this.entryDuration,
+    required this.entryCurve,
+    required this.exitDuration,
+    required this.exitCurve,
+    required this.draggablePrefs,
+    required this.gyroPrefs,
+  });
 
   /// Creates the fallback recipe.
   factory DoughRecipeData.fallback() => DoughRecipeData();

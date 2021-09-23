@@ -88,14 +88,14 @@ class _PressableDoughState extends State<PressableDough> {
           _controller.stop();
         }
       },
-      child: widget.child,
       behavior: HitTestBehavior.translucent,
+      child: widget.child,
     );
 
     return Dough(
-      child: pressableInterface,
       controller: _controller,
       transformer: BasicDoughTransformer(),
+      child: pressableInterface,
     );
   }
 }

@@ -53,7 +53,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   late AnimationController _animCtrl;
 
   /// The current normalized time into the squish animation.
-  double _effectiveT = 0.0;
+  double _effectiveT = 0;
 
   /// The curve along which the squish will animate.
   Curve _effectiveCurve = Curves.linear;
@@ -70,7 +70,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
       ..addStatusListener(_onDoughCtrlStatusUpdated)
       ..addListener(_onDoughCtrlUpdated);
 
-    Tween<double>(begin: 0.0, end: 1.0).animate(_animCtrl);
+    Tween<double>(begin: 0, end: 1).animate(_animCtrl);
 
     // If the controller was active on start, inform this widget that it
     // should start squishing (as soon as the context is usable).
@@ -158,7 +158,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   void _onAnimCtrlStatusUpdated(AnimationStatus status) {
     setState(() {
       if (status == AnimationStatus.completed) {
-        _effectiveT = _effectiveCurve.transform(1.0);
+        _effectiveT = _effectiveCurve.transform(1);
       }
     });
   }

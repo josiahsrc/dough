@@ -14,7 +14,7 @@ class DraggableDoughDemo extends StatelessWidget {
         child: Text(
           'Draggable',
           textAlign: TextAlign.center,
-          style: Theme.of(context).accentTextTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ),
     );
@@ -28,7 +28,7 @@ class DraggableDoughDemo extends StatelessWidget {
         child: Text(
           'Squishy feedback',
           textAlign: TextAlign.center,
-          style: Theme.of(context).accentTextTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ),
     );
@@ -69,7 +69,7 @@ class DraggableDoughDemo extends StatelessWidget {
             child: Text(
               'Drag target',
               textAlign: TextAlign.center,
-              style: Theme.of(context).accentTextTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
         );

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -25,7 +27,10 @@ class DraggableDough<T extends Object> extends StatefulWidget {
     this.axis,
     this.childWhenDragging,
     this.feedbackOffset = Offset.zero,
-    this.dragAnchor = DragAnchor.child,
+    this.dragAnchorStrategy,
+    @Deprecated('Please file a PR to use the updated API if you are using this')
+        // ignore: deprecated_member_use
+        this.dragAnchor = DragAnchor.child,
     this.affinity,
     this.maxSimultaneousDrags,
     this.onDragStarted,
@@ -66,7 +71,11 @@ class DraggableDough<T extends Object> extends StatefulWidget {
   final Offset feedbackOffset;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
+  @Deprecated('Please file a PR to use the updated API if you are using this')
   final DragAnchor dragAnchor;
+
+  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
+  final DragAnchorStrategy? dragAnchorStrategy;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final bool ignoringFeedbackSemantics;
@@ -139,15 +148,17 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         child: widget.feedback,
       ),
     );
+
     Widget draggable;
     if (widget.longPress) {
       draggable = LongPressDraggable<T>(
-        child: widget.child,
         feedback: doughFeedback,
         data: widget.data,
         axis: widget.axis,
         childWhenDragging: widget.childWhenDragging,
         feedbackOffset: widget.feedbackOffset,
+        dragAnchorStrategy: widget.dragAnchorStrategy,
+        // ignore: deprecated_member_use
         dragAnchor: widget.dragAnchor,
         maxSimultaneousDrags: widget.maxSimultaneousDrags,
         ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
@@ -155,15 +166,17 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         onDragEnd: widget.onDragEnd,
         onDragCompleted: widget.onDragCompleted,
         onDragStarted: widget.onDragStarted,
+        child: widget.child,
       );
     } else {
       draggable = Draggable<T>(
-        child: widget.child,
         feedback: doughFeedback,
         data: widget.data,
         axis: widget.axis,
         childWhenDragging: widget.childWhenDragging,
         feedbackOffset: widget.feedbackOffset,
+        dragAnchorStrategy: widget.dragAnchorStrategy,
+        // ignore: deprecated_member_use
         dragAnchor: widget.dragAnchor,
         affinity: widget.affinity,
         maxSimultaneousDrags: widget.maxSimultaneousDrags,
@@ -172,18 +185,17 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         onDragEnd: widget.onDragEnd,
         onDragCompleted: widget.onDragCompleted,
         onDragStarted: widget.onDragStarted,
+        child: widget.child,
       );
     }
 
     return Listener(
-      child: draggable,
       onPointerDown: (event) {
         _controllerTracker.enqueueHintControllerID(event.pointer);
-        _controllerTracker.initController(event.pointer)
-          ..start(
-            origin: event.position,
-            target: event.position,
-          );
+        _controllerTracker.initController(event.pointer).start(
+              origin: event.position,
+              target: event.position,
+            );
       },
       onPointerMove: (event) {
         // This should never happen. But just in case, be safe.
@@ -217,6 +229,7 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
           _controllerTracker.tearDownController(event.pointer);
         }
       },
+      child: draggable,
     );
   }
 }
@@ -257,12 +270,12 @@ class _DragFeedbackState extends State<_DragFeedback> {
   @override
   Widget build(BuildContext context) {
     return Dough(
-      child: widget.child,
       controller: widget.controllerTracker.getcontroller(_controllerID),
       transformer: DraggableOverlayDoughTransformer(
         snapToTargetOnStop: true,
         applyDelta: true,
       ),
+      child: widget.child,
     );
   }
 }

@@ -129,7 +129,7 @@ class DoughTransformations {
       vmath.Vector4(0, 0, 0, 1),
     );
 
-    return rotateAway * skew * rotateTowards;
+    return rotateAway.multiplied(skew).multiplied(rotateTowards);
   }
 
   /// A utility method which creates the default dough squishing [Matrix4].
@@ -138,9 +138,9 @@ class DoughTransformations {
   ///
   /// You can basically think of this as the core squish behavior.
   static Matrix4 squishDeformation(DoughTransformerContext context) {
-    return perspectiveWarp(context) *
-        viscositySkew(context) *
-        expansion(context);
+    return perspectiveWarp(context)
+        .multiplied(viscositySkew(context))
+        .multiplied(expansion(context));
   }
 }
 
@@ -158,6 +158,7 @@ abstract class DoughTransformer {
 
   /// A callback raised after a transform has been invoked.
   @mustCallSuper
+  // ignore: use_setters_to_change_properties
   void onPreTransform(DoughTransformerContext context) {
     // For backwards compatability.
     _context = context;
@@ -264,7 +265,8 @@ class BasicDoughTransformer extends DoughTransformer {
       0,
     );
 
-    return translate * DoughTransformations.squishDeformation(context);
+    return translate
+        .multiplied(DoughTransformations.squishDeformation(context));
   }
 }
 
@@ -319,6 +321,7 @@ class DraggableOverlayDoughTransformer extends DoughTransformer {
       );
     }
 
-    return translate * DoughTransformations.squishDeformation(context);
+    return translate
+        .multiplied(DoughTransformations.squishDeformation(context));
   }
 }

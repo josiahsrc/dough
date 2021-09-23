@@ -24,7 +24,7 @@ class PressableDoughDemo extends StatelessWidget {
         child: Text(
           'Drag me around!',
           textAlign: TextAlign.center,
-          style: Theme.of(context).accentTextTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
       decoration: BoxDecoration(

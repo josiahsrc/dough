@@ -1,5 +1,3 @@
 analyzer:
-  errors:
-
 linter:
   rules:
