@@ -1,3 +1,13 @@
+## [1.0.2] - March 24, 2021.
+
+- Removed deprecated dependencies.
+- Fixed some linting.
+- Updated dependencies.
+
+## [1.0.1] - March 24, 2021.
+
+- Fixed some linting.
+
 ## [1.0.0] - March 24, 2021.
 
 - Migrated to null-safety.
