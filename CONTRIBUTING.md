@@ -4,6 +4,10 @@
 
 The following is a set of guidelines for contributing to Dough and its packages. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
+## Getting started
+
+See the [DEVELOPER.md](./DEVELOPER.md) for information on how the project is setup and how to start developing.
+
 ## Proposing a change
 
 If you intend to change the public API, or make any non-trivial changes to the implementation, please file an issue first. This lets us reach an agreement on your proposal before you put significant effort into it.

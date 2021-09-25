@@ -92,8 +92,8 @@ class DoughTransformations {
 
   /// A utility method which creates a [Matrix4] that skews widgets in the
   /// direction of the [_DoughTransformerContext.delta] based on the
-  /// `DoughRecipe.viscosity` (see [DoughRecipe]). If an 
-  /// [_DoughTransformerContext.axis] is specified, the resulting matrix 
+  /// `DoughRecipe.viscosity` (see [DoughRecipe]). If an
+  /// [_DoughTransformerContext.axis] is specified, the resulting matrix
   /// will be constrained to the provided axis.
   static Matrix4 viscositySkew(DoughTransformerContext context) {
     final skewSize =
@@ -139,15 +139,9 @@ abstract class DoughTransformer {
   /// Creates a DoughTransformer.
   DoughTransformer() : super();
 
-  late DoughTransformerContext _context;
-
   /// A callback raised after a transform has been invoked.
   @mustCallSuper
-  // ignore: use_setters_to_change_properties
-  void onPreTransform(DoughTransformerContext context) {
-    // For backwards compatability.
-    _context = context;
-  }
+  void onPreTransform(DoughTransformerContext context) {}
 
   /// Creates the [Matrix4] which will be used to transform the [Dough.child]
   /// widget.
@@ -156,84 +150,6 @@ abstract class DoughTransformer {
   /// A callback raised after a transform has been invoked.
   @mustCallSuper
   void onPostTransform(DoughTransformerContext context) {}
-
-  /// See `DoughTransformations.expansion`.
-  @protected
-  @Deprecated('Use DoughTransformations.expansion instead.')
-  Matrix4 createExpansionMatrix() {
-    return DoughTransformations.expansion(_context);
-  }
-
-  /// See `DoughTransformations.perspectiveWarp`.
-  @protected
-  @Deprecated('Use DoughTransformations.perspectiveWarp instead.')
-  Matrix4 createPerspectiveWarpMatrix() {
-    return DoughTransformations.perspectiveWarp(_context);
-  }
-
-  /// See `DoughTransformations.viscositySkew`.
-  @protected
-  @Deprecated('Use DoughTransformations.viscositySkew instead.')
-  Matrix4 createViscositySkewMatrix() {
-    return DoughTransformations.viscositySkew(_context);
-  }
-
-  /// See `DoughTransformations.squishDeformation`.
-  @protected
-  @Deprecated('Use DoughTransformations.squishDeformation instead.')
-  Matrix4 createSquishDeformationMatrix() {
-    return DoughTransformations.squishDeformation(_context);
-  }
-
-  /// The unscaled animation time clamped between 0 and 1.
-  @Deprecated('Access this value using the context instead.')
-  double get rawT => _context.rawT;
-
-  /// The scaled animation time, based on [rawT], which has been transformed
-  /// by the `DoughRecipe.entryCurve` or `DoughRecipe.exitCurve` (see 
-  /// [DoughRecipe]).
-  @Deprecated('Access this value using the context instead.')
-  double get t => _context.t;
-
-  /// The contexual recipe applied to the associated [Dough] widget.
-  @Deprecated('Access this value using the context instead.')
-  DoughRecipeData get recipe => _context.recipe;
-
-  /// The origin of the dough squish. This value is equivalent to
-  /// [DoughController.origin], but is a vector instead of an offset.
-  @Deprecated('Access this value using the context instead.')
-  vmath.Vector2 get origin => _context.origin;
-
-  /// The target of the dough squish. This value is equivalent to
-  /// [DoughController.target], but is a vector instead of an offset.
-  @Deprecated('Access this value using the context instead.')
-  vmath.Vector2 get target => _context.target;
-
-  /// The delta of the dough squish. This value is equivalent to
-  /// [DoughController.delta], but is a vector instead of an offset.
-  @Deprecated('Access this value using the context instead.')
-  vmath.Vector2 get delta => _context.delta;
-
-  /// The full-circle delta angle of the [delta] value, relative to the
-  /// [Dough] widgets up direction. This value ranges between 0 radians
-  /// and 2PI radians.
-  @Deprecated('Access this value using the context instead.')
-  double get deltaAngle => _context.deltaAngle;
-
-  /// The controller for the associated [Dough] widget.
-  @Deprecated('Access this value using the context instead.')
-  DoughController get controller => _context.controller;
-
-  /// The axis on which to constrain any stretching.
-  @Deprecated('Access this value using the context instead.')
-  Axis? get axis => _context.axis;
-
-  /// Creates the [Matrix4] which will be used to transform the [Dough.child]
-  /// widget.
-  @Deprecated('Use DoughTransformer.transform instead')
-  Matrix4 createDoughMatrix() {
-    return transform(_context);
-  }
 }
 
 /// Transforms [Dough.child] widgets such that they stretch from their origin
