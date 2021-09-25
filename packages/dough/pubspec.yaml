@@ -13,7 +13,6 @@ dependencies:
     sdk: flutter
   freezed_annotation: ^0.14.3
   provider: ^6.0.0
-  sensors: ^2.0.0
   vector_math: ^2.1.0
 
 dev_dependencies:
