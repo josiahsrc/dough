@@ -1,4 +1,4 @@
-![Flutter Dough Sensors](../../assets/images/dough-sensors-logo@repo.png)
+![Flutter Dough Sensors](../../docs/assets/images/dough-sensors-logo@repo.png)
 
 <p align="center">
 <a href="https://pub.dev/packages/dough_sensors"><img src="https://img.shields.io/pub/v/dough_sensors.svg" alt="Pub"></a>
@@ -44,7 +44,7 @@ GyroDough(
 
 You can find a full example of how to use this widget [here](example/lib/demos/gyro_dough_demo.dart).
 
-![GyroDough Demo](../../assets/gifs/gyro-dough.gif)
+![GyroDough Demo](../../docs/assets/gifs/gyro-dough.gif)
 
 <br>
 

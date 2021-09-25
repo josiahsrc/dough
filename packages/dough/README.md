@@ -1,4 +1,4 @@
-![Flutter Dough](../../assets/images/dough-logo@repo.png)
+![Flutter Dough](../../docs/assets/images/dough-logo@repo.png)
 
 <p align="center">
 <a href="https://pub.dev/packages/dough"><img src="https://img.shields.io/pub/v/dough.svg" alt="Pub"></a>
@@ -42,7 +42,7 @@ PressableDough(
 
 You can find a full example of how to use this widget [here](example/lib/dough_widget_demos/pressable_dough_demo.dart).
 
-![PressableDough Demo](../../assets/gifs/pressable-dough.gif)
+![PressableDough Demo](../../docs/assets/gifs/pressable-dough.gif)
 
 <br>
 
@@ -61,7 +61,7 @@ DraggableDough<String>(
 
 You can find a full example of how to use this widget [here](example/lib/dough_widget_demos/draggable_dough_demo.dart).
 
-![DraggableDough Demo](../../assets/gifs/draggable-dough.gif)
+![DraggableDough Demo](../../docs/assets/gifs/draggable-dough.gif)
 
 <br>
 
@@ -69,7 +69,7 @@ You can find a full example of how to use this widget [here](example/lib/dough_w
 
 If the above widgets aren't exactly what you're looking for, you can easily create your own squishy widget using the provided `Dough` widget! See the [example project](example/lib/dough_widget_demos/custom_dough_demo.dart) for more details on how to do this.
 
-![CustomDough Demo](../../assets/gifs/custom-dough.gif)
+![CustomDough Demo](../../docs/assets/gifs/custom-dough.gif)
 
 <br>
 
@@ -93,7 +93,7 @@ DoughRecipe(
 
 You can find a full example of how to use this widget [here](example/lib/dough_widget_demos/dough_recipe_demo.dart).
 
-![DoughRecipe Demo](../../assets/gifs/dough-recipe.gif)
+![DoughRecipe Demo](../../docs/assets/gifs/dough-recipe.gif)
 
 <br>
 
@@ -117,7 +117,7 @@ To keep the Dough package consistent with Flutter, the 'prefs' suffix has change
 
 The `GyroDough` widget has moved. You can now find it in the new [Dough Sensors](https://pub.dev/packages/dough_sensors) package.
 
-![GyroDough Demo](../../assets/gifs/gyro-dough.gif)
+![GyroDough Demo](../../docs/assets/gifs/gyro-dough.gif)
 
 <br>
 

@@ -1,4 +1,4 @@
-![Flutter Dough](./assets/images/dough-logo@repo.png)
+![Flutter Dough](./docs/assets/images/dough-logo@repo.png)
 
 # Dough Library
 
@@ -15,18 +15,18 @@ Here are a few samples of the different widgets provided by this repo. You can f
 
 ### Pressable Dough
 
-![PressableDough Demo](./assets/gifs/pressable-dough.gif)
+![PressableDough Demo](./docs/assets/gifs/pressable-dough.gif)
 
 ### Draggable Dough
 
-![DraggableDough Demo](./assets/gifs/draggable-dough.gif)
+![DraggableDough Demo](./docs/assets/gifs/draggable-dough.gif)
 
 ### Custom Dough
 
-![CustomDough Demo](./assets/gifs/custom-dough.gif)
+![CustomDough Demo](./docs/assets/gifs/custom-dough.gif)
 
 ## Dough Sensors Demos
 
 ### Gyro Dough
 
-![GyroDough Demo](./assets/gifs/gyro-dough.gif)
+![GyroDough Demo](./docs/assets/gifs/gyro-dough.gif)
