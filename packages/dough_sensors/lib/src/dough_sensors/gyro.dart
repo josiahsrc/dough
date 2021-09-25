@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:dough/dough.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 
-import 'dough.dart';
-import 'dough_controller.dart';
-import 'dough_recipe.dart';
+import 'gyro_recipe.dart';
 
 /// A widget that stretches its child in a dough-like fashion based
 /// on physical device accelerometer inputs (e.g. the [Dough] jiggles
@@ -60,13 +59,13 @@ class _GyroDoughState extends State<GyroDough> {
 
   @override
   void didChangeDependencies() {
-    final prefs = DoughRecipe.watch(context).gyroPrefs;
+    final recipe = GyroDoughRecipe.of(context);
 
     if (!_hasInitialized) {
       _rollingSum = Offset.zero;
       _rollingIndex = 0;
       _rollingSamples = List<Offset>.filled(
-        prefs.sampleCount,
+        recipe.sampleCount,
         Offset.zero,
       );
 
@@ -76,7 +75,7 @@ class _GyroDoughState extends State<GyroDough> {
 
       final oldSamples = _rollingSamples;
       final newSamples = List<Offset>.filled(
-        prefs.sampleCount,
+        recipe.sampleCount,
         Offset.zero,
       );
 
@@ -102,8 +101,8 @@ class _GyroDoughState extends State<GyroDough> {
   }
 
   void _onAccelEvent(AccelerometerEvent event) {
-    final prefs = DoughRecipe.read(context).gyroPrefs;
-    final sample = Offset(-event.x, event.y) * prefs.gyroMultiplier;
+    final recipe = GyroDoughRecipe.of(context, listen: false);
+    final sample = Offset(-event.x, event.y) * recipe.gyroMultiplier;
 
     _rollingIndex = (_rollingIndex + 1) % _rollingSamples.length;
     _rollingSum -= _rollingSamples[_rollingIndex];

@@ -1,4 +1,4 @@
-import 'package:dough/dough.dart';
+import 'package:dough_sensors/dough_sensors.dart';
 import 'package:flutter/material.dart';
 
 /// This page demonstrates how to use the [GyroDough] widget.
@@ -23,9 +23,9 @@ class GyroDoughDemo extends StatelessWidget {
 
     // Create a squishy widget which reacts to physical
     // phone movement!
-    final mySquishyGyroWidget = DoughRecipe(
-      data: DoughRecipeData(
-        adhesion: 21,
+    final mySquishyGyroWidget = GyroDoughRecipe(
+      data: GyroDoughRecipeData(
+        sampleCount: 10,
       ),
       child: GyroDough(
         child: myWidgetToSquish,

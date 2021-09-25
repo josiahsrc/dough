@@ -1,7 +1,2 @@
-library dough_sensors;
-
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/dough_sensors/gyro.dart';
+export 'src/dough_sensors/gyro_recipe.dart';

@@ -6,8 +6,6 @@ import 'dough.dart';
 import 'dough_controller.dart';
 import 'draggable.dart';
 import 'draggable_recipe.dart';
-import 'gyro.dart';
-import 'gyro_recipe.dart';
 
 part 'dough_recipe.freezed.dart';
 
@@ -110,8 +108,5 @@ class DoughRecipeData with _$DoughRecipeData {
 
     /// Default settings applied to [DraggableDough] widgets.
     @Default(DraggableDoughPrefs()) DraggableDoughPrefs draggablePrefs,
-
-    /// Default settings applied to [GyroDough] widgets.
-    @Default(GyroDoughPrefs()) GyroDoughPrefs gyroPrefs,
   }) = _DoughRecipeData;
 }
