@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
 
 import 'dough.dart';
@@ -8,6 +8,8 @@ import 'draggable.dart';
 import 'draggable_recipe.dart';
 import 'gyro.dart';
 import 'gyro_recipe.dart';
+
+part 'dough_recipe.freezed.dart';
 
 /// Inherited settings for [Dough] widgets. Use this to override
 /// the default [Dough] settings.
@@ -21,7 +23,7 @@ class DoughRecipe extends StatelessWidget {
   }) : super(key: key);
 
   /// The fallback recipe.
-  static final DoughRecipeData _kFallbackRecipe = DoughRecipeData.fallback();
+  static const DoughRecipeData _kFallbackRecipe = DoughRecipeData();
 
   /// This widget's child. Any [Dough] widget below this widget will inherit
   /// the [data] provided in this recipe.
@@ -65,141 +67,51 @@ class DoughRecipe extends StatelessWidget {
 }
 
 /// Settings which will be applied to the [Dough] widget at runtime.
-@immutable
-class DoughRecipeData extends Equatable {
-  /// Creates a recipe. Defaults are implied for any values not
-  /// specified.
-  factory DoughRecipeData({
-    double? viscosity,
-    double? adhesion,
-    double? expansion,
-    bool? usePerspectiveWarp,
-    double? perspectiveWarpDepth,
-    Duration? entryDuration,
-    Curve? entryCurve,
-    Duration? exitDuration,
-    Curve? exitCurve,
-    DraggableDoughPrefs? draggablePrefs,
-    GyroDoughPrefs? gyroPrefs,
-  }) {
-    return DoughRecipeData.raw(
-      viscosity: viscosity ?? 7000,
-      adhesion: adhesion ?? 12,
-      expansion: expansion ?? 1,
-      usePerspectiveWarp: usePerspectiveWarp ?? false,
-      perspectiveWarpDepth: perspectiveWarpDepth ?? 0.015,
-      entryDuration: entryDuration ?? const Duration(milliseconds: 20),
-      entryCurve: entryCurve ?? Curves.easeInOut,
-      exitDuration: exitDuration ?? const Duration(milliseconds: 500),
-      exitCurve: exitCurve ?? Curves.elasticIn,
-      draggablePrefs: draggablePrefs ?? DraggableDoughPrefs.fallback(),
-      gyroPrefs: gyroPrefs ?? GyroDoughPrefs.fallback(),
-    );
-  }
+/// Also includes fields that are common to all supported dough-like
+/// widgets.
+@freezed
+class DoughRecipeData with _$DoughRecipeData {
+  /// Creates a DoughRecipeData.
+  const factory DoughRecipeData({
+    /// How 'thick' a [Dough] widget is. Higher values make for harder/less
+    /// elastic [Dough]. A typical value would be something like 7000. Lower
+    /// values like 100 will result in unexpected behaviors.
+    @Default(7000) double viscosity,
 
-  /// Creates a raw recipe, all values must be specified.
-  const DoughRecipeData.raw({
-    required this.viscosity,
-    required this.adhesion,
-    required this.expansion,
-    required this.usePerspectiveWarp,
-    required this.perspectiveWarpDepth,
-    required this.entryDuration,
-    required this.entryCurve,
-    required this.exitDuration,
-    required this.exitCurve,
-    required this.draggablePrefs,
-    required this.gyroPrefs,
-  });
+    /// How sticky a [Dough] widget is. Higher values result in [Dough] that
+    /// doesn't move around a lot when its dragged. Lower values result in
+    /// really "slippery" [Dough]. A typical value would be something like 12.
+    @Default(12) double adhesion,
 
-  /// Creates the fallback recipe.
-  factory DoughRecipeData.fallback() => DoughRecipeData();
+    /// The factor by which a [Dough] widget expands when activated.
+    @Default(1) double expansion,
 
-  /// How 'thick' a [Dough] widget is. Higher values make for harder/less
-  /// elastic [Dough]. A typical value would be something like 7000. Lower
-  /// values like 100 will result in unexpected behaviors.
-  final double viscosity;
+    /// Whether perspective warping should be used. When enabled, [Dough] 
+    /// widgets will perform a 3D rotation slightly towards 
+    /// [DoughController.delta]. This will give the illusion that the dough 
+    /// has mass and make it feel more jiggly.
+    @Default(false) bool usePerspectiveWarp,
 
-  /// How sticky a [Dough] widget is. Higher values result in [Dough] that
-  /// doesn't move around a lot when its dragged. Lower values result in
-  /// really "slippery" [Dough]. A typical value would be something like 12.
-  final double adhesion;
+    /// The depth of the perspective warp. A typical value would be something
+    /// like 0.015.
+    @Default(0.015) double perspectiveWarpDepth,
 
-  /// The factor by which a [Dough] widget expands when activated.
-  final double expansion;
+    /// How long a [Dough] widget takes to transition into a squished state.
+    @Default(Duration(milliseconds: 20)) Duration entryDuration,
 
-  /// Whether perspective warping should be used. When enabled, [Dough] widgets
-  /// will perform a 3D rotation slightly towards [DoughController.delta]. This
-  /// will give the illusion that the dough has mass and make it feel more
-  /// jiggly.
-  final bool usePerspectiveWarp;
+    /// The curve by which a [Dough] widget enters a squished state.
+    @Default(Curves.easeInOut) Curve entryCurve,
 
-  /// The depth of the perspective warp. A typical value would be something
-  /// like 0.015.
-  final double perspectiveWarpDepth;
+    /// How long a [Dough] widget takes to transition out of a squished state.
+    @Default(Duration(milliseconds: 500)) Duration exitDuration,
 
-  /// How long a [Dough] widget takes to transition into a squished state.
-  final Duration entryDuration;
+    /// The curve by which a [Dough] widget exits a squished state.
+    @Default(Curves.elasticIn) Curve exitCurve,
 
-  /// The curve by which a [Dough] widget enters a squished state.
-  final Curve entryCurve;
+    /// Default settings applied to [DraggableDough] widgets.
+    @Default(DraggableDoughPrefs()) DraggableDoughPrefs draggablePrefs,
 
-  /// How long a [Dough] widget takes to transition out of a squished state.
-  final Duration exitDuration;
-
-  /// The curve by which a [Dough] widget exits a squished state.
-  final Curve exitCurve;
-
-  /// Default settings applied to [DraggableDough] widgets.
-  final DraggableDoughPrefs draggablePrefs;
-
-  /// Default settings applied to [GyroDough] widgets.
-  final GyroDoughPrefs gyroPrefs;
-
-  /// Copies the current recipe with some new values.
-  DoughRecipeData copyWith({
-    double? viscosity,
-    double? adhesion,
-    double? expansion,
-    bool? usePerspectiveWarp,
-    double? perspectiveWarpDepth,
-    Duration? entryDuration,
-    Curve? entryCurve,
-    Duration? exitDuration,
-    Curve? exitCurve,
-    DraggableDoughPrefs? draggablePrefs,
-    GyroDoughPrefs? gyroPrefs,
-  }) {
-    return DoughRecipeData.raw(
-      viscosity: viscosity ?? this.viscosity,
-      adhesion: adhesion ?? this.adhesion,
-      expansion: expansion ?? this.expansion,
-      usePerspectiveWarp: usePerspectiveWarp ?? this.usePerspectiveWarp,
-      perspectiveWarpDepth: perspectiveWarpDepth ?? this.perspectiveWarpDepth,
-      entryDuration: entryDuration ?? this.entryDuration,
-      entryCurve: entryCurve ?? this.entryCurve,
-      exitDuration: exitDuration ?? this.exitDuration,
-      exitCurve: exitCurve ?? this.exitCurve,
-      draggablePrefs: draggablePrefs ?? this.draggablePrefs,
-      gyroPrefs: gyroPrefs ?? this.gyroPrefs,
-    );
-  }
-
-  @override
-  List<Object> get props => [
-        viscosity,
-        adhesion,
-        expansion,
-        usePerspectiveWarp,
-        perspectiveWarpDepth,
-        entryDuration,
-        entryCurve,
-        exitDuration,
-        exitCurve,
-        draggablePrefs,
-        gyroPrefs,
-      ];
-
-  @override
-  bool get stringify => true;
+    /// Default settings applied to [GyroDough] widgets.
+    @Default(GyroDoughPrefs()) GyroDoughPrefs gyroPrefs,
+  }) = _DoughRecipeData;
 }

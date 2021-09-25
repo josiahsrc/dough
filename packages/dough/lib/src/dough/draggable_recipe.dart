@@ -1,55 +1,21 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'draggable.dart';
 
+part 'draggable_recipe.freezed.dart';
+
 /// Preferences applied to [DraggableDough] widgets.
-class DraggableDoughPrefs extends Equatable {
+@freezed
+class DraggableDoughPrefs with _$DraggableDoughPrefs {
   /// Creates [DraggableDough] preferences.
-  factory DraggableDoughPrefs({
-    double? breakDistance,
-    bool? useHapticsOnBreak,
-  }) {
-    return DraggableDoughPrefs.raw(
-      breakDistance: breakDistance ?? 80,
-      useHapticsOnBreak: useHapticsOnBreak ?? true,
-    );
-  }
+  const factory DraggableDoughPrefs({
+    /// The logical pixel distance at which the [DraggableDough] should
+    /// elastically break its hold on the origin and enter a freely movable
+    /// state.
+    @Default(80) double breakDistance,
 
-  /// Creates raw [DraggableDough] preferences, all values must be specified.
-  const DraggableDoughPrefs.raw({
-    required this.breakDistance,
-    required this.useHapticsOnBreak,
-  });
-
-  /// Creates fallback [DraggableDough] preferences.
-  factory DraggableDoughPrefs.fallback() => DraggableDoughPrefs();
-
-  /// The logical pixel distance at which the [DraggableDough] should
-  /// elastically break its hold on the origin and enter a freely movable
-  /// state.
-  final double breakDistance;
-
-  /// Whether [DraggableDough] widgets should trigger haptic feedback when
-  /// the dough breaks its hold on the origin.
-  final bool useHapticsOnBreak;
-
-  /// Copies these preferences with some new values.
-  DraggableDoughPrefs copyWith({
-    double? breakDistance,
-    bool? useHapticsOnBreak,
-  }) {
-    return DraggableDoughPrefs.raw(
-      breakDistance: breakDistance ?? this.breakDistance,
-      useHapticsOnBreak: useHapticsOnBreak ?? this.useHapticsOnBreak,
-    );
-  }
-
-  @override
-  List<Object> get props => [
-        breakDistance,
-        useHapticsOnBreak,
-      ];
-
-  @override
-  bool get stringify => true;
+    /// Whether [DraggableDough] widgets should trigger haptic feedback when
+    /// the dough breaks its hold on the origin.
+    @Default(true) bool useHapticsOnBreak,
+  }) = _DraggableDoughPrefs;
 }

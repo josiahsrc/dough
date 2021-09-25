@@ -1,78 +1,61 @@
 import 'dart:ui' as ui;
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vector_math/vector_math_64.dart' as vmath;
 
 import 'dough.dart';
 import 'dough_controller.dart';
 import 'dough_recipe.dart';
 
+part 'dough_transformer.freezed.dart';
+
 /// A context passed to a [DoughTransformer]. This will contain a context
 /// to inform the [DoughTransformer] on how to transform a widget.
-class DoughTransformerContext extends Equatable {
+@freezed
+class DoughTransformerContext with _$DoughTransformerContext {
   /// Creates an instance of a [DoughTransformerContext].
-  const DoughTransformerContext({
-    required this.rawT,
-    required this.t,
-    required this.recipe,
-    required this.origin,
-    required this.target,
-    required this.delta,
-    required this.deltaAngle,
-    required this.controller,
-    required this.axis,
-  });
+  const factory DoughTransformerContext({
+    /// The unscaled animation time clamped between 0 and 1.
+    required double rawT,
 
-  /// The unscaled animation time clamped between 0 and 1.
-  final double rawT;
+    /// The scaled animation time, based on [rawT], which has been transformed
+    /// by the [DoughRecipeData.entryCurve] or [DoughRecipeData.exitCurve].
+    required double t,
 
-  /// The scaled animation time, based on [rawT], which has been transformed
-  /// by the [DoughRecipeData.entryCurve] or [DoughRecipeData.exitCurve].
-  final double t;
+    /// The contexual recipe applied to the associated [Dough] widget.
+    required DoughRecipeData recipe,
 
-  /// The contexual recipe applied to the associated [Dough] widget.
-  final DoughRecipeData recipe;
+    /// The origin of the dough squish. This value is equivalent to
+    /// [DoughController.origin], but is a vector instead of an offset.
+    required vmath.Vector2 origin,
 
-  /// The origin of the dough squish. This value is equivalent to
-  /// [DoughController.origin], but is a vector instead of an offset.
-  final vmath.Vector2 origin;
+    /// The target of the dough squish. This value is equivalent to
+    /// [DoughController.target], but is a vector instead of an offset.
+    required vmath.Vector2 target,
 
-  /// The target of the dough squish. This value is equivalent to
-  /// [DoughController.target], but is a vector instead of an offset.
-  final vmath.Vector2 target;
+    /// The delta of the dough squish. This value is equivalent to
+    /// [DoughController.delta], but is a vector instead of an offset.
+    required vmath.Vector2 delta,
 
-  /// The delta of the dough squish. This value is equivalent to
-  /// [DoughController.delta], but is a vector instead of an offset.
-  final vmath.Vector2 delta;
+    /// The full-circle delta angle of the [delta] value, relative to the
+    /// [Dough] widgets up direction. This value ranges between 0 radians
+    /// and 2PI radians.
+    required double deltaAngle,
 
-  /// The full-circle delta angle of the [delta] value, relative to the
-  /// [Dough] widgets up direction. This value ranges between 0 radians
-  /// and 2PI radians.
-  final double deltaAngle;
+    /// The controller for the associated [Dough] widget.
+    required DoughController controller,
 
-  /// The controller for the associated [Dough] widget.
-  final DoughController controller;
+    /// The axis on which to constrain any stretching.
+    required Axis? axis,
+  }) = _DoughTransformerContext;
 
-  /// The axis on which to constrain any stretching.
-  final Axis? axis;
+  // ignore: unused_element
+  const DoughTransformerContext._();
 
   /// Whether or not this transformer has an axis to constrain to.
   bool get hasAxis => axis != null;
-
-  @override
-  List<Object?> get props => [
-        rawT,
-        t,
-        recipe,
-        origin,
-        target,
-        delta,
-        deltaAngle,
-        controller,
-        axis,
-      ];
 }
 
 /// A utility for common dough transformations.
@@ -80,7 +63,7 @@ class DoughTransformations {
   const DoughTransformations._();
 
   /// A utility method which creates a [Matrix4] that scales widgets by a
-  /// factor of the `DoughRecipe.expansion` property.
+  /// factor of the `DoughRecipe.expansion` property (see [DoughRecipe]).
   static Matrix4 expansion(DoughTransformerContext context) {
     final scaleMag = ui.lerpDouble(
       1,
@@ -92,7 +75,8 @@ class DoughTransformations {
 
   /// A utility method which creates a [Matrix4] that perspectively rotates
   /// wigets around their yaw and pitch axes based on
-  /// [DoughTransformerContext.delta] and `DoughRecipe.viscosity`.
+  /// [_DoughTransformerContext.delta] and `DoughRecipe.viscosity`
+  /// (see [DoughRecipe]).
   static Matrix4 perspectiveWarp(DoughTransformerContext context) {
     if (!context.recipe.usePerspectiveWarp) {
       return Matrix4.identity();
@@ -107,9 +91,10 @@ class DoughTransformations {
   }
 
   /// A utility method which creates a [Matrix4] that skews widgets in the
-  /// direction of the [DoughTransformerContext.delta] based on the
-  /// `DoughRecipe.viscosity`. If an [DoughTransformerContext.axis] is
-  /// specified, the resulting matrix will be constrained to the provided axis.
+  /// direction of the [_DoughTransformerContext.delta] based on the
+  /// `DoughRecipe.viscosity` (see [DoughRecipe]). If an 
+  /// [_DoughTransformerContext.axis] is specified, the resulting matrix 
+  /// will be constrained to the provided axis.
   static Matrix4 viscositySkew(DoughTransformerContext context) {
     final skewSize =
         context.t * context.delta.length / context.recipe.viscosity;
@@ -134,7 +119,7 @@ class DoughTransformations {
 
   /// A utility method which creates the default dough squishing [Matrix4].
   /// The resulting [Matrix4] doesn't apply translations, only other warping
-  /// deformations based on the [DoughTransformerContext.recipe].
+  /// deformations based on the [_DoughTransformerContext.recipe].
   ///
   /// You can basically think of this as the core squish behavior.
   static Matrix4 squishDeformation(DoughTransformerContext context) {
@@ -205,7 +190,8 @@ abstract class DoughTransformer {
   double get rawT => _context.rawT;
 
   /// The scaled animation time, based on [rawT], which has been transformed
-  /// by the [DoughRecipeData.entryCurve] or [DoughRecipeData.exitCurve].
+  /// by the `DoughRecipe.entryCurve` or `DoughRecipe.exitCurve` (see 
+  /// [DoughRecipe]).
   @Deprecated('Access this value using the context instead.')
   double get t => _context.t;
 
@@ -284,7 +270,7 @@ class DraggableOverlayDoughTransformer extends DoughTransformer {
 
   /// Whether the controller's delta should be applied to the widget.
   /// This will offset the widget being dragged by
-  /// [DoughTransformerContext.delta].
+  /// [_DoughTransformerContext.delta].
   final bool applyDelta;
 
   /// If [applyDelta] is true, this determines whether the widget should
