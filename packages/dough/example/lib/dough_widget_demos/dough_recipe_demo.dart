@@ -56,7 +56,7 @@ class DoughRecipeDemo extends StatelessWidget {
         usePerspectiveWarp: true,
         perspectiveWarpDepth: 0.02,
         exitDuration: Duration(milliseconds: 600),
-        draggablePrefs: DraggableDoughPrefs(
+        draggableRecipe: DraggableDoughRecipeData(
           breakDistance: 100,
           useHapticsOnBreak: true,
         ),

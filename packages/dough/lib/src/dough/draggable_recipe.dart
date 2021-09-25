@@ -6,9 +6,9 @@ part 'draggable_recipe.freezed.dart';
 
 /// Preferences applied to [DraggableDough] widgets.
 @freezed
-class DraggableDoughPrefs with _$DraggableDoughPrefs {
+class DraggableDoughRecipeData with _$DraggableDoughRecipeData {
   /// Creates [DraggableDough] preferences.
-  const factory DraggableDoughPrefs({
+  const factory DraggableDoughRecipeData({
     /// The logical pixel distance at which the [DraggableDough] should
     /// elastically break its hold on the origin and enter a freely movable
     /// state.
@@ -17,5 +17,5 @@ class DraggableDoughPrefs with _$DraggableDoughPrefs {
     /// Whether [DraggableDough] widgets should trigger haptic feedback when
     /// the dough breaks its hold on the origin.
     @Default(true) bool useHapticsOnBreak,
-  }) = _DraggableDoughPrefs;
+  }) = _DraggableDoughRecipeData;
 }

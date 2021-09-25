@@ -105,7 +105,7 @@ You can find a full example of how to use this widget [here](example/lib/dough_w
 
 This is the migration guide for migrating from version 1.0.2 to 2.0.0. Version 2.0.0 improves the Dough api and moved some features into a new package (see below).
 
-### DoughRecipePrefs -> DoughRecipeData
+### DoughPrefs -> DoughRecipeData
 
 To keep the Dough package consistent with Flutter, the 'prefs' suffix has changed to 'data'. This means that...
 
