@@ -2,11 +2,12 @@
 
 # Dough Library
 
-Squishy widgets for Flutter.
+Squishy widgets for Flutter. This project houses all the Dough related widgets. Check out the packages folder for a list of the available Dough packages.
 
 ## Quick Links
 
 - [Dough](./packages/dough/README.md)
+- [Dough Sensors](./packages/dough_sensors/README.md)
 
 ## Demos
 

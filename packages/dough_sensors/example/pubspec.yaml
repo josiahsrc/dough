@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  dough:
+    path: ../../dough
   dough_sensors:
     path: ../
 
