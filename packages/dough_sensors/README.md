@@ -20,7 +20,7 @@ This package provides some smooshy widgets that integrate with system sensors. T
 
 <br>
 
-## Platform Support
+## Platform support
 
 | Android |  iOS  | MacOS |  Web  | Linux | Windows |
 | :-----: | :---: | :---: | :---: | :---: | :-----: |
@@ -32,7 +32,7 @@ This package provides squishy widgets you can use right out of the box. Optional
 
 <br>
 
-### Gyro Dough
+## Gyro Dough
 
 Wrap any widget in `GyroDough` to make it squish based on how a user moves their phone around in physical space. This widget only works on devices that have accelerometer/gyroscope features.
 

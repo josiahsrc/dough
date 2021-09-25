@@ -1,3 +1,4 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+- Import GyroDough widget from the original [Dough Project](https://pub.dev/packages/dough)
+- Create `GyroDoughRecipe` widget

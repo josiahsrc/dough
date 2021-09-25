@@ -12,25 +12,25 @@ This package provides some widgets you can use to create a smooshy UI.
 - [Flutter package](https://pub.dev/packages/dough)
 - [Source code](https://github.com/josiahsrc/dough)
 
-## Platform Support
+## Platform support
 
 | Android |  iOS  | MacOS |  Web  | Linux | Windows |
 | :-----: | :---: | :---: | :---: | :---: | :-----: |
-|   ✔️     |   ✔️   |   ✔️   |   ✔️   |   ✔️   |   ✔️     |
+|    ✔️    |   ✔️   |   ✔️   |   ✔️   |   ✔️   |    ✔️    |
 
 <br> 
 
-> See the [migration guide](#migration-guide) below for migrating from `v1.0.2 -> v2.0.0`.
+> See the [migration guide](../../docs/migrations/1-2.md) for details on how to migrate from `v1.0.2` to `v2.0.0`. This has details on what happened to the `GyroDough` widget.
 
 <br> 
 
-## How to use
+## Getting started
 
 This package provides squishy widgets you can use right out of the box. Optionally, you can create custom Dough widgets for a custom squish effect. For a more complete overview on how to use the Dough library, check out the [example project](./example/README.md) provided on GitHub.
 
 <br>
 
-### Pressable Dough
+## Pressable Dough
 
 Wrap any widget in `PressableDough` to make it squish based on a user's input gestures.
 
@@ -47,7 +47,7 @@ You can find a full example of how to use this widget [here](example/lib/dough_w
 <br>
 
 
-### Draggable Dough
+## Draggable Dough
 
 Similar to Flutter's built-in Draggable widget, `DraggableDough` allows you to drag and drop widgets around... Only this time it's squishy!
 
@@ -65,7 +65,7 @@ You can find a full example of how to use this widget [here](example/lib/dough_w
 
 <br>
 
-### Make your own Dough
+## Make your own Dough
 
 If the above widgets aren't exactly what you're looking for, you can easily create your own squishy widget using the provided `Dough` widget! See the [example project](example/lib/dough_widget_demos/custom_dough_demo.dart) for more details on how to do this.
 
@@ -94,30 +94,6 @@ DoughRecipe(
 You can find a full example of how to use this widget [here](example/lib/dough_widget_demos/dough_recipe_demo.dart).
 
 ![DoughRecipe Demo](../../docs/assets/gifs/dough-recipe.gif)
-
-<br>
-
----
-
-<br>
-
-## Migration Guide
-
-This is the migration guide for migrating from version 1.0.2 to 2.0.0. Version 2.0.0 improves the Dough api and moved some features into a new package (see below).
-
-### DoughPrefs -> DoughRecipeData
-
-To keep the Dough package consistent with Flutter, the 'prefs' suffix has changed to 'data'. This means that...
-
-```
-
-```
-
-### Gyro Dough
-
-The `GyroDough` widget has moved. You can now find it in the new [Dough Sensors](https://pub.dev/packages/dough_sensors) package.
-
-![GyroDough Demo](../../docs/assets/gifs/gyro-dough.gif)
 
 <br>
 
