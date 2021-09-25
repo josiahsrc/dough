@@ -202,7 +202,6 @@ class DraggableOverlayDoughTransformer extends DoughTransformer {
       if (snapToTargetOnStop) {
         final effDelta =
             -context.delta * (context.controller.isActive ? 1 : context.t);
-
         translate = Matrix4.translationValues(
           effDelta.x + adhesiveDelta.x,
           effDelta.y + adhesiveDelta.y,

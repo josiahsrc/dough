@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'dough_recipe.dart';
 import 'draggable.dart';
 
 part 'draggable_recipe.freezed.dart';
@@ -18,4 +20,45 @@ class DraggableDoughRecipeData with _$DraggableDoughRecipeData {
     /// the dough breaks its hold on the origin.
     @Default(true) bool useHapticsOnBreak,
   }) = _DraggableDoughRecipeData;
+}
+
+/// Inherited settings for [DraggableDough] widgets. Use this to override
+/// the default [DraggableDough] settings.
+class DraggableDoughRecipe extends StatelessWidget {
+  /// Creates an instance of a [DraggableDoughRecipe].
+  const DraggableDoughRecipe({
+    Key? key,
+    required this.data,
+    required this.child,
+  }) : super(key: key);
+
+  static const _kFallback = DraggableDoughRecipeData();
+
+  /// The [DraggableDoughRecipeData] applied to all child [DraggableDough]
+  /// widgets.
+  final DraggableDoughRecipeData? data;
+
+  /// The child to apply these settings to.
+  final Widget child;
+
+  /// Gets the inherited receipe. If no recipe is found a default one will
+  /// be returned instead.
+  static DraggableDoughRecipeData of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      DoughRecipe.of(
+        context,
+        listen: listen,
+      ).draggableRecipe;
+
+  @override
+  Widget build(BuildContext context) {
+    return DoughRecipe(
+      data: DoughRecipe.of(context).copyWith(
+        draggableRecipe: data ?? _kFallback,
+      ),
+      child: child,
+    );
+  }
 }

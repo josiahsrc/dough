@@ -20,46 +20,37 @@ class DoughRecipeData with _$DoughRecipeData {
     /// How 'thick' a [Dough] widget is. Higher values make for harder/less
     /// elastic [Dough]. A typical value would be something like 7000. Lower
     /// values like 100 will result in unexpected behaviors.
-    @Default(7000)
-        double viscosity,
+    @Default(7000) double viscosity,
 
     /// How sticky a [Dough] widget is. Higher values result in [Dough] that
     /// doesn't move around a lot when its dragged. Lower values result in
     /// really "slippery" [Dough]. A typical value would be something like 12.
-    @Default(12)
-        double adhesion,
+    @Default(12) double adhesion,
 
     /// The factor by which a [Dough] widget expands when activated.
-    @Default(1)
-        double expansion,
+    @Default(1) double expansion,
 
     /// Whether perspective warping should be used. When enabled, [Dough]
     /// widgets will perform a 3D rotation slightly towards
     /// [DoughController.delta]. This will give the illusion that the dough
     /// has mass and make it feel more jiggly.
-    @Default(false)
-        bool usePerspectiveWarp,
+    @Default(false) bool usePerspectiveWarp,
 
     /// The depth of the perspective warp. A typical value would be something
     /// like 0.015.
-    @Default(0.015)
-        double perspectiveWarpDepth,
+    @Default(0.015) double perspectiveWarpDepth,
 
     /// How long a [Dough] widget takes to transition into a squished state.
-    @Default(Duration(milliseconds: 20))
-        Duration entryDuration,
+    @Default(Duration(milliseconds: 20)) Duration entryDuration,
 
     /// The curve by which a [Dough] widget enters a squished state.
-    @Default(Curves.easeInOut)
-        Curve entryCurve,
+    @Default(Curves.easeInOut) Curve entryCurve,
 
     /// How long a [Dough] widget takes to transition out of a squished state.
-    @Default(Duration(milliseconds: 500))
-        Duration exitDuration,
+    @Default(Duration(milliseconds: 500)) Duration exitDuration,
 
     /// The curve by which a [Dough] widget exits a squished state.
-    @Default(Curves.elasticIn)
-        Curve exitCurve,
+    @Default(Curves.elasticIn) Curve exitCurve,
 
     /// Default settings applied to [DraggableDough] widgets.
     @Default(DraggableDoughRecipeData())

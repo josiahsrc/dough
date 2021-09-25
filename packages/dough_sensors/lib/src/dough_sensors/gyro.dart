@@ -11,9 +11,6 @@ import 'gyro_recipe.dart';
 /// when you move your phone around).
 ///
 /// **This widget ONLY works on devices that have accelerometers.**
-///
-/// Please note that this widget will be moved over to a separate package
-/// to remove a platform depedency.
 class GyroDough extends StatefulWidget {
   /// Creates a [GyroDough] widget.
   const GyroDough({

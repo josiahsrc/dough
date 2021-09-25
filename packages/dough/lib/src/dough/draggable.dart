@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use_from_same_package
-
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/services.dart';
 
 import 'dough.dart';
 import 'dough_controller.dart';
-import 'dough_recipe.dart';
 import 'dough_transformer.dart';
 import 'draggable_recipe.dart';
 
@@ -19,7 +16,6 @@ class DraggableDough<T extends Object> extends StatefulWidget {
   /// Creates a [DraggableDough] widget.
   const DraggableDough({
     Key? key,
-    this.recipe,
     this.onDoughBreak,
     required this.child,
     required this.feedback,
@@ -28,9 +24,6 @@ class DraggableDough<T extends Object> extends StatefulWidget {
     this.childWhenDragging,
     this.feedbackOffset = Offset.zero,
     this.dragAnchorStrategy,
-    @Deprecated('Please file a PR to use the updated API if you are using this')
-        // ignore: deprecated_member_use
-        this.dragAnchor = DragAnchor.child,
     this.affinity,
     this.maxSimultaneousDrags,
     this.onDragStarted,
@@ -41,11 +34,6 @@ class DraggableDough<T extends Object> extends StatefulWidget {
     this.longPress = false,
   })  : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
         super(key: key);
-
-  /// Preferences for the behavior of this [DraggableDough] widget. This can
-  /// be specified here or in the context of a [DoughRecipe] widget. This will
-  /// override the contextual `DoughRecipeData.draggableRecipe` if provided.
-  final DraggableDoughRecipeData? recipe;
 
   /// A callback raised when the user drags the feedback widget beyond the
   /// `DraggableDoughRecipeData.breakDistance` and the [Dough] snaps back into
@@ -69,10 +57,6 @@ class DraggableDough<T extends Object> extends StatefulWidget {
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Offset feedbackOffset;
-
-  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  @Deprecated('Please file a PR to use the updated API if you are using this')
-  final DragAnchor dragAnchor;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DragAnchorStrategy? dragAnchorStrategy;
@@ -135,13 +119,12 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DoughRecipe.of(context);
-    final prefs = widget.recipe ?? recipe.draggableRecipe;
+    final recipe = DraggableDoughRecipe.of(context);
 
     // The feedback widget won't share the same context once the [Draggable]
     // widget instantiates it as an overlay. The [DoughRecipe] has to be copied
     // directly so it will exist in the overlay's context as well.
-    final doughFeedback = DoughRecipe(
+    final doughFeedback = DraggableDoughRecipe(
       data: recipe,
       child: _DragFeedback(
         controllerTracker: _controllerTracker,
@@ -158,8 +141,6 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         childWhenDragging: widget.childWhenDragging,
         feedbackOffset: widget.feedbackOffset,
         dragAnchorStrategy: widget.dragAnchorStrategy,
-        // ignore: deprecated_member_use
-        dragAnchor: widget.dragAnchor,
         maxSimultaneousDrags: widget.maxSimultaneousDrags,
         ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
         onDraggableCanceled: widget.onDraggableCanceled,
@@ -176,8 +157,6 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         childWhenDragging: widget.childWhenDragging,
         feedbackOffset: widget.feedbackOffset,
         dragAnchorStrategy: widget.dragAnchorStrategy,
-        // ignore: deprecated_member_use
-        dragAnchor: widget.dragAnchor,
         affinity: widget.affinity,
         maxSimultaneousDrags: widget.maxSimultaneousDrags,
         ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
@@ -205,11 +184,11 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
 
         final controller = _controllerTracker.getcontroller(event.pointer);
         if (controller.isActive) {
-          final sqrBreakThresh = prefs.breakDistance * prefs.breakDistance;
+          final sqrBreakThresh = recipe.breakDistance * recipe.breakDistance;
           if (controller.delta.distanceSquared > sqrBreakThresh) {
             controller.stop();
             widget.onDoughBreak?.call();
-            if (prefs.useHapticsOnBreak) {
+            if (recipe.useHapticsOnBreak) {
               HapticFeedback.selectionClick();
             }
           } else {
