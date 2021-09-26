@@ -14,7 +14,7 @@ class ListViewDoughDemo extends StatelessWidget {
         viscosity: 1400,
         adhesion: 40,
         exitDuration: Duration(milliseconds: 800),
-        listViewDoughRecipe: ListViewDoughRecipeData(),
+        scrollableDoughRecipe: ScrollableDoughRecipeData(),
       ),
       child: mySquishyList,
     );

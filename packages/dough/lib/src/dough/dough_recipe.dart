@@ -7,8 +7,8 @@ import 'dough.dart';
 import 'dough_controller.dart';
 import 'draggable_dough.dart';
 import 'draggable_dough_recipe.dart';
-import 'list_view_dough.dart';
-import 'list_view_dough_recipe.dart';
+import 'scrollable_dough.dart';
+import 'scrollable_dough_recipe.dart';
 
 part 'dough_recipe.freezed.dart';
 
@@ -58,9 +58,9 @@ class DoughRecipeData with _$DoughRecipeData {
     @Default(DraggableDoughRecipeData())
         DraggableDoughRecipeData draggableDoughRecipe,
 
-    /// Default settings applied to [ListViewDough] widgets.
-    @Default(ListViewDoughRecipeData())
-        ListViewDoughRecipeData listViewDoughRecipe,
+    /// Default settings applied to scrollable dough widgets.
+    @Default(ScrollableDoughRecipeData())
+        ScrollableDoughRecipeData scrollableDoughRecipe,
   }) = _DoughRecipeData;
 }
 
