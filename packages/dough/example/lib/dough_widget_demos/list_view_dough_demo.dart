@@ -7,8 +7,12 @@ class ListViewDoughDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     final mySquishyList = ListViewDough();
 
-    final myExtraSquishyList = ListViewDoughRecipe(
-      data: ListViewDoughRecipeData(),
+    final myExtraSquishyList = DoughRecipe(
+      data: DoughRecipeData(
+        viscosity: 500,
+        adhesion: 5,
+        listViewDoughRecipe: ListViewDoughRecipeData(),
+      ),
       child: mySquishyList,
     );
 

@@ -19,7 +19,7 @@ class ListViewDoughRecipe extends StatelessWidget {
   /// Creates an instance of a [ListViewDoughRecipe].
   const ListViewDoughRecipe({
     Key? key,
-    required this.data,
+    this.data,
     required this.child,
   }) : super(key: key);
 
