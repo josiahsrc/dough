@@ -7,6 +7,8 @@ import 'dough.dart';
 import 'dough_controller.dart';
 import 'draggable.dart';
 import 'draggable_recipe.dart';
+import 'list_view.dart';
+import 'list_view_recipe.dart';
 
 part 'dough_recipe.freezed.dart';
 
@@ -54,7 +56,11 @@ class DoughRecipeData with _$DoughRecipeData {
 
     /// Default settings applied to [DraggableDough] widgets.
     @Default(DraggableDoughRecipeData())
-        DraggableDoughRecipeData draggableRecipe,
+        DraggableDoughRecipeData draggableDoughRecipe,
+
+    /// Default settings applied to [ListViewDough] widgets.
+    @Default(ListViewDoughRecipeData())
+        ListViewDoughRecipeData listViewDoughRecipe,
   }) = _DoughRecipeData;
 }
 
@@ -77,8 +83,8 @@ class DoughRecipe extends StatelessWidget {
   /// The settings to be applied to all [Dough] widgets below this widget.
   final DoughRecipeData? data;
 
-  /// Gets the inherited receipe. If no recipe is found a default one will
-  /// be returned instead.
+  /// Gets the inherited [DoughRecipeData]. If no recipe is found a 
+  /// default one will be returned instead.
   static DoughRecipeData of(
     BuildContext context, {
     bool listen = true,

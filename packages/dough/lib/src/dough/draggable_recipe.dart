@@ -41,8 +41,8 @@ class DraggableDoughRecipe extends StatelessWidget {
   /// The child to apply these settings to.
   final Widget child;
 
-  /// Gets the inherited receipe. If no recipe is found a default one will
-  /// be returned instead.
+  /// Gets the inherited [DraggableDoughRecipeData]. If no recipe is found a 
+  /// default one will be returned instead.
   static DraggableDoughRecipeData of(
     BuildContext context, {
     bool listen = true,
@@ -50,13 +50,13 @@ class DraggableDoughRecipe extends StatelessWidget {
       DoughRecipe.of(
         context,
         listen: listen,
-      ).draggableRecipe;
+      ).draggableDoughRecipe;
 
   @override
   Widget build(BuildContext context) {
     return DoughRecipe(
       data: DoughRecipe.of(context).copyWith(
-        draggableRecipe: data ?? _kFallback,
+        draggableDoughRecipe: data ?? _kFallback,
       ),
       child: child,
     );

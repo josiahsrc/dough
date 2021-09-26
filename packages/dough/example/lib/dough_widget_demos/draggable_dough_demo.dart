@@ -39,7 +39,7 @@ class DraggableDoughDemo extends StatelessWidget {
       data: DoughRecipeData(
         adhesion: 4,
         viscosity: 500,
-        draggableRecipe: DraggableDoughRecipeData(
+        draggableDoughRecipe: DraggableDoughRecipeData(
           breakDistance: 80,
           useHapticsOnBreak: true,
         ),
