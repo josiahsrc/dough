@@ -91,7 +91,7 @@ class DoughTransformations {
 
   /// Calculates the skew size for the provided context. This skew size
   /// is used for calculating the "squishy" transformations for Dough.
-  static double skewSize(DoughTransformerContext context) {
+  static double viscositySkewSize(DoughTransformerContext context) {
     return context.t * context.delta.length / context.recipe.viscosity;
   }
 
@@ -101,7 +101,7 @@ class DoughTransformations {
   /// [_DoughTransformerContext.axis] is specified, the resulting matrix
   /// will be constrained to the provided axis.
   static Matrix4 viscositySkew(DoughTransformerContext context) {
-    final skewSize = DoughTransformations.skewSize(context);
+    final skewSize = DoughTransformations.viscositySkewSize(context);
 
     if (context.axis == Axis.vertical) {
       return Matrix4.identity()..scale(1, skewSize, 1);
@@ -135,7 +135,7 @@ class DoughTransformations {
     }
 
     Matrix4 axisSkew;
-    final skewSize = 1 + DoughTransformations.skewSize(context);
+    final skewSize = 1 + DoughTransformations.viscositySkewSize(context);
     if (axis == Axis.horizontal) {
       axisSkew = Matrix4.identity().scaled(skewSize, 1.0, 1.0);
     } else if (axis == Axis.vertical) {
@@ -177,7 +177,7 @@ abstract class DoughTransformer {
 /// towards the target with resistance pulling the widget back towards its
 /// origin.
 class BasicDoughTransformer extends DoughTransformer {
-  /// Creates a BasicDoughTransformer.
+  /// Creates a [BasicDoughTransformer].
   BasicDoughTransformer() : super();
 
   @override

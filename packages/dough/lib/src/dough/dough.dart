@@ -33,8 +33,6 @@ class Dough extends StatefulWidget {
 
   /// The axis on which to constrain any stretching. If no axis is specified,
   /// the [Dough] will not be constrained to any access.
-  ///
-  /// **Note that this feature is still under development.**
   final Axis? axis;
 
   @override
