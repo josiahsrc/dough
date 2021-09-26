@@ -3,6 +3,7 @@ import 'main.dart';
 import 'dough_widget_demos/custom_dough_demo.dart';
 import 'dough_widget_demos/pressable_dough_demo.dart';
 import 'dough_widget_demos/draggable_dough_demo.dart';
+import 'dough_widget_demos/list_view_dough_demo.dart';
 import 'dough_widget_demos/dough_recipe_demo.dart';
 
 class Routes {
@@ -10,6 +11,7 @@ class Routes {
   static final kCustomDough = '/custom-dough';
   static final kPressableDough = '/pressable-dough';
   static final kDraggableDough = '/draggable-dough';
+  static final kListViewDough = '/list-view-dough';
   static final kDoughRecipeDemo = '/dough-recipe';
 
   static define() => {
@@ -17,6 +19,7 @@ class Routes {
         kCustomDough: (context) => CustomDoughDemo(),
         kPressableDough: (context) => PressableDoughDemo(),
         kDraggableDough: (context) => DraggableDoughDemo(),
+        kListViewDough: (context) => ListViewDoughDemo(),
         kDoughRecipeDemo: (context) => DoughRecipeDemo(),
       };
 }
