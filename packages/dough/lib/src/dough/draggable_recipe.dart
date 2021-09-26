@@ -28,7 +28,7 @@ class DraggableDoughRecipe extends StatelessWidget {
   /// Creates an instance of a [DraggableDoughRecipe].
   const DraggableDoughRecipe({
     Key? key,
-    required this.data,
+    this.data,
     required this.child,
   }) : super(key: key);
 

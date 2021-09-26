@@ -53,9 +53,6 @@ class DoughTransformerContext with _$DoughTransformerContext {
 
   // ignore: unused_element
   const DoughTransformerContext._();
-
-  /// Whether or not this transformer has an axis to constrain to.
-  bool get hasAxis => axis != null;
 }
 
 /// A utility for common dough transformations.
@@ -123,8 +120,24 @@ class DoughTransformations {
   ///
   /// You can basically think of this as the core squish behavior.
   static Matrix4 squishDeformation(DoughTransformerContext context) {
+    final axis = context.axis;
+    if (axis == null) {
+      return perspectiveWarp(context)
+          .multiplied(viscositySkew(context))
+          .multiplied(expansion(context));
+    }
+
+    Matrix4 axisSkew;
+    if (axis == Axis.horizontal) {
+      axisSkew = Matrix4.skewX(context.delta.x);
+    } else if (axis == Axis.vertical) {
+      axisSkew = Matrix4.skewY(context.delta.y);
+    } else {
+      throw UnimplementedError();
+    }
+
     return perspectiveWarp(context)
-        .multiplied(viscositySkew(context))
+        .multiplied(axisSkew)
         .multiplied(expansion(context));
   }
 }

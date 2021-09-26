@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'dough.dart';
 import 'dough_controller.dart';
+import 'dough_recipe.dart';
 import 'dough_transformer.dart';
 import 'draggable_recipe.dart';
 
@@ -119,13 +120,16 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DraggableDoughRecipe.of(context);
+    final baseRecipe = DoughRecipe.of(context);
+    final recipe = baseRecipe.draggableDoughRecipe;
 
     // The feedback widget won't share the same context once the [Draggable]
     // widget instantiates it as an overlay. The [DoughRecipe] has to be copied
     // directly so it will exist in the overlay's context as well.
-    final doughFeedback = DraggableDoughRecipe(
-      data: recipe,
+    //
+    // Using the base recipe so no context reads are necessary.
+    final doughFeedback = DoughRecipe(
+      data: baseRecipe,
       child: _DragFeedback(
         controllerTracker: _controllerTracker,
         child: widget.feedback,

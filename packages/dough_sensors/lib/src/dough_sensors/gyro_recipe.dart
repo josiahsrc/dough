@@ -38,7 +38,7 @@ class GyroDoughRecipe extends StatelessWidget {
   /// Creates an instance of a [GyroDoughRecipe].
   const GyroDoughRecipe({
     Key? key,
-    required this.data,
+    this.data,
     required this.child,
   }) : super(key: key);
 
@@ -50,8 +50,8 @@ class GyroDoughRecipe extends StatelessWidget {
   /// The child to apply these settings to.
   final Widget child;
 
-  /// Gets the inherited receipe. If no recipe is found a default one will
-  /// be returned instead.
+  /// Gets the inherited [GyroDoughRecipeData]. If no recipe is found a 
+  /// default one will be returned instead.
   static GyroDoughRecipeData of(
     BuildContext context, {
     bool listen = true,
