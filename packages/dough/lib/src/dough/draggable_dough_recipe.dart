@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'dough_recipe.dart';
-import 'draggable.dart';
+import 'draggable_dough.dart';
 
-part 'draggable_recipe.freezed.dart';
+part 'draggable_dough_recipe.freezed.dart';
 
 /// Preferences applied to [DraggableDough] widgets.
 @freezed

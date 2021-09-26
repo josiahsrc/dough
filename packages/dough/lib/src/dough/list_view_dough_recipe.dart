@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'dough_recipe.dart';
-import 'list_view.dart';
+import 'list_view_dough.dart';
 
-part 'list_view_recipe.freezed.dart';
+part 'list_view_dough_recipe.freezed.dart';
 
 /// Preferences applied to [ListViewDough] widgets.
 @freezed

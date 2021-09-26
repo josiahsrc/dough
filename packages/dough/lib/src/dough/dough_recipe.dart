@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 
 import 'dough.dart';
 import 'dough_controller.dart';
-import 'draggable.dart';
-import 'draggable_recipe.dart';
-import 'list_view.dart';
-import 'list_view_recipe.dart';
+import 'draggable_dough.dart';
+import 'draggable_dough_recipe.dart';
+import 'list_view_dough.dart';
+import 'list_view_dough_recipe.dart';
 
 part 'dough_recipe.freezed.dart';
 

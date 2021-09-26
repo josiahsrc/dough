@@ -4,7 +4,7 @@ import 'package:dough/dough.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-import 'gyro_recipe.dart';
+import 'gyro_recipe_dough.dart';
 
 /// A widget that stretches its child in a dough-like fashion based
 /// on physical device accelerometer inputs (e.g. the [Dough] jiggles

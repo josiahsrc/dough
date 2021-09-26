@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
 
-import 'gyro.dart';
+import 'gyro_dough.dart';
 
 part 'gyro_recipe.freezed.dart';
 

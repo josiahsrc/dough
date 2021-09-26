@@ -7,7 +7,7 @@ import 'dough.dart';
 import 'dough_controller.dart';
 import 'dough_recipe.dart';
 import 'dough_transformer.dart';
-import 'draggable_recipe.dart';
+import 'draggable_dough_recipe.dart';
 
 /// A widget which mimics the behavior of Flutter's [Draggable] widget, only
 /// this one is squishy! For details on what each field does for this widget,
