@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -104,7 +102,7 @@ class _ListViewDoughState extends State<ListViewDough> {
 
     return Dough(
       controller: doughController,
-      // axis: widget.scrollDirection,
+      axis: widget.scrollDirection,
       child: listener,
     );
   }

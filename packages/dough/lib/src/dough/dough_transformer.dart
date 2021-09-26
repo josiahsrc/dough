@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_int_literals
+
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -87,14 +89,19 @@ class DoughTransformations {
       ..scale(perspDelta.length / context.recipe.viscosity + 1);
   }
 
+  /// Calculates the skew size for the provided context. This skew size
+  /// is used for calculating the "squishy" transformations for Dough.
+  static double skewSize(DoughTransformerContext context) {
+    return context.t * context.delta.length / context.recipe.viscosity;
+  }
+
   /// A utility method which creates a [Matrix4] that skews widgets in the
   /// direction of the [_DoughTransformerContext.delta] based on the
   /// `DoughRecipe.viscosity` (see [DoughRecipe]). If an
   /// [_DoughTransformerContext.axis] is specified, the resulting matrix
   /// will be constrained to the provided axis.
   static Matrix4 viscositySkew(DoughTransformerContext context) {
-    final skewSize =
-        context.t * context.delta.length / context.recipe.viscosity;
+    final skewSize = DoughTransformations.skewSize(context);
 
     if (context.axis == Axis.vertical) {
       return Matrix4.identity()..scale(1, skewSize, 1);
@@ -128,10 +135,11 @@ class DoughTransformations {
     }
 
     Matrix4 axisSkew;
+    final skewSize = 1 + DoughTransformations.skewSize(context);
     if (axis == Axis.horizontal) {
-      axisSkew = Matrix4.skewX(context.delta.x);
+      axisSkew = Matrix4.identity().scaled(skewSize, 1.0, 1.0);
     } else if (axis == Axis.vertical) {
-      axisSkew = Matrix4.skewY(context.delta.y);
+      axisSkew = Matrix4.identity().scaled(1.0, skewSize, 1.0);
     } else {
       throw UnimplementedError();
     }
