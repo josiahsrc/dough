@@ -9,8 +9,11 @@ class ListViewDoughDemo extends StatelessWidget {
 
     final myExtraSquishyList = DoughRecipe(
       data: DoughRecipeData(
-        viscosity: 500,
-        adhesion: 5,
+        expansion: 1,
+        exitCurve: Curves.elasticIn,
+        viscosity: 1400,
+        adhesion: 40,
+        exitDuration: Duration(milliseconds: 800),
         listViewDoughRecipe: ListViewDoughRecipeData(),
       ),
       child: mySquishyList,

@@ -16,6 +16,7 @@ class Dough extends StatefulWidget {
     required this.controller,
     this.transformer,
     this.axis,
+    this.alignment = Alignment.center,
   }) : super(key: key);
 
   /// The child to squish.
@@ -34,6 +35,9 @@ class Dough extends StatefulWidget {
   /// The axis on which to constrain any stretching. If no axis is specified,
   /// the [Dough] will not be constrained to any access.
   final Axis? axis;
+
+  /// The origin of the squish deformation relative to the child widget.
+  final Alignment alignment;
 
   @override
   _DoughState createState() => _DoughState();
@@ -141,7 +145,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     effTrfm.onPostTransform(tContext);
 
     return Transform(
-      alignment: Alignment.center,
+      alignment: widget.alignment,
       transform: transform,
       child: widget.child,
     );
