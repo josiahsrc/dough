@@ -5,17 +5,17 @@ repository: https://github.com/josiahsrc/dough/tree/master/packages/dough
 homepage: https://josiahsaunders.com/
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  provider: ^6.0.0
-  sensors: ^2.0.0
-  vector_math: ^2.1.0
+  provider: ^6.0.2
+  sensors: ^2.0.3
+  vector_math: ^2.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^2.0.0
+  very_good_analysis: ^3.0.0

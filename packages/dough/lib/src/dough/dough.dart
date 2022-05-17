@@ -75,7 +75,7 @@ class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
     // If the controller was active on start, inform this widget that it
     // should start squishing (as soon as the context is usable).
     if (widget.controller.isActive) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.controller.isActive) {
           _onDoughCtrlStatusUpdated(widget.controller.status);
         }
