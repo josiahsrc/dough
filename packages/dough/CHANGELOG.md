@@ -1,3 +1,7 @@
+## [1.0.3] - May 16, 2022.
+
+- Updated to support Flutter `3.0.0`.
+
 ## [1.0.2] - March 24, 2021.
 
 - Removed deprecated dependencies.
