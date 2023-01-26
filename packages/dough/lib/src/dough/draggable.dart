@@ -28,9 +28,6 @@ class DraggableDough<T extends Object> extends StatefulWidget {
     this.childWhenDragging,
     this.feedbackOffset = Offset.zero,
     this.dragAnchorStrategy,
-    @Deprecated('Please file a PR to use the updated API if you are using this')
-        // ignore: deprecated_member_use
-        this.dragAnchor = DragAnchor.child,
     this.affinity,
     this.maxSimultaneousDrags,
     this.onDragStarted,
@@ -69,10 +66,6 @@ class DraggableDough<T extends Object> extends StatefulWidget {
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final Offset feedbackOffset;
-
-  /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
-  @Deprecated('Please file a PR to use the updated API if you are using this')
-  final DragAnchor dragAnchor;
 
   /// See [Flutter's docs](https://api.flutter.dev/flutter/widgets/Draggable-class.html).
   final DragAnchorStrategy? dragAnchorStrategy;
@@ -158,8 +151,6 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         childWhenDragging: widget.childWhenDragging,
         feedbackOffset: widget.feedbackOffset,
         dragAnchorStrategy: widget.dragAnchorStrategy,
-        // ignore: deprecated_member_use
-        dragAnchor: widget.dragAnchor,
         maxSimultaneousDrags: widget.maxSimultaneousDrags,
         ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
         onDraggableCanceled: widget.onDraggableCanceled,
@@ -176,8 +167,6 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
         childWhenDragging: widget.childWhenDragging,
         feedbackOffset: widget.feedbackOffset,
         dragAnchorStrategy: widget.dragAnchorStrategy,
-        // ignore: deprecated_member_use
-        dragAnchor: widget.dragAnchor,
         affinity: widget.affinity,
         maxSimultaneousDrags: widget.maxSimultaneousDrags,
         ignoringFeedbackSemantics: widget.ignoringFeedbackSemantics,
