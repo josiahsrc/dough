@@ -1,3 +1,7 @@
+## [1.0.4] - Feb 7, 2023.
+
+- Updated to support Flutter `3.7`.
+
 ## [1.0.3] - May 16, 2022.
 
 - Updated to support Flutter `3.0.0`.

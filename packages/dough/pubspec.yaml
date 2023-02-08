@@ -1,6 +1,6 @@
 name: dough
 description: This library provides widgets that can be used to create a smooshy user interface.
-version: 1.0.3
+version: 1.0.4
 repository: https://github.com/josiahsrc/dough/tree/master/packages/dough
 homepage: https://josiahsaunders.com/
 
