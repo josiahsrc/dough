@@ -63,6 +63,10 @@ export namespace Components {
         "viscosity": number;
     }
 }
+export interface DoughDraggableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDoughDraggableElement;
+}
 declare global {
     interface HTMLDoughAllPurposeFlourElement extends Components.DoughAllPurposeFlour, HTMLStencilElement {
     }
@@ -127,6 +131,9 @@ declare namespace LocalJSX {
           * @type {number}
          */
         "adhesion"?: number;
+        "onDoughDragEnd"?: (event: DoughDraggableCustomEvent<{ x: number, y: number }>) => void;
+        "onDoughDragMove"?: (event: DoughDraggableCustomEvent<{ x: number, y: number }>) => void;
+        "onDoughDragStart"?: (event: DoughDraggableCustomEvent<{ x: number, y: number }>) => void;
         /**
           * The viscosity of the dough. The higher the number, the more the dough will resist movement.
           * @type {number}
