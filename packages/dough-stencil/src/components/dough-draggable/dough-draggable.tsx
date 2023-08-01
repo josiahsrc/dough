@@ -33,6 +33,7 @@ export class DoughDraggable {
 
   private onStart(e: MouseEvent | TouchEvent) {
     this.active = true;
+    this.el.classList.add('active');
 
     if (e instanceof MouseEvent) {
       this.startX = e.clientX;
@@ -75,6 +76,7 @@ export class DoughDraggable {
   private onEnd(_: MouseEvent | TouchEvent) {
     this.active = false;
     this.detatched = false;
+    this.el.classList.remove('active');
     this.deltaX = 0;
     this.deltaY = 0;
     this.startX = 0;
