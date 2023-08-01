@@ -1,12 +1,14 @@
 ![Flutter Dough](./assets/images/dough-logo@repo.png)
+![Dough JS](./assets/images/dough-web-logo@repo.jpeg)
 
 # Dough Library
 
-Squishy widgets for Flutter.
+Squishy widgets for Flutter and the web.
 
 ## Quick Links
 
-- [Dough](./packages/dough/README.md)
+- [Flutter Dough](./packages/dough/README.md)
+- [Dough JS](./packages/doughjs/readme.md)
 
 ## Demos
 
