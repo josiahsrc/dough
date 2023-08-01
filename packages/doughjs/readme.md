@@ -1,4 +1,4 @@
-![Flutter Dough](../../assets/images/dough-web-logo@repo.jpeg)
+![Dough JS](./assets/images/dough-web-logo@repo.jpeg)
 
 This package provides some widgets you can use to create a smooshy UI.
 
