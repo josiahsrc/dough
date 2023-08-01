@@ -13,6 +13,15 @@
 | `viscosity` | `viscosity` | The viscosity of the dough. The higher the number, the more the dough will resist movement.               | `number` | `4`     |
 
 
+## Events
+
+| Event            | Description | Type                                     |
+| ---------------- | ----------- | ---------------------------------------- |
+| `doughDragEnd`   |             | `CustomEvent<{ x: number; y: number; }>` |
+| `doughDragMove`  |             | `CustomEvent<{ x: number; y: number; }>` |
+| `doughDragStart` |             | `CustomEvent<{ x: number; y: number; }>` |
+
+
 ## Dependencies
 
 ### Depends on
