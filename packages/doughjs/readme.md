@@ -22,7 +22,7 @@ Wrap any component in `dough-pressable` to make it squish based on a user's inpu
 </dough-pressable>
 ```
 
-![PressableDough Demo](../../assets/gifs/pressable-dough.gif)
+![PressableDough Demo](./assets/gifs/pressable-dough.gif)
 
 ### Draggable Dough
 
@@ -34,13 +34,13 @@ Wrap any component in `dough-pressable` to make it squish based on a user's inpu
 </dough-draggable>
 ```
 
-![DraggableDough Demo](../../assets/gifs/draggable-dough.gif)
+![DraggableDough Demo](./assets/gifs/draggable-dough.gif)
 
 ### Make your own Dough
 
 If the above widgets aren't exactly what you're looking for, you can easily create your own squishy component using the provided `dough-all-purpose-flour` component! Check out the `dough-pressable` implementation for how to do that.
 
-![CustomDough Demo](../../assets/gifs/custom-dough.gif)
+![CustomDough Demo](./assets/gifs/custom-dough.gif)
 
 ---
 
