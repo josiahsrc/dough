@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@stencil/sass": "^3.0.5"
+  }
+}
