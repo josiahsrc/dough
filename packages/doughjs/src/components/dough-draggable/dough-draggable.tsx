@@ -1,4 +1,4 @@
-import { Component, Element, Host, Prop, State, h } from '@stencil/core';
+import { Component, Element, Host, Event, EventEmitter, Prop, State, h } from '@stencil/core';
 import { Vec2 } from "../../utils/math";
 
 const BREAK_DISTANCE: number = 50;
@@ -13,6 +13,9 @@ export class DoughDraggable {
   private startX: number = 0;
   private startY: number = 0;
 
+  @Event() doughDragStart: EventEmitter<{ x: number, y: number }>;
+  @Event() doughDragMove: EventEmitter<{ x: number, y: number }>;
+  @Event() doughDragEnd: EventEmitter<{ x: number, y: number }>;
 
   /**
    * The adhesion of the dough. The higher the number, the more the dough will stick to its original position.
@@ -33,6 +36,7 @@ export class DoughDraggable {
 
   private onStart(e: MouseEvent | TouchEvent) {
     this.active = true;
+    this.el.classList.add('active');
 
     if (e instanceof MouseEvent) {
       this.startX = e.clientX;
@@ -41,6 +45,8 @@ export class DoughDraggable {
       this.startX = e.touches[0].clientX;
       this.startY = e.touches[0].clientY;
     }
+
+    this.doughDragStart.emit({ x: this.startX, y: this.startY });
 
     document.addEventListener('mousemove', this.onMove.bind(this));
     document.addEventListener('mouseup', this.onEnd.bind(this));
@@ -62,6 +68,8 @@ export class DoughDraggable {
       y = e.touches[0].clientY;
     }
 
+    this.doughDragMove.emit({ x, y });
+
     this.deltaX = x - this.startX;
     this.deltaY = y - this.startY;
 
@@ -72,9 +80,19 @@ export class DoughDraggable {
     }
   }
 
-  private onEnd(_: MouseEvent | TouchEvent) {
+  private onEnd(e: MouseEvent | TouchEvent) {
+    if (!this.active)
+      return;
+
+    if (e instanceof MouseEvent) {
+      this.doughDragEnd.emit({ x: e.clientX, y: e.clientY });
+    } else {
+      this.doughDragEnd.emit({ x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY });
+    }
+
     this.active = false;
     this.detatched = false;
+    this.el.classList.remove('active');
     this.deltaX = 0;
     this.deltaY = 0;
     this.startX = 0;
@@ -85,8 +103,6 @@ export class DoughDraggable {
     document.removeEventListener('mouseup', this.onEnd.bind(this));
     document.removeEventListener('touchmove', this.onMove.bind(this));
     document.removeEventListener('touchend', this.onEnd.bind(this));
-
-
   }
 
   render() {
