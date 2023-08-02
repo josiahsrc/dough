@@ -45,8 +45,6 @@ export class DoughDraggable {
       this.startY = e.touches[0].clientY;
     }
 
-    this.doughDragStart.emit({ x: this.startX, y: this.startY });
-
     document.addEventListener('mousemove', this.onMove.bind(this));
     document.addEventListener('mouseup', this.onEnd.bind(this));
     document.addEventListener('touchmove', this.onMove.bind(this));
@@ -67,8 +65,6 @@ export class DoughDraggable {
       y = e.touches[0].clientY;
     }
 
-    this.doughDragMove.emit({ x, y });
-
     this.deltaX = x - this.startX;
     this.deltaY = y - this.startY;
 
@@ -77,6 +73,7 @@ export class DoughDraggable {
     if (!this.detached && BREAK_DISTANCE * this.adhesion < magnitude) {
       this.el.classList.add('detached');
       this.detached = true;
+      this.doughDragStart.emit({ x, y });
     }
 
     if (this.detached) {
