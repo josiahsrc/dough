@@ -1,6 +1,6 @@
 {
-  "name": "doughjs",
-  "version": "0.0.5",
+  "name": "dough-js",
+  "version": "0.0.1",
   "description": "This library provides widgets that can be used to create a smooshy user interface.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/doughjs/doughjs.esm.js",
+  "unpkg": "dist/dough-js/dough-js.esm.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/josiahsrc/dough"
@@ -26,7 +26,8 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@stencil/core": "^4.0.0"
+    "@stencil/core": "^4.0.0",
+    "@stencil/sass": "^3.0.5"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",

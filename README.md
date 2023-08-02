@@ -8,7 +8,7 @@ Squishy widgets for Flutter and the web.
 ## Quick Links
 
 - [Flutter Dough](./packages/dough/README.md)
-- [Dough JS](./packages/doughjs/readme.md)
+- [Dough JS](./packages/dough-js/readme.md)
 
 ## Demos
 
