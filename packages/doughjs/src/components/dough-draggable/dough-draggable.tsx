@@ -31,12 +31,11 @@ export class DoughDraggable {
   @State() active: boolean = false;
   @State() deltaX: number = 0;
   @State() deltaY: number = 0;
-  @State() detatched: boolean = false;
+  @State() detached: boolean = false;
 
 
   private onStart(e: MouseEvent | TouchEvent) {
     this.active = true;
-    this.el.classList.add('active');
 
     if (e instanceof MouseEvent) {
       this.startX = e.clientX;
@@ -45,8 +44,6 @@ export class DoughDraggable {
       this.startX = e.touches[0].clientX;
       this.startY = e.touches[0].clientY;
     }
-
-    this.doughDragStart.emit({ x: this.startX, y: this.startY });
 
     document.addEventListener('mousemove', this.onMove.bind(this));
     document.addEventListener('mouseup', this.onEnd.bind(this));
@@ -68,15 +65,19 @@ export class DoughDraggable {
       y = e.touches[0].clientY;
     }
 
-    this.doughDragMove.emit({ x, y });
-
     this.deltaX = x - this.startX;
     this.deltaY = y - this.startY;
 
     const vect = new Vec2(this.deltaX, this.deltaY);
     const magnitude = vect.length;
-    if (!this.detatched && BREAK_DISTANCE * this.adhesion < magnitude) {
-      this.detatched = true;
+    if (!this.detached && BREAK_DISTANCE * this.adhesion < magnitude) {
+      this.el.classList.add('detached');
+      this.detached = true;
+      this.doughDragStart.emit({ x, y });
+    }
+
+    if (this.detached) {
+      this.doughDragMove.emit({ x, y });
     }
   }
 
@@ -91,8 +92,8 @@ export class DoughDraggable {
     }
 
     this.active = false;
-    this.detatched = false;
-    this.el.classList.remove('active');
+    this.detached = false;
+    this.el.classList.remove('detached');
     this.deltaX = 0;
     this.deltaY = 0;
     this.startX = 0;
@@ -106,8 +107,8 @@ export class DoughDraggable {
   }
 
   render() {
-    const translateX = this.detatched ? this.deltaX : 0;
-    const translateY = this.detatched ? this.deltaY : 0;
+    const translateX = this.detached ? this.deltaX : 0;
+    const translateY = this.detached ? this.deltaY : 0;
 
     return (
       <Host onTouchStart={this.onStart.bind(this)} onMouseDown={this.onStart.bind(this)} style={{
@@ -116,8 +117,8 @@ export class DoughDraggable {
         <dough-all-purpose-flour
           originX={0}
           originY={0}
-          targetX={this.detatched ? 0 : this.deltaX}
-          targetY={this.detatched ? 0 : this.deltaY}
+          targetX={this.detached ? 0 : this.deltaX}
+          targetY={this.detached ? 0 : this.deltaY}
           adhesion={this.adhesion}
           viscosity={this.viscosity}
         >
