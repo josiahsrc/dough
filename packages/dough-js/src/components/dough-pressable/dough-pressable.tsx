@@ -80,7 +80,10 @@ export class DoughPressable {
   render() {
     return (
       <Host onMouseDown={this.onStart.bind(this)} onTouchStart={this.onStart.bind(this)}>
-        <dough-all-purpose-flour originX={0} originY={0} targetX={this.deltaX} targetY={this.deltaY} adhesion={this.adhesion} viscosity={this.viscosity}>
+        <dough-all-purpose-flour
+          active={this.active}
+
+          originX={0} originY={0} targetX={this.deltaX} targetY={this.deltaY} adhesion={this.adhesion} viscosity={this.viscosity}>
           <slot></slot>
         </dough-all-purpose-flour>
       </Host>

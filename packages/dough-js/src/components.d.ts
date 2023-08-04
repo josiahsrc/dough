@@ -8,6 +8,11 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DoughAllPurposeFlour {
         /**
+          * Set active to true when you want to manipulate the dough. Set to false when you want it to smooth back to its original position.
+          * @type {boolean}
+         */
+        "active": boolean;
+        /**
           * The adhesion of the dough. The higher the number, the more the dough will stick to its original position.
           * @type {number}
          */
@@ -94,6 +99,11 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DoughAllPurposeFlour {
+        /**
+          * Set active to true when you want to manipulate the dough. Set to false when you want it to smooth back to its original position.
+          * @type {boolean}
+         */
+        "active"?: boolean;
         /**
           * The adhesion of the dough. The higher the number, the more the dough will stick to its original position.
           * @type {number}

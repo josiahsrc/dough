@@ -71,9 +71,12 @@ export class DoughDraggable {
     const vect = new Vec2(this.deltaX, this.deltaY);
     const magnitude = vect.length;
     if (!this.detached && BREAK_DISTANCE * this.adhesion < magnitude) {
+
       this.el.classList.add('detached');
       this.detached = true;
       this.doughDragStart.emit({ x, y });
+
+
     }
 
     if (this.detached) {
@@ -94,8 +97,6 @@ export class DoughDraggable {
     this.active = false;
     this.detached = false;
     this.el.classList.remove('detached');
-    this.deltaX = 0;
-    this.deltaY = 0;
     this.startX = 0;
     this.startY = 0;
 
@@ -110,11 +111,14 @@ export class DoughDraggable {
     const translateX = this.detached ? this.deltaX : 0;
     const translateY = this.detached ? this.deltaY : 0;
 
+
     return (
       <Host onTouchStart={this.onStart.bind(this)} onMouseDown={this.onStart.bind(this)} style={{
         transform: `translate(${translateX}px, ${translateY}px)`
-      }}>
+      }}
+      >
         <dough-all-purpose-flour
+          active={this.active}
           originX={0}
           originY={0}
           targetX={this.detached ? 0 : this.deltaX}
@@ -124,7 +128,7 @@ export class DoughDraggable {
         >
           <slot></slot>
         </dough-all-purpose-flour>
-      </Host>
+      </Host >
     );
   }
 }

@@ -7,6 +7,24 @@ import { Matrix4, Vec2, deg2rad } from "../../utils/math";
   shadow: true,
 })
 export class DoughAllPurposeFlour {
+  @State() matrix: Matrix4 = Matrix4.identity();
+  @State() smoothDeltaX: number = 0;
+  @State() smoothDeltaY: number = 0;
+  private smoothDeltaXInterval: any;
+  private smoothDeltaYInterval: any;
+  /**
+   * Set active to true when you want to manipulate the dough. Set to false when you want it to smooth back to its original position.
+   * @type {boolean}
+   */
+  @Prop() active: boolean = false;
+  @Watch('active') activeChanged() {
+    clearInterval(this.smoothDeltaYInterval);
+    clearInterval(this.smoothDeltaXInterval);
+    if (!this.active) {
+      this.smoothDeltaXChange();
+      this.smoothDeltaYChange();
+    }
+  }
   /**
    * The adhesion of the dough. The higher the number, the more the dough will stick to its original position.
    * @type {number}
@@ -24,7 +42,11 @@ export class DoughAllPurposeFlour {
    */
   @Prop() originX: number = 0;
   @Watch('originX') originXChanged() {
-    this.updatePosition();
+    clearInterval(this.smoothDeltaXInterval);
+    if (!this.active)
+      this.smoothDeltaXChange();
+    else
+      this.updatePosition();
   }
   /**
    * The origin Y coordinate of the dough. This is the point that the dough will try to return to.
@@ -32,7 +54,11 @@ export class DoughAllPurposeFlour {
    */
   @Prop() originY: number = 0;
   @Watch('originY') originYChanged() {
-    this.updatePosition();
+    clearInterval(this.smoothDeltaYInterval);
+    if (!this.active)
+      this.smoothDeltaYChange();
+    else
+      this.updatePosition();
   }
   /**
    * The target X coordinate of the dough. This is the point that the dough will try to move to.
@@ -40,7 +66,11 @@ export class DoughAllPurposeFlour {
    */
   @Prop() targetX: number = 0;
   @Watch('targetX') targetXChanged() {
-    this.updatePosition();
+    clearInterval(this.smoothDeltaXInterval);
+    if (!this.active)
+      this.smoothDeltaXChange();
+    else
+      this.updatePosition();
   }
   /**
    * The target Y coordinate of the dough. This is the point that the dough will try to move to.
@@ -48,10 +78,44 @@ export class DoughAllPurposeFlour {
    */
   @Prop() targetY: number = 0;
   @Watch('targetY') targetYChanged() {
-    this.updatePosition();
+    clearInterval(this.smoothDeltaYInterval);
+    if (!this.active)
+      this.smoothDeltaYChange();
+    else
+      this.updatePosition();
   }
 
-  @State() matrix: Matrix4 = Matrix4.identity();
+
+  smoothDeltaXChange() {
+    this.smoothDeltaX = this.targetX - this.originX;
+    // exponential decay of delta as a function of viscosity
+    this.smoothDeltaXInterval = setInterval(() => {
+      this.smoothDeltaX = this.smoothDeltaX * (1 - 1 / this.viscosity);
+      console.log(this.smoothDeltaX);
+      if (Math.abs(this.smoothDeltaX) < 0.01) {
+        this.smoothDeltaX = 0;
+        clearInterval(this.smoothDeltaXInterval);
+      }
+      this.updatePosition();
+    }, 1000 / 60);
+  }
+
+
+
+  smoothDeltaYChange() {
+    this.smoothDeltaY = this.targetY - this.originY;
+    this.smoothDeltaYInterval = setInterval(() => {
+      this.smoothDeltaY = this.smoothDeltaY * (1 - 1 / this.viscosity);
+      if (Math.abs(this.smoothDeltaY) < 0.01) {
+        this.smoothDeltaY = 0;
+        clearInterval(this.smoothDeltaYInterval);
+      }
+      this.updatePosition();
+    }, 1000 / 60);
+  }
+
+
+
 
   connectedCallback() {
     this.updatePosition();
@@ -71,8 +135,8 @@ export class DoughAllPurposeFlour {
   private updatePosition() {
     const STRECH_CAP = 100;
 
-    const deltaX = this.targetX - this.originX;
-    const deltaY = this.targetY - this.originY;
+    const deltaX = this.active ? this.targetX - this.originX : this.smoothDeltaX
+    const deltaY = this.active ? this.targetY - this.originY : this.smoothDeltaY
     const delta = new Vec2(deltaX, deltaY);
 
     const skewSize = this.scaleNumber((Math.min(STRECH_CAP, delta.length / this.viscosity)), [0, (STRECH_CAP)], [0, deg2rad(40)]);
