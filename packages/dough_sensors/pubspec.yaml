@@ -1,6 +1,6 @@
 name: dough_sensors
 description: Smooshy widgets that use sensors.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/josiahsrc/dough/tree/master/packages/dough_sensors
 homepage: https://josiahsaunders.com/
 
@@ -12,11 +12,8 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
-  provider: ^6.1.1
   sensors: ^2.0.3
-  vector_math: ^2.1.4
-  dough:
-    path: ../dough
+  dough: ^2.0.0
 
 dev_dependencies:
   flutter_test:
