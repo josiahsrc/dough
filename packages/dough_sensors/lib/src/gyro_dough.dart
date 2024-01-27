@@ -19,10 +19,16 @@ class GyroDough extends StatefulWidget {
   const GyroDough({
     Key? key,
     required this.child,
+    this.recipe,
   }) : super(key: key);
 
   /// The child to stretch based on physical device motion.
   final Widget child;
+
+  /// Preferences for the behavior of this [GyroDough] widget. This can
+  /// be specified here or in the context of a [GyroDoughRecipe] widget.
+  /// This will override the contextual [GyroDoughRecipeData] if provided.
+  final GyroDoughRecipeData? recipe;
 
   @override
   GyroDoughState createState() => GyroDoughState();
@@ -59,7 +65,7 @@ class GyroDoughState extends State<GyroDough> {
 
   @override
   void didChangeDependencies() {
-    final prefs = GyroDoughRecipe.watch(context);
+    final prefs = widget.recipe ?? GyroDoughRecipe.watch(context);
 
     if (!_hasInitialized) {
       _rollingSum = Offset.zero;

@@ -28,8 +28,13 @@ class GyroDoughDemo extends StatelessWidget {
       data: DoughRecipeData(
         adhesion: 21,
       ),
-      child: GyroDough(
-        child: myWidgetToSquish,
+      child: GyroDoughRecipe(
+        data: GyroDoughRecipeData(
+          gyroMultiplier: 110,
+        ),
+        child: GyroDough(
+          child: myWidgetToSquish,
+        ),
       ),
     );
 
