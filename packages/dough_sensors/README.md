@@ -30,7 +30,7 @@ You can find a full example of how to use this widget [here](example/lib/dough_w
 
 If you don't like the default dough settings, you can easily change how the dough feels. Just wrap any widget that uses `GyroDough` in a `GyroDoughRecipe` and you're good to go.
 
-```
+```dart
 GyroDoughRecipe(
   data: GyroDoughRecipeData(
     gyroMultiplier: 110, // Control the squishiness of the widget
