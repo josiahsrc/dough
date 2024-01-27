@@ -2,6 +2,8 @@
 
 import 'dart:collection';
 
+import 'package:dough/src/utils/recipe.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,7 +11,6 @@ import 'dough.dart';
 import 'dough_controller.dart';
 import 'dough_recipe.dart';
 import 'dough_transformer.dart';
-import 'draggable_recipe.dart';
 
 /// A widget which mimics the behavior of Flutter's [Draggable] widget, only
 /// this one is squishy! For details on what each field does for this widget,
@@ -19,7 +20,7 @@ class DraggableDough<T extends Object> extends StatefulWidget {
   /// Creates a [DraggableDough] widget.
   const DraggableDough({
     super.key,
-    this.prefs,
+    this.recipe,
     this.onDoughBreak,
     required this.child,
     required this.feedback,
@@ -40,11 +41,11 @@ class DraggableDough<T extends Object> extends StatefulWidget {
 
   /// Preferences for the behavior of this [DraggableDough] widget. This can
   /// be specified here or in the context of a [DoughRecipe] widget. This will
-  /// override the contextual [DoughRecipeData.draggablePrefs] if provided.
-  final DraggableDoughPrefs? prefs;
+  /// override the contextual [DraggableDoughRecipeData] if provided.
+  final DraggableDoughRecipeData? recipe;
 
   /// A callback raised when the user drags the feedback widget beyond the
-  /// [DraggableDoughPrefs.breakDistance] and the [Dough] snaps back into
+  /// [DraggableDoughRecipeData.breakDistance] and the [Dough] snaps back into
   /// its original form.
   final VoidCallback? onDoughBreak;
 
@@ -99,12 +100,12 @@ class DraggableDough<T extends Object> extends StatefulWidget {
   final bool longPress;
 
   @override
-  _DraggableDoughState<T> createState() => _DraggableDoughState<T>();
+  DraggableDoughState<T> createState() => DraggableDoughState<T>();
 }
 
 /// The state of a [DraggableDough] widget which controls how the [Dough] morphs
 /// as the feedback is dragged around.
-class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
+class DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
   final _controllerTracker = _DragControllerTracker();
 
   @override
@@ -127,14 +128,13 @@ class _DraggableDoughState<T extends Object> extends State<DraggableDough<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final recipe = DoughRecipe.watch(context);
-    final prefs = widget.prefs ?? recipe.draggablePrefs;
+    final prefs = widget.recipe ?? DraggableDoughRecipe.watch(context);
 
     // The feedback widget won't share the same context once the [Draggable]
     // widget instantiates it as an overlay. The [DoughRecipe] has to be copied
     // directly so it will exist in the overlay's context as well.
     final doughFeedback = DoughRecipe(
-      data: recipe,
+      data: DoughRecipe.watch(context).copyWith(draggableRecipe: prefs),
       child: _DragFeedback(
         controllerTracker: _controllerTracker,
         child: widget.feedback,
@@ -338,4 +338,101 @@ class _DragControllerTracker {
     _hintControllerIDs.clear();
     _controllers.clear();
   }
+}
+
+/// Preferences applied to [DraggableDough] widgets.
+class DraggableDoughRecipeData extends Equatable {
+  /// Creates [DraggableDough] preferences.
+  factory DraggableDoughRecipeData({
+    double? breakDistance,
+    bool? useHapticsOnBreak,
+  }) {
+    return DraggableDoughRecipeData.raw(
+      breakDistance: breakDistance ?? 80,
+      useHapticsOnBreak: useHapticsOnBreak ?? true,
+    );
+  }
+
+  /// Creates raw [DraggableDough] preferences, all values must be specified.
+  const DraggableDoughRecipeData.raw({
+    required this.breakDistance,
+    required this.useHapticsOnBreak,
+  });
+
+  /// Creates fallback [DraggableDough] preferences.
+  factory DraggableDoughRecipeData.fallback() => DraggableDoughRecipeData();
+
+  /// The logical pixel distance at which the [DraggableDough] should
+  /// elastically break its hold on the origin and enter a freely movable
+  /// state.
+  final double breakDistance;
+
+  /// Whether [DraggableDough] widgets should trigger haptic feedback when
+  /// the dough breaks its hold on the origin.
+  final bool useHapticsOnBreak;
+
+  /// Copies these preferences with some new values.
+  DraggableDoughRecipeData copyWith({
+    double? breakDistance,
+    bool? useHapticsOnBreak,
+  }) {
+    return DraggableDoughRecipeData.raw(
+      breakDistance: breakDistance ?? this.breakDistance,
+      useHapticsOnBreak: useHapticsOnBreak ?? this.useHapticsOnBreak,
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        breakDistance,
+        useHapticsOnBreak,
+      ];
+
+  @override
+  bool get stringify => true;
+}
+
+final _kFallback = DraggableDoughRecipeData.fallback();
+
+/// Inherited settings for [DraggableDough] widgets. Use this to override
+/// the default [DraggableDough] settings.
+class DraggableDoughRecipe extends AbstractRecipe<DraggableDoughRecipeData> {
+  /// Creates a [DraggableDoughRecipe] widget.
+  const DraggableDoughRecipe({
+    super.key,
+    required super.child,
+    super.data,
+  });
+
+  /// Gets the inherited [DraggableDoughRecipeData]. If no recipe is found,
+  /// a default one will be returned instead.
+  static DraggableDoughRecipeData of(
+    BuildContext context, [
+    bool listen = true,
+  ]) {
+    final root = maybeRecipeOf<DoughRecipeData>(
+      context: context,
+      listen: listen,
+    );
+    final draggable = maybeRecipeOf<DraggableDoughRecipeData>(
+      context: context,
+      listen: listen,
+    );
+    return draggable ?? root?.draggableRecipe ?? _kFallback;
+  }
+
+  /// Gets the inherited [DraggableDoughRecipeData] without listening
+  /// to it. If no recipe is found, a default one will be returned instead.
+  static DraggableDoughRecipeData read(BuildContext context) {
+    return of(context, false);
+  }
+
+  /// Gets the inherited [DraggableDoughRecipeData] and listens to it. If no
+  /// recipe is found, a default one will be returned instead.
+  static DraggableDoughRecipeData watch(BuildContext context) {
+    return of(context);
+  }
+
+  @override
+  DraggableDoughRecipeData get fallback => _kFallback;
 }

@@ -48,12 +48,12 @@ class PressableDough extends StatefulWidget {
   final PressableDoughReleaseCallback? onReleased;
 
   @override
-  _PressableDoughState createState() => _PressableDoughState();
+  PressableDoughState createState() => PressableDoughState();
 }
 
 /// The state of a [PressableDough] widget which updates a [Dough] widget
 /// based on user input.
-class _PressableDoughState extends State<PressableDough> {
+class PressableDoughState extends State<PressableDough> {
   final _controller = DoughController();
 
   @override

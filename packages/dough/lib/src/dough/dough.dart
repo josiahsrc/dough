@@ -38,12 +38,12 @@ class Dough extends StatefulWidget {
   final Axis? axis;
 
   @override
-  _DoughState createState() => _DoughState();
+  DoughState createState() => DoughState();
 }
 
 /// The state of a [Dough] widget which manages an animation controller
 /// to gracefully transform a widget over time.
-class _DoughState extends State<Dough> with SingleTickerProviderStateMixin {
+class DoughState extends State<Dough> with SingleTickerProviderStateMixin {
   /// A fallback [DoughTransformer] which will be used if none is specified.
   /// This is not static because it's values are modified based on the state
   /// of this widget.

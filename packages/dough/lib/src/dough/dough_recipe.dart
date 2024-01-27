@@ -1,34 +1,23 @@
+import 'package:dough/src/dough/draggable_dough.dart';
+import 'package:dough/src/utils/recipe.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'dough.dart';
 import 'dough_controller.dart';
-import 'draggable.dart';
-import 'draggable_recipe.dart';
-import 'gyro.dart';
-import 'gyro_recipe.dart';
+
+final _kFallback = DoughRecipeData.fallback();
 
 /// Inherited settings for [Dough] widgets. Use this to override
 /// the default [Dough] settings.
 @immutable
-class DoughRecipe extends StatelessWidget {
+class DoughRecipe extends AbstractRecipe<DoughRecipeData> {
   /// Creates a [DoughRecipe] widget.
   const DoughRecipe({
-    Key? key,
-    required this.child,
-    this.data,
-  }) : super(key: key);
-
-  /// The fallback recipe.
-  static final DoughRecipeData _kFallbackRecipe = DoughRecipeData.fallback();
-
-  /// This widget's child. Any [Dough] widget below this widget will inherit
-  /// the [data] provided in this recipe.
-  final Widget child;
-
-  /// The settings to be applied to all [Dough] widgets below this widget.
-  final DoughRecipeData? data;
+    super.key,
+    required super.child,
+    super.data,
+  });
 
   /// Gets the inherited [DoughRecipeData]. If no recipe is found,
   /// a default one will be returned instead.
@@ -36,11 +25,11 @@ class DoughRecipe extends StatelessWidget {
     BuildContext context, [
     bool listen = true,
   ]) {
-    try {
-      return Provider.of<DoughRecipeData>(context, listen: listen);
-    } on ProviderNotFoundException catch (_) {
-      return _kFallbackRecipe;
-    }
+    return recipeOf<DoughRecipeData>(
+      context: context,
+      fallbackData: _kFallback,
+      listen: listen,
+    );
   }
 
   /// Gets the inherited [DoughRecipeData] without listening to it. If no
@@ -56,12 +45,7 @@ class DoughRecipe extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Provider.value(
-      value: data ?? _kFallbackRecipe,
-      child: child,
-    );
-  }
+  DoughRecipeData get fallback => _kFallback;
 }
 
 /// Settings which will be applied to the [Dough] widget at runtime.
@@ -79,8 +63,7 @@ class DoughRecipeData extends Equatable {
     Curve? entryCurve,
     Duration? exitDuration,
     Curve? exitCurve,
-    DraggableDoughPrefs? draggablePrefs,
-    GyroDoughPrefs? gyroPrefs,
+    DraggableDoughRecipeData? draggableRecipe,
   }) {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? 7000,
@@ -92,8 +75,7 @@ class DoughRecipeData extends Equatable {
       entryCurve: entryCurve ?? Curves.easeInOut,
       exitDuration: exitDuration ?? const Duration(milliseconds: 500),
       exitCurve: exitCurve ?? Curves.elasticIn,
-      draggablePrefs: draggablePrefs ?? DraggableDoughPrefs.fallback(),
-      gyroPrefs: gyroPrefs ?? GyroDoughPrefs.fallback(),
+      draggableRecipe: draggableRecipe,
     );
   }
 
@@ -108,8 +90,7 @@ class DoughRecipeData extends Equatable {
     required this.entryCurve,
     required this.exitDuration,
     required this.exitCurve,
-    required this.draggablePrefs,
-    required this.gyroPrefs,
+    this.draggableRecipe,
   });
 
   /// Creates the fallback recipe.
@@ -151,10 +132,7 @@ class DoughRecipeData extends Equatable {
   final Curve exitCurve;
 
   /// Default settings applied to [DraggableDough] widgets.
-  final DraggableDoughPrefs draggablePrefs;
-
-  /// Default settings applied to [GyroDough] widgets.
-  final GyroDoughPrefs gyroPrefs;
+  final DraggableDoughRecipeData? draggableRecipe;
 
   /// Copies the current recipe with some new values.
   DoughRecipeData copyWith({
@@ -167,8 +145,7 @@ class DoughRecipeData extends Equatable {
     Curve? entryCurve,
     Duration? exitDuration,
     Curve? exitCurve,
-    DraggableDoughPrefs? draggablePrefs,
-    GyroDoughPrefs? gyroPrefs,
+    DraggableDoughRecipeData? draggableRecipe,
   }) {
     return DoughRecipeData.raw(
       viscosity: viscosity ?? this.viscosity,
@@ -180,13 +157,12 @@ class DoughRecipeData extends Equatable {
       entryCurve: entryCurve ?? this.entryCurve,
       exitDuration: exitDuration ?? this.exitDuration,
       exitCurve: exitCurve ?? this.exitCurve,
-      draggablePrefs: draggablePrefs ?? this.draggablePrefs,
-      gyroPrefs: gyroPrefs ?? this.gyroPrefs,
+      draggableRecipe: draggableRecipe ?? this.draggableRecipe,
     );
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         viscosity,
         adhesion,
         expansion,
@@ -196,8 +172,7 @@ class DoughRecipeData extends Equatable {
         entryCurve,
         exitDuration,
         exitCurve,
-        draggablePrefs,
-        gyroPrefs,
+        draggableRecipe,
       ];
 
   @override

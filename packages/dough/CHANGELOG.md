@@ -1,3 +1,14 @@
+## [2.0.0] - Jan 27, 2024.
+
+- Updated flutter version
+- [BREAKING] Renamed `DoughDraggablePrefs` to `DraggableDoughRecipeData`
+- [BREAKING] Pulled `GyroDough` out into its own `dough_sensors` package
+- Added a `AbstractDoughRecipe` class to make it easier to create custom recipes
+- Added `recipeOf` and `maybeRecipeOf` utilities for accessing recipes from context
+- Removed platform dependency on the `sensors` package
+- Changed some documentation
+- Added a `DraggableDoughRecipe` that can be used to specifically override the `DraggableDough` widget's recipe
+
 ## [1.0.4] - Feb 7, 2023.
 
 - Updated to support Flutter `3.7`.
