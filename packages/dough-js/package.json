@@ -20,21 +20,21 @@
   ],
   "scripts": {
     "build": "stencil build --docs",
-    "start": "stencil build --dev --watch --serve",
+    "start": "stencil build --dev --watch --serve --no-open",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@stencil/core": "^4.0.0",
-    "@stencil/sass": "^3.0.5"
+    "@stencil/core": "^4.14.1"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.11",
     "jest": "^27.5.1",
     "jest-cli": "^27.5.1",
-    "puppeteer": "^20.7.3"
+    "puppeteer": "^20.7.3",
+    "@stencil/sass": "^3.0.5"
   },
   "license": "MIT"
 }
