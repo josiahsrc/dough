@@ -31,7 +31,7 @@
     "access": "public"
   },
   "dependencies": {
-    "dough-stencil": "*"
+    "dough-js": "*"
   },
   "devDependencies": {
     "@types/react": "^18.2.74",

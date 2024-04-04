@@ -2,7 +2,7 @@ import { Config } from '@stencil/core';
 import { reactOutputTarget } from '@stencil/react-output-target';
 
 export const config: Config = {
-  namespace: 'dough-stencil',
+  namespace: 'dough-js',
   extras: {
     enableImportInjection: true,
   },
@@ -19,7 +19,7 @@ export const config: Config = {
       serviceWorker: null, // disable service workers
     },
     reactOutputTarget({
-      componentCorePackage: 'dough-stencil',
+      componentCorePackage: 'dough-js',
       proxiesFile: '../dough-react/lib/components/stencil-generated/index.ts',
     }),
   ],
