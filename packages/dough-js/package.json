@@ -1,31 +1,13 @@
 {
   "name": "dough-js",
-  "version": "0.0.8",
+  "version": "0.0.21",
   "description": "This library provides widgets that can be used to create a smooshy user interface.",
-  "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
+  "main": "dist/index.cjs.js",
   "unpkg": "dist/dough-js/dough-js.esm.js",
-  "exports": {
-    ".": {
-      "import": "./dist/dough-js/dough-js.esm.js",
-      "require": "./dist/dough-js/dough-js.cjs.js"
-    },
-    "./dough-all-purpose-flour": {
-      "import": "./dist/components/dough-all-purpose-flour.js",
-      "types": "./dist/components/dough-all-purpose-flour.d.ts"
-    },
-    "./dough-draggable": {
-      "import": "./dist/components/dough-draggable.js",
-      "types": "./dist/components/dough-draggable.d.ts"
-    },
-    "./dough-pressable": {
-      "import": "./dist/components/dough-pressable.js",
-      "types": "./dist/components/dough-pressable.d.ts"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/josiahsrc/dough"
@@ -34,6 +16,9 @@
     "dist/",
     "loader/"
   ],
+  "bugs": {
+    "url": "https://github.com/josiahsrc/dough/issues"
+  },
   "scripts": {
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve --no-open",
@@ -50,6 +35,9 @@
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
     "puppeteer": "^21.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "license": "MIT"
 }

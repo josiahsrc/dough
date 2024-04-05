@@ -3,9 +3,6 @@ import { reactOutputTarget } from '@stencil/react-output-target';
 
 export const config: Config = {
   namespace: 'dough-js',
-  extras: {
-    enableImportInjection: true,
-  },
   outputTargets: [
     {
       type: 'dist',
@@ -16,7 +13,7 @@ export const config: Config = {
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+      serviceWorker: false,
     },
     reactOutputTarget({
       componentCorePackage: 'dough-js',

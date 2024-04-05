@@ -1,13 +1,13 @@
 {
   "name": "dough-react",
-  "version": "0.0.0",
-  "description": "> TODO: description",
-  "author": "Gabriel Saunders <igabe@icloud.com>",
+  "version": "0.0.11",
+  "description": "This library provides widgets that can be used to create a smooshy user interface.",
   "homepage": "https://github.com/josiahsrc/dough#readme",
   "license": "ISC",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
+  "unpkg": "dist/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

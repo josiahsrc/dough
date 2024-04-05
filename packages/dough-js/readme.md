@@ -12,6 +12,12 @@ This package provides some widgets you can use to create a smooshy UI.
 
 This package provides squishy UI components that you can use right out of the box. Or, optionally, you can create your own.
 
+Add the following to your `index.html` file:
+
+```html
+<script type="module" src="https://unpkg.com/dough-js"></script>
+```
+
 ### Pressable Dough
 
 Wrap any component in `dough-pressable` to make it squish based on a user's input gestures.

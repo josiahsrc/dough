@@ -1,6 +1,7 @@
 ![Flutter Dough](./assets/images/dough-logo@repo.png)
 ![Flutter Dough Sensors](./assets/images/dough-sensors-logo@repo.png)
 ![Dough JS](./assets/images/dough-web-logo@repo.jpeg)
+![Dough React](./assets/images/dough-react-logo@repo.png)
 
 # Dough Library
 
@@ -11,6 +12,7 @@ Squishy widgets for Flutter and the web.
 - [Flutter Dough](./packages/dough/README.md)
 - [Flutter Dough Sensors](./packages/dough_sensors/README.md)
 - [Dough JS](./packages/dough-js/readme.md)
+- [Dough React](./packages/dough-react/README.md)
 
 ## Demos
 
