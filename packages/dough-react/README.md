@@ -1,4 +1,4 @@
-![Dough React](./assets/images/dough-react-logo@repo.png)
+![Dough React](https://github.com/josiahsrc/dough/blob/master/assets/images/dough-react-logo@repo.png?raw=true)
 
 This package provides some widgets you can use to create a smooshy UI.
 
@@ -11,6 +11,14 @@ This package provides some widgets you can use to create a smooshy UI.
 ## How to use
 
 This package provides squishy UI components that you can use right out of the box. Or, optionally, you can create your own.
+
+To use This component you must call defineCustomElements() from `@dough-react` in your app's entry file.
+
+```tsx
+import { defineCustomElements } from 'dough-react';
+
+defineCustomElements();
+```
 
 ### Pressable Dough
 

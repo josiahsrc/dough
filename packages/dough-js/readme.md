@@ -1,4 +1,4 @@
-![Dough JS](./assets/images/dough-web-logo@repo.jpeg)
+![Dough JS](https://github.com/josiahsrc/dough/blob/master/assets/images/dough-web-logo@repo.jpeg?raw=true)
 
 This package provides some widgets you can use to create a smooshy UI.
 

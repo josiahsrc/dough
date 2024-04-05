@@ -1,6 +1,6 @@
 {
   "name": "dough-js",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "This library provides widgets that can be used to create a smooshy user interface.",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
