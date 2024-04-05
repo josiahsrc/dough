@@ -1,6 +1,6 @@
 {
   "name": "dough-react",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "This library provides widgets that can be used to create a smooshy user interface.",
   "homepage": "https://github.com/josiahsrc/dough#readme",
   "license": "MIT",
