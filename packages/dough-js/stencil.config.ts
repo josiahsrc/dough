@@ -1,5 +1,5 @@
 import { Config } from '@stencil/core';
-import { sass } from '@stencil/sass';
+import { reactOutputTarget } from '@stencil/react-output-target';
 
 export const config: Config = {
   namespace: 'dough-js',
@@ -9,18 +9,15 @@ export const config: Config = {
       esmLoaderPath: '../loader',
     },
     {
-      type: 'dist-custom-elements',
-    },
-    {
       type: 'docs-readme',
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+      serviceWorker: false,
     },
+    reactOutputTarget({
+      componentCorePackage: 'dough-js',
+      proxiesFile: '../dough-react/lib/components/stencil-generated/index.ts',
+    }),
   ],
-  testing: {
-    browserHeadless: 'new',
-  },
-  plugins: [sass()],
 };

@@ -79,7 +79,20 @@ declare global {
         prototype: HTMLDoughAllPurposeFlourElement;
         new (): HTMLDoughAllPurposeFlourElement;
     };
+    interface HTMLDoughDraggableElementEventMap {
+        "doughDragStart": { x: number, y: number };
+        "doughDragMove": { x: number, y: number };
+        "doughDragEnd": { x: number, y: number };
+    }
     interface HTMLDoughDraggableElement extends Components.DoughDraggable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDoughDraggableElementEventMap>(type: K, listener: (this: HTMLDoughDraggableElement, ev: DoughDraggableCustomEvent<HTMLDoughDraggableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDoughDraggableElementEventMap>(type: K, listener: (this: HTMLDoughDraggableElement, ev: DoughDraggableCustomEvent<HTMLDoughDraggableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDoughDraggableElement: {
         prototype: HTMLDoughDraggableElement;

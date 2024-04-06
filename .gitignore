@@ -110,5 +110,3 @@ nohup.out
 
 # other stuff
 /node_modules/
-/package-lock.json
-/package.json

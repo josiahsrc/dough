@@ -1,4 +1,4 @@
-![Dough JS](https://github.com/josiahsrc/dough/blob/master/assets/images/dough-web-logo@repo.jpeg?raw=true)
+![Dough React](https://github.com/josiahsrc/dough/blob/master/assets/images/dough-react-logo@repo.png?raw=true)
 
 This package provides some widgets you can use to create a smooshy UI.
 
@@ -12,41 +12,43 @@ This package provides some widgets you can use to create a smooshy UI.
 
 This package provides squishy UI components that you can use right out of the box. Or, optionally, you can create your own.
 
-Add the following to your `index.html` file:
+To use This component you must call defineCustomElements() from `@dough-react` in your app's entry file.
 
-```html
-<script type="module" src="https://unpkg.com/dough-js"></script>
+```tsx
+import { defineCustomElements } from 'dough-react';
+
+defineCustomElements();
 ```
 
 ### Pressable Dough
 
-Wrap any component in `dough-pressable` to make it squish based on a user's input gestures.
+Wrap any component in `DoughPressable` to make it squish based on a user's input gestures.
 
-```html
-<dough-pressable>
+```tsx
+<DoughPressable>
   <img src="..." />
-</dough-pressable>
+</DoughPressable>
 ```
 
-![PressableDough Demo](./assets/gifs/pressable-dough.gif)
+![DoughPressable Demo](./assets/gifs/pressable-dough.gif)
 
 ### Draggable Dough
 
-`dough-draggable` allows you to drag and drop components around... Only this time it's squishy!
+`DoughDraggable` allows you to drag and drop components around... Only this time it's squishy!
 
-```html
-<dough-draggable>
+```tsx
+<DoughDraggable>
   <img src="..." />
-</dough-draggable>
+</DoughDraggable>
 ```
 
 ![DraggableDough Demo](./assets/gifs/draggable-dough.gif)
 
 ### Make your own Dough
 
-If the above widgets aren't exactly what you're looking for, you can easily create your own squishy component using the provided `dough-all-purpose-flour` component! Check out the `dough-pressable` implementation for how to do that.
+If the above widgets aren't exactly what you're looking for, you can easily create your own squishy component using the provided `DoughAllPurposeFlour` component! Check out the `DoughPressable` implementation for how to do that.
 
-![CustomDough Demo](./assets/gifs/custom-dough.gif)
+![DoughAllPurposeFlour Demo](./assets/gifs/custom-dough.gif)
 
 ---
 
@@ -54,10 +56,10 @@ If the above widgets aren't exactly what you're looking for, you can easily crea
 
 If you don't like the default dough settings, you can easily change how the dough feels. Just update the provided `viscosity` and `adhesion` parameters.
 
-```html
-<dough-draggable viscosity="10" adhesion="4">
+```tsx
+<DoughDraggable viscosity="10" adhesion="4">
   <img src="..." />
-</dough-draggable>
+</DoughDraggable>
 ```
 
 ---

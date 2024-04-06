@@ -10,23 +10,21 @@ export class DoughPressable {
   private startY: number = 0;
 
   /**
- * The adhesion of the dough. The higher the number, the more the dough will stick to its original position.
- * @type {number}
- */
+   * The adhesion of the dough. The higher the number, the more the dough will stick to its original position.
+   * @type {number}
+   */
   @Prop() adhesion: number = 8;
   /**
    * The viscosity of the dough. The higher the number, the more the dough will resist movement.
    * @type {number}
    */
-  @Prop() viscosity: number = 10
+  @Prop() viscosity: number = 10;
 
   @State() active: boolean = false;
   @State() deltaX: number = 0;
   @State() deltaY: number = 0;
 
-
   onStart(e: MouseEvent | TouchEvent) {
-    console.log(e);
     this.active = true;
 
     if (e instanceof MouseEvent) {
@@ -42,12 +40,10 @@ export class DoughPressable {
     document.addEventListener('mouseup', this.onEnd.bind(this));
     document.addEventListener('touchmove', this.onMove.bind(this));
     document.addEventListener('touchend', this.onEnd.bind(this));
-
   }
 
   onMove(e: MouseEvent | TouchEvent) {
-    if (!this.active)
-      return;
+    if (!this.active) return;
 
     let x = 0;
     let y = 0;
@@ -80,14 +76,10 @@ export class DoughPressable {
   render() {
     return (
       <Host onMouseDown={this.onStart.bind(this)} onTouchStart={this.onStart.bind(this)}>
-        <dough-all-purpose-flour
-          active={this.active}
-
-          originX={0} originY={0} targetX={this.deltaX} targetY={this.deltaY} adhesion={this.adhesion} viscosity={this.viscosity}>
+        <dough-all-purpose-flour active={this.active} originX={0} originY={0} targetX={this.deltaX} targetY={this.deltaY} adhesion={this.adhesion} viscosity={this.viscosity}>
           <slot></slot>
         </dough-all-purpose-flour>
       </Host>
     );
   }
-
 }
